@@ -1,0 +1,8 @@
+node_modules/
+build/
+dist/
+.react-router/
+_reference/
+owner-files/
+pnpm-lock.yaml
+packages/config/src/spokes.ts

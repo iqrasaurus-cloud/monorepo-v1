@@ -1,0 +1,34 @@
+/* IqraSaurus design tokens. Values sampled from the logo (BUILD_SPEC.md §3.2).
+   Each colour also has an "-rgb" channel triple so Tailwind opacity modifiers
+   such as text-ink/70 work. Keep both in sync. */
+:root {
+  --ink: #354f52;
+  --ink-rgb: 53 79 82;
+  --primary: #5c3d8f;
+  --primary-rgb: 92 61 143;
+  --plum: #441c4b;
+  --plum-rgb: 68 28 75;
+  --magenta: #ce4eda;
+  --magenta-rgb: 206 78 218;
+  --sun: #ffe45d;
+  --sun-rgb: 255 228 93;
+  --taupe: #b0a38e;
+  --taupe-rgb: 176 163 142;
+  --paper: #f6f4ee;
+  --paper-rgb: 246 244 238;
+  --paper-2: #ece8dd;
+  --paper-2-rgb: 236 232 221;
+  --white: #ffffff;
+  --white-rgb: 255 255 255;
+  --accent: var(--primary);
+  --accent-rgb: var(--primary-rgb);
+
+  --font-heading: 'Fredoka Variable', 'Fredoka', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Nunito Sans Variable', 'Nunito Sans', 'Segoe UI', system-ui, sans-serif;
+  --font-arabic: 'Noto Naskh Arabic', 'Traditional Arabic', 'Amiri', serif;
+
+  --radius-card: 16px;
+  --radius-pill: 999px;
+  --shadow-soft: 0 2px 6px rgb(var(--ink-rgb) / 0.06), 0 12px 32px rgb(var(--ink-rgb) / 0.08);
+  --content-max: 1200px;
+}

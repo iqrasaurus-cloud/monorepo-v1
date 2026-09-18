@@ -1,0 +1,82 @@
+@import '@fontsource-variable/fredoka';
+@import '@fontsource-variable/nunito-sans';
+@import '@fontsource/noto-naskh-arabic';
+@import '@iqra/config/tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-paper font-body text-ink antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading font-semibold text-primary;
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--primary-rgb));
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: rgb(var(--sun-rgb));
+    color: rgb(var(--plum-rgb));
+  }
+
+  /* Arabic is always rendered as supplied: right-to-left, roomy, never spaced or uppercased. */
+  [lang='ar'] {
+    font-family: var(--font-arabic);
+    direction: rtl;
+    line-height: 2;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+  }
+}
+
+@layer components {
+  .label {
+    @apply font-body text-xs font-semibold uppercase tracking-label;
+  }
+
+  .section {
+    @apply py-20 md:py-32;
+  }
+
+  .ribbon {
+    clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%, 10px 50%);
+  }
+
+  .link-sweep {
+    @apply relative;
+  }
+  .link-sweep::after {
+    content: '';
+    @apply absolute inset-x-0 bottom-0 h-px origin-right scale-x-0 bg-current transition-transform duration-500 ease-wipe;
+  }
+  .link-sweep:hover::after,
+  .link-sweep:focus-visible::after {
+    @apply origin-left scale-x-100;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-marquee {
+    animation: none;
+  }
+  .link-sweep::after {
+    transition: none;
+  }
+}

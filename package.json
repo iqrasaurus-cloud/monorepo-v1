@@ -1,0 +1,29 @@
+{
+  "name": "iqrasaurus",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.4.2",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "pnpm -r --parallel --filter \"./apps/**\" run dev",
+    "build": "pnpm -r --filter \"./apps/**\" run build",
+    "typecheck": "pnpm -r run typecheck && tsc -p scripts/tsconfig.json",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "new:spoke": "node scripts/new-spoke.mjs",
+    "gen:vercel": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/gen-vercel.mts",
+    "assets": "node scripts/optimise-assets.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^24.10.1",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "globals": "^16.5.0",
+    "prettier": "^3.6.2",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.46.4"
+  }
+}
