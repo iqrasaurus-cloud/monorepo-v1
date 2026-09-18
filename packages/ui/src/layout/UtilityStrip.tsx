@@ -1,27 +1,30 @@
 import { hubMenu, type SiteConfig } from '@iqra/config'
-import { Link } from 'react-router'
 import { Container } from '../primitives/Container.tsx'
-import { hubHref } from './links.ts'
-
-const linkClass = 'link-sweep label py-2 text-white/85 transition-colors hover:text-white'
+import { cn } from '../utils/cn.ts'
+import { HubLink } from './HubLink.tsx'
+import { hubLive } from './links.ts'
 
 /** Band 1: hub links, identical on every site. Desktop only; the drawer carries them on mobile. */
 export function UtilityStrip({ site }: { site: SiteConfig }) {
+  const active = site.kind === 'hub' || hubLive()
   return (
     <div className="hidden bg-plum text-white lg:block">
       <Container as="nav" aria-label="IqraSaurus" className="flex h-9 items-center justify-between">
         <ul className="flex items-center gap-7">
           {hubMenu.map((item) => (
             <li key={item.path}>
-              {site.kind === 'hub' ? (
-                <Link to={item.path} className={linkClass}>
-                  {item.label}
-                </Link>
-              ) : (
-                <a href={hubHref(site, item.path)} className={linkClass}>
-                  {item.label}
-                </a>
-              )}
+              <HubLink
+                site={site}
+                path={item.path}
+                className={cn(
+                  'label py-2',
+                  active
+                    ? 'link-sweep text-white/85 transition-colors hover:text-white'
+                    : 'text-white/60',
+                )}
+              >
+                {item.label}
+              </HubLink>
             </li>
           ))}
         </ul>

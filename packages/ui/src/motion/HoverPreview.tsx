@@ -83,7 +83,14 @@ export function HoverPreview({ containerRef, items, activeKey, className }: Hove
                 }}
                 transition={{ duration: duration.crossfade, ease: easeReveal }}
               >
-                <Picture {...item} className="h-full w-full object-contain" />
+                <Picture
+                  src={item.src}
+                  fallback={item.fallback}
+                  alt={item.alt}
+                  width={item.width}
+                  height={item.height}
+                  className="h-full w-full object-contain"
+                />
               </motion.div>
             ))}
           </motion.div>

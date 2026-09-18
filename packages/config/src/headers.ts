@@ -23,14 +23,24 @@ export const contentSecurityPolicy = (site: SiteConfig, frameAncestors: FrameAnc
     'upgrade-insecure-requests',
   ].join('; ')
 
-const commonHeaders = [
+/** Origins of external embeds that declare a given feature in `allow`. */
+const allowedOrigins = (site: SiteConfig, feature: string): string[] =>
+  [site.journal, site.chat]
+    .filter((e) => e.src.startsWith('https://') && (e.allow ?? '').split(/\s+/).includes(feature))
+    .map((e) => new URL(e.src).origin)
+    .filter((o, i, a) => a.indexOf(o) === i)
+
+export const permissionsPolicy = (site: SiteConfig): string => {
+  const mic = allowedOrigins(site, 'microphone')
+  const micValue = mic.length > 0 ? ['self', ...mic.map((o) => `"${o}"`)].join(' ') : ''
+  return `camera=(), microphone=(${micValue}), geolocation=(), payment=(), usb=()`
+}
+
+const commonHeaders = (site: SiteConfig) => [
   { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
   { key: 'X-Content-Type-Options', value: 'nosniff' },
   { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-  {
-    key: 'Permissions-Policy',
-    value: 'camera=(), microphone=(), geolocation=(), payment=(), usb=()',
-  },
+  { key: 'Permissions-Policy', value: permissionsPolicy(site) },
   { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
 ]
 
@@ -40,14 +50,14 @@ export const securityHeaders = (site: SiteConfig): HeaderRule[] => [
     source: '/((?!embeds/).*)',
     headers: [
       { key: 'Content-Security-Policy', value: contentSecurityPolicy(site, "'none'") },
-      ...commonHeaders,
+      ...commonHeaders(site),
     ],
   },
   {
     source: '/embeds/(.*)',
     headers: [
       { key: 'Content-Security-Policy', value: contentSecurityPolicy(site, "'self'") },
-      ...commonHeaders,
+      ...commonHeaders(site),
     ],
   },
   {

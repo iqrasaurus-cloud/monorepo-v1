@@ -5,7 +5,8 @@ import { Picture } from '../primitives/Picture.tsx'
 import { Scallop } from '../primitives/Scallop.tsx'
 import { cn } from '../utils/cn.ts'
 import { brandImage } from './brand.ts'
-import { hubHref, toolkitEntries, toolkitLabel } from './links.ts'
+import { HubLink } from './HubLink.tsx'
+import { hubLive, toolkitEntries, toolkitLabel } from './links.ts'
 import { ComingSoonPill } from './ToolkitMegaMenu.tsx'
 
 const heading = 'label mb-4 text-sun'
@@ -14,6 +15,7 @@ const link = 'link-sweep text-white/85 transition-colors hover:text-white'
 export function Footer({ site }: { site: SiteConfig }) {
   const logo = brandImage('logo-square')
   const year = new Date().getFullYear()
+  const hubActive = site.kind === 'hub' || hubLive()
   const verify = [
     { label: 'Verify ARS on MUIS', href: brand.verifyLinks.ars },
     { label: 'Verify IECP on MUIS', href: brand.verifyLinks.iecp },
@@ -35,18 +37,17 @@ export function Footer({ site }: { site: SiteConfig }) {
             <ul className="space-y-2">
               {hubMenu.map((item) => (
                 <li key={item.path}>
-                  {site.kind === 'hub' ? (
-                    <Link to={item.path} className={link}>
-                      {item.label}
-                    </Link>
-                  ) : (
-                    <a href={hubHref(site, item.path)} className={link}>
-                      {item.label}
-                    </a>
-                  )}
+                  <HubLink
+                    site={site}
+                    path={item.path}
+                    className={hubActive ? link : 'text-white/45'}
+                  >
+                    {item.label}
+                  </HubLink>
                 </li>
               ))}
             </ul>
+            {!hubActive ? <p className="label mt-3 text-white/45">Coming soon</p> : null}
           </nav>
 
           <nav aria-label="Toolkit">

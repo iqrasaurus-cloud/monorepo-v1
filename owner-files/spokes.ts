@@ -21,6 +21,11 @@ export interface EmbedConfig {
   src: string
   /** Accessible title for the iframe. */
   title: string
+  /**
+   * Browser features the embed may use, e.g. 'microphone'. Leave out for none.
+   * Also opens that feature for the embed's origin in the site's Permissions-Policy.
+   */
+  allow?: string
 }
 
 export interface SiteConfig {
@@ -78,8 +83,12 @@ export const sites: SiteConfig[] = [
     order: 1,
     mascot: 'mascot-magnifier.png',
     mascotTone: 'playful',
-    journal: { src: '', title: 'Quran Investigators Journal' }, // OWNER
-    chat: { src: '', title: 'Ask the Quran Investigators guide' }, // OWNER
+    journal: { src: '/embeds/journal-sample/index.html', title: 'Quran Investigators Journal' }, // OWNER
+    chat: {
+      src: 'https://www.chatbase.co/chatbot-iframe/zlzFNm9ySuiomi-Mi-gNR',
+      title: 'Ask the Quran Investigators guide',
+      allow: 'microphone',
+    }, // OWNER
     support: { href: '', label: 'Support Quran Investigators' }, // OWNER
   },
   {

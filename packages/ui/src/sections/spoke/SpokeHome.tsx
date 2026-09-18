@@ -6,6 +6,8 @@ import { AdaptIt } from './AdaptIt.tsx'
 import { bgClass, isBlank, nonBlank, scallopClass, type Bg } from './helpers.ts'
 import { Hero } from './Hero.tsx'
 import { Journey } from './Journey.tsx'
+import { JourneyStrip } from './JourneyStrip.tsx'
+import { QuoteBand } from './QuoteBand.tsx'
 import { SupportUs } from './SupportUs.tsx'
 import { TryIt } from './TryIt.tsx'
 import { WhatIsIt } from './WhatIsIt.tsx'
@@ -19,6 +21,10 @@ interface Block {
   id?: string
   bg: Bg
   empty: boolean
+  /** Shorter vertical padding for narrow bands. */
+  compact?: boolean
+  /** The block draws its own background and full-bleed layout. */
+  flush?: boolean
   node: ReactNode
 }
 
@@ -40,6 +46,7 @@ export function SpokeHome({ site, content }: SpokeHomeProps) {
   const steps = nonBlank(c.tryIt.steps)
 
   const blocks: Block[] = [
+    { bg: 'paper-2', empty: false, compact: true, node: <JourneyStrip /> },
     {
       id: 'about',
       bg: 'white',
@@ -57,6 +64,7 @@ export function SpokeHome({ site, content }: SpokeHomeProps) {
       empty: journeyEmpty,
       node: <Journey journey={c.journey} />,
     },
+    { bg: 'plum', empty: false, node: <QuoteBand /> },
     {
       bg: 'white',
       empty: nonBlank(c.whatWeDid.body).length === 0 && c.whatWeDid.photos.length === 0,
@@ -84,6 +92,7 @@ export function SpokeHome({ site, content }: SpokeHomeProps) {
     {
       bg: 'paper-2',
       empty: nonBlank(c.adaptIt.body).length === 0,
+      flush: true,
       node: <AdaptIt body={nonBlank(c.adaptIt.body)} image={c.hero.image} />,
     },
     {
@@ -125,7 +134,13 @@ export function SpokeHome({ site, content }: SpokeHomeProps) {
             ))}
             <div id={block.id} className={cn(bgClass[block.bg], 'relative')}>
               {changed ? <Scallop className={scallopClass[scallop]} /> : null}
-              <section className="section">{block.node}</section>
+              <section
+                className={cn(
+                  block.compact ? 'py-6 md:py-8' : block.flush ? 'pb-20 md:pb-32' : 'section',
+                )}
+              >
+                {block.node}
+              </section>
             </div>
           </Fragment>
         )

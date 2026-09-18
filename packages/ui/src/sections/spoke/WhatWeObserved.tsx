@@ -1,4 +1,4 @@
-import type { SpokeContent } from '@iqra/config'
+import { brandCopy, type SpokeContent } from '@iqra/config'
 import { Reveal, RevealItem, RevealList } from '../../motion/Reveal.tsx'
 import { Container } from '../../primitives/Container.tsx'
 import { SectionHeading } from '../../primitives/SectionHeading.tsx'
@@ -7,7 +7,12 @@ export function WhatWeObserved({ items }: { items: SpokeContent['whatWeObserved'
   return (
     <Container>
       <Reveal>
-        <SectionHeading eyebrow="Impact" title="What we observed" className="mb-12" />
+        <SectionHeading
+          eyebrow="We tried this"
+          title="What we observed"
+          lede={brandCopy.weTriedThis}
+          className="mb-12"
+        />
       </Reveal>
       <RevealList as="ul" className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {items.map((item, i) => (

@@ -1,5 +1,12 @@
 import { hub, siteMenu, siteUrl, toolkit, type SiteConfig } from '@iqra/config'
 
+/**
+ * Links to iqrasaurus.com are switched on for every site at once by setting the
+ * hub's status to 'live' in packages/config/src/spokes.ts. Until then the labels
+ * are shown but do not link anywhere.
+ */
+export const hubLive = (): boolean => hub().status === 'live'
+
 /** Absolute hub URL for a Band 1 link, or a router path when already on the hub. */
 export const hubHref = (site: SiteConfig, path: string): string =>
   site.kind === 'hub' ? path : siteUrl(hub(), path)

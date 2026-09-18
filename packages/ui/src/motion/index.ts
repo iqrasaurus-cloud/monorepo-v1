@@ -1,4 +1,5 @@
 export * from './presets.ts'
+export { useIsClient } from './useIsClient.ts'
 export { useMediaQuery } from './useMediaQuery.ts'
 export { useReducedMotionSafe } from './useReducedMotionSafe.ts'
 export { Reveal, RevealList, RevealItem } from './Reveal.tsx'

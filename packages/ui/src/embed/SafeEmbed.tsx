@@ -1,6 +1,7 @@
 import { frameOrigins, type EmbedConfig, type SiteConfig } from '@iqra/config'
 import { useEffect, useState } from 'react'
 import { mascotImage } from '../layout/brand.ts'
+import { useIsClient } from '../motion/useIsClient.ts'
 import { Button } from '../primitives/Button.tsx'
 import { Picture } from '../primitives/Picture.tsx'
 import { cn } from '../utils/cn.ts'
@@ -41,6 +42,7 @@ function Notice({ site, title, body }: { site: SiteConfig; title: string; body: 
 interface SafeEmbedProps {
   site: SiteConfig
   embed: EmbedConfig
+  /** Sets the height. The frame fills it edge to edge. */
   className?: string
 }
 
@@ -51,6 +53,8 @@ interface SafeEmbedProps {
 export function SafeEmbed({ site, embed, className }: SafeEmbedProps) {
   const [loaded, setLoaded] = useState(false)
   const [slow, setSlow] = useState(false)
+  // The frame is only created in the browser so its load event is never missed.
+  const isClient = useIsClient()
   const status = verdict(site, embed.src)
 
   useEffect(() => {
@@ -86,24 +90,23 @@ export function SafeEmbed({ site, embed, className }: SafeEmbedProps) {
   return (
     <div className={cn('relative', className)}>
       {!loaded ? (
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 animate-pulse rounded-card bg-paper-2"
+        <div aria-hidden="true" className="absolute inset-0 animate-pulse bg-paper-2" />
+      ) : null}
+      {isClient ? (
+        <iframe
+          src={embed.src}
+          title={embed.title}
+          sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+          loading="lazy"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allow={embed.allow ?? ''}
+          onLoad={() => setLoaded(true)}
+          className={cn(
+            'relative block h-full w-full border-0 bg-transparent transition-opacity duration-500',
+            loaded ? 'opacity-100' : 'opacity-0',
+          )}
         />
       ) : null}
-      <iframe
-        src={embed.src}
-        title={embed.title}
-        sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
-        loading="lazy"
-        referrerPolicy="strict-origin-when-cross-origin"
-        allow=""
-        onLoad={() => setLoaded(true)}
-        className={cn(
-          'relative h-full w-full rounded-card border-0 bg-white transition-opacity duration-500',
-          loaded ? 'opacity-100' : 'opacity-0',
-        )}
-      />
       {!loaded && slow ? (
         <p className="absolute inset-x-0 bottom-6 text-center text-sm text-ink/80">
           Taking a while to load.{' '}

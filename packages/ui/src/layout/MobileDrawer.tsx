@@ -6,13 +6,14 @@ import { duration, easeWipe, stagger } from '../motion/presets.ts'
 import { useSmoothScroll } from '../motion/SmoothScroll.tsx'
 import { useReducedMotionSafe } from '../motion/useReducedMotionSafe.ts'
 import { cn } from '../utils/cn.ts'
-import { hubHref, toolkitEntries, toolkitLabel } from './links.ts'
+import { HubLink } from './HubLink.tsx'
+import { hubLive, toolkitEntries, toolkitLabel } from './links.ts'
 import { ComingSoonPill } from './ToolkitMegaMenu.tsx'
 import { useAnchorNavigate } from './useAnchorNavigate.ts'
 
 const FOCUSABLE = 'a[href], button:not([disabled])'
 const itemClass = 'block py-2.5 font-heading text-2xl font-semibold text-ink'
-const hubItemClass = 'block py-2 label text-ink/70'
+const hubItemClass = 'block py-2 label'
 
 interface RiseProps {
   index: number
@@ -56,6 +57,7 @@ export function MobileDrawer({ site, open, onClose }: MobileDrawerProps) {
   const [toolkitOpen, setToolkitOpen] = useState(false)
   const onAnchor = useAnchorNavigate()
   const { lock } = useSmoothScroll()
+  const hubActive = site.kind === 'hub' || hubLive()
 
   useEffect(() => {
     if (!open) return
@@ -228,19 +230,21 @@ export function MobileDrawer({ site, open, onClose }: MobileDrawerProps) {
                 {hubMenu.map((item, i) => (
                   <li key={item.path}>
                     <Rise index={hubOffset + i} reduced={reduced}>
-                      {site.kind === 'hub' ? (
-                        <Link to={item.path} className={hubItemClass} onClick={onClose}>
-                          {item.label}
-                        </Link>
-                      ) : (
-                        <a href={hubHref(site, item.path)} className={hubItemClass}>
-                          {item.label}
-                        </a>
-                      )}
+                      <HubLink
+                        site={site}
+                        path={item.path}
+                        onClick={onClose}
+                        className={cn(hubItemClass, hubActive ? 'text-ink/70' : 'text-ink/40')}
+                      >
+                        {item.label}
+                      </HubLink>
                     </Rise>
                   </li>
                 ))}
               </ul>
+              {!hubActive ? (
+                <p className="label mt-2 text-ink/40">IqraSaurus home: coming soon</p>
+              ) : null}
             </nav>
           </motion.div>
         </>

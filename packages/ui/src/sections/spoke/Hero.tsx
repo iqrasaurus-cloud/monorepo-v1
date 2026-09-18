@@ -1,6 +1,6 @@
 import { fourI, type SiteConfig, type SpokeContent } from '@iqra/config'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { useId, useRef } from 'react'
+import { useRef } from 'react'
 import { mascotImage } from '../../layout/brand.ts'
 import { useAnchorNavigate } from '../../layout/useAnchorNavigate.ts'
 import { LetterRise } from '../../motion/LetterRise.tsx'
@@ -8,26 +8,9 @@ import { duration, easeReveal, heroScrollOut, heroText } from '../../motion/pres
 import { useReducedMotionSafe } from '../../motion/useReducedMotionSafe.ts'
 import { Container } from '../../primitives/Container.tsx'
 import { Eyebrow } from '../../primitives/Eyebrow.tsx'
+import { Pattern } from '../../primitives/Pattern.tsx'
 import { Picture } from '../../primitives/Picture.tsx'
 import { cn } from '../../utils/cn.ts'
-
-function Pattern() {
-  const id = useId()
-  return (
-    <svg
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-0 h-full w-full text-plum opacity-[0.04]"
-    >
-      <defs>
-        <pattern id={id} width="72" height="72" patternUnits="userSpaceOnUse">
-          <path d="M36 6 L66 36 L36 66 L6 36 Z" fill="none" stroke="currentColor" strokeWidth="2" />
-          <circle cx="36" cy="36" r="7" fill="none" stroke="currentColor" strokeWidth="2" />
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill={`url(#${id})`} />
-    </svg>
-  )
-}
 
 interface HeroProps {
   site: SiteConfig
@@ -58,15 +41,15 @@ export function Hero({ site, hero, nextAnchor }: HeroProps) {
     <section
       ref={ref}
       id="top"
-      className="relative overflow-hidden bg-paper pb-16 pt-14 md:pb-24 md:pt-20"
+      className="relative overflow-hidden bg-paper pb-16 pt-12 md:pb-24 md:pt-20"
     >
-      <Pattern />
+      <Pattern className="text-plum opacity-[0.04]" />
       <Container>
         <motion.div
           style={reduced ? undefined : { y, opacity }}
-          className="grid items-center gap-10 lg:grid-cols-[1.3fr_1fr]"
+          className="grid items-center gap-10 lg:grid-cols-[1.25fr_1fr]"
         >
-          <div>
+          <div className="min-w-0">
             {hero.eyebrow ? (
               <motion.div
                 data-reveal=""
@@ -80,7 +63,7 @@ export function Hero({ site, hero, nextAnchor }: HeroProps) {
 
             <LetterRise
               text={hero.headline}
-              className="font-heading text-[13vw] font-bold uppercase leading-[0.95] tracking-tight sm:text-[4.5rem] lg:text-[5.5rem]"
+              className="font-heading text-[clamp(2.5rem,9.5vw,5.25rem)] font-bold uppercase leading-[0.98] tracking-tight"
               lineClassName={(i) => (i === 0 ? 'text-ink' : 'text-accent')}
             />
 
