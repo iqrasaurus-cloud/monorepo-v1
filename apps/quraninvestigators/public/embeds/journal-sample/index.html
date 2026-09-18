@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Journal</title>
+    <style>
+      /* Keep these values in step with packages/config/src/tokens.css */
+      :root {
+        --ink: #354f52;
+        --primary: #5c3d8f;
+        --plum: #441c4b;
+        --sun: #ffe45d;
+        --taupe: #b0a38e;
+        --paper: #f6f4ee;
+        --white: #ffffff;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 24px;
+        background: var(--paper);
+        color: var(--ink);
+        font: 16px/1.6 'Nunito Sans', 'Segoe UI', system-ui, sans-serif;
+      }
+      .grid {
+        display: grid;
+        gap: 20px;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      }
+      .card {
+        background: var(--white);
+        border-radius: 16px;
+        box-shadow: 0 2px 6px rgb(53 79 82 / 0.06), 0 12px 32px rgb(53 79 82 / 0.08);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+      .card img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 3 / 2;
+        object-fit: cover;
+      }
+      .card .body {
+        padding: 20px;
+      }
+      .meta {
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--primary);
+        margin: 0 0 8px;
+      }
+      .card h2 {
+        font: 700 20px/1.25 'Fredoka', 'Segoe UI', system-ui, sans-serif;
+        color: var(--primary);
+        margin: 0 0 8px;
+      }
+      .card p {
+        margin: 0 0 12px;
+      }
+      .card a {
+        color: var(--plum);
+        background: var(--sun);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        padding: 8px 16px;
+        border-radius: 999px;
+        display: inline-block;
+      }
+      .empty {
+        color: var(--taupe);
+      }
+    </style>
+  </head>
+  <body>
+    <main id="posts" class="grid" aria-live="polite">
+      <p class="empty">Loading posts…</p>
+    </main>
+    <script src="journal.js"></script>
+  </body>
+</html>

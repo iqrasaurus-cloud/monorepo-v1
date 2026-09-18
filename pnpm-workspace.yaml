@@ -3,5 +3,7 @@ packages:
   - 'packages/*'
 
 # Vite depends on esbuild, whose install script only checks its own binary.
+# sharp (image optimiser, scripts only) downloads its prebuilt binary on install.
 allowBuilds:
   esbuild: true
+  sharp: true

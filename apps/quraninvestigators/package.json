@@ -1,0 +1,29 @@
+{
+  "name": "quraninvestigators",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "react-router dev --port 3000",
+    "build": "react-router build",
+    "preview": "vite preview --outDir build/client",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@iqra/config": "workspace:*",
+    "@iqra/ui": "workspace:*",
+    "@react-router/node": "^7.6.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router": "^7.6.1"
+  },
+  "devDependencies": {
+    "@react-router/dev": "^7.6.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "autoprefixer": "^10.4.23",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.19",
+    "typescript": "~5.9.3",
+    "vite": "^7.2.4"
+  }
+}

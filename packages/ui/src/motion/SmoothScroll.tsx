@@ -1,4 +1,4 @@
-import Lenis from 'lenis'
+import type Lenis from 'lenis'
 import {
   createContext,
   useCallback,
@@ -43,8 +43,9 @@ const SmoothScrollContext = createContext<SmoothScrollApi>({
 export const useSmoothScroll = (): SmoothScrollApi => useContext(SmoothScrollContext)
 
 /**
- * Lenis smooth-scroll provider. Routes in-page anchor clicks through Lenis and
- * resets to the top on route change. Does nothing when reduced motion is preferred.
+ * Lenis smooth-scroll provider. Lenis is loaded in the browser only (never during
+ * pre-rendering), anchor clicks are routed through it, and every route change
+ * resets to the top. Does nothing when reduced motion is preferred.
  */
 export function SmoothScroll({ children }: { children: ReactNode }) {
   const reduced = useReducedMotionSafe()
@@ -53,18 +54,23 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (reduced) return
-    const lenis = new Lenis({ lerp: lenisOptions.lerp })
-    lenisRef.current = lenis
-
+    let cancelled = false
     let raf = 0
-    const loop = (time: number) => {
-      lenis.raf(time)
+
+    void import('lenis').then(({ default: LenisCtor }) => {
+      if (cancelled) return
+      const lenis = new LenisCtor({ lerp: lenisOptions.lerp })
+      lenisRef.current = lenis
+      const loop = (time: number) => {
+        lenis.raf(time)
+        raf = requestAnimationFrame(loop)
+      }
       raf = requestAnimationFrame(loop)
-    }
-    raf = requestAnimationFrame(loop)
+    })
 
     const onClick = (e: MouseEvent) => {
-      if (e.defaultPrevented) return
+      const lenis = lenisRef.current
+      if (e.defaultPrevented || !lenis) return
       const anchor = (e.target as Element | null)?.closest('a[href^="#"]')
       const href = anchor?.getAttribute('href')
       if (!href || href === '#') return
@@ -76,9 +82,10 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     document.addEventListener('click', onClick)
 
     return () => {
+      cancelled = true
       cancelAnimationFrame(raf)
       document.removeEventListener('click', onClick)
-      lenis.destroy()
+      lenisRef.current?.destroy()
       lenisRef.current = null
     }
   }, [reduced])
