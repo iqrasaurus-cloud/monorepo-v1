@@ -19,6 +19,8 @@ interface ScrollOptions {
 
 interface SmoothScrollApi {
   scrollTo: (target: string | HTMLElement | number, options?: ScrollOptions) => void
+  /** Pause smooth scrolling while a drawer or dialog is open. */
+  lock: (locked: boolean) => void
 }
 
 const nativeScrollTo: SmoothScrollApi['scrollTo'] = (target, options) => {
@@ -33,7 +35,10 @@ const nativeScrollTo: SmoothScrollApi['scrollTo'] = (target, options) => {
   window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY + offset, behavior })
 }
 
-const SmoothScrollContext = createContext<SmoothScrollApi>({ scrollTo: nativeScrollTo })
+const SmoothScrollContext = createContext<SmoothScrollApi>({
+  scrollTo: nativeScrollTo,
+  lock: () => {},
+})
 
 export const useSmoothScroll = (): SmoothScrollApi => useContext(SmoothScrollContext)
 
@@ -89,7 +94,14 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     else nativeScrollTo(target, options)
   }, [])
 
-  const api = useMemo(() => ({ scrollTo }), [scrollTo])
+  const lock = useCallback((locked: boolean) => {
+    const lenis = lenisRef.current
+    if (!lenis) return
+    if (locked) lenis.stop()
+    else lenis.start()
+  }, [])
+
+  const api = useMemo(() => ({ scrollTo, lock }), [scrollTo, lock])
 
   return <SmoothScrollContext.Provider value={api}>{children}</SmoothScrollContext.Provider>
 }

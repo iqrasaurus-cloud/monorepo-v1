@@ -1,3 +1,7 @@
 packages:
   - 'apps/*'
   - 'packages/*'
+
+# Vite depends on esbuild, whose install script only checks its own binary.
+allowBuilds:
+  esbuild: true
