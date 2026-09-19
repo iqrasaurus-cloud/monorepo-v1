@@ -115,6 +115,10 @@ export function MobileDrawer({ site, open, onClose }: MobileDrawerProps) {
             role="dialog"
             aria-modal="true"
             aria-label="Menu"
+            // Lenis hijacks wheel/touch scrolling for the whole page, including while
+            // stopped, so without this the drawer's own overflow-y-auto never gets a
+            // scroll gesture to act on.
+            data-lenis-prevent=""
             className="fixed inset-y-0 left-0 z-50 flex w-[85%] max-w-[380px] flex-col overflow-y-auto bg-paper px-6 pb-10 pt-4 shadow-soft"
             initial={reduced ? { opacity: 0 } : { clipPath: 'inset(0 100% 0 0)' }}
             animate={reduced ? { opacity: 1 } : { clipPath: 'inset(0 0% 0 0)' }}
