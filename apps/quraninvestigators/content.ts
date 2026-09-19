@@ -78,9 +78,13 @@ export const content: SpokeContent = {
       'The series is based on the Tafseer of Ibn Kathir and the Sahih International translation of the Qur\u2019an. Ahadith quoted in the series come from the Sahih collections of Al-Bukhari and Muslim.',
       '[[CONTENT NEEDED: Where and when have you run Quran Investigators sessions, and roughly how many surahs are covered so far?]]', // NEEDED
     ],
-    // Real sample pages from the Al-Qadr booklet (owner-supplied). More can be
-    // added the same way — export from PowerPoint and drop into assets-src/photos/.
+    // Real sample pages from the Al-Qadr booklet (owner-supplied), repeated once to
+    // reach the six photos the scrolling gallery needs (SplitScroll.tsx, minPhotos).
+    // OWNER: once more pages are exported, replace the repeats with new real ones.
     photos: [
+      { src: '/photos/qi-alqadr-p10-matching.webp', alt: 'Booklet page 10: a Quranic literacy matching activity, pairing each verse of Surah Al-Qadr with its meaning', width: 950, height: 1344 },
+      { src: '/photos/qi-alqadr-p11-quickfacts.webp', alt: 'Booklet page 11: an Islamic knowledge word-puzzle activity, unscrambling letters to find quick facts about Surah Al-Qadr', width: 950, height: 1344 },
+      { src: '/photos/qi-alqadr-p12-hiddenfacts.webp', alt: 'Booklet page 12: a numeracy activity, finding the crescent moon and Ka’bah hidden in a night scene', width: 950, height: 1344 },
       { src: '/photos/qi-alqadr-p10-matching.webp', alt: 'Booklet page 10: a Quranic literacy matching activity, pairing each verse of Surah Al-Qadr with its meaning', width: 950, height: 1344 },
       { src: '/photos/qi-alqadr-p11-quickfacts.webp', alt: 'Booklet page 11: an Islamic knowledge word-puzzle activity, unscrambling letters to find quick facts about Surah Al-Qadr', width: 950, height: 1344 },
       { src: '/photos/qi-alqadr-p12-hiddenfacts.webp', alt: 'Booklet page 12: a numeracy activity, finding the crescent moon and Ka’bah hidden in a night scene', width: 950, height: 1344 },
@@ -88,6 +92,14 @@ export const content: SpokeContent = {
   },
 
   whatWeObserved: {
+    // LAYOUT PLACEHOLDER — the press clipping, standing in so you can see how a real
+    // photo (e.g. children at a session) looks here. Swap for a real photo or remove.
+    photo: {
+      src: '/photos/press-beritaharian-2016.webp',
+      alt: '[[PLACEHOLDER PHOTO — replace with a real photo from a session]]',
+      width: 1280,
+      height: 720,
+    },
     items: [
       // NEEDED — real observations only. Two or three is enough to start.
       { text: '[[CONTENT NEEDED: Something a child said or did during a Quran Investigators session]]' },
@@ -99,6 +111,13 @@ export const content: SpokeContent = {
   },
 
   whatWeLearned: {
+    // LAYOUT PLACEHOLDER — same clipping, same purpose: swap for a real photo or remove.
+    photo: {
+      src: '/photos/press-beritaharian-2016.webp',
+      alt: '[[PLACEHOLDER PHOTO — replace with a real photo or remove]]',
+      width: 1280,
+      height: 720,
+    },
     // NEEDED — this is the heart of a "living record of practice". Be honest about what did not work.
     worked: ['[[CONTENT NEEDED: What worked]]'],
     didnt: ['[[CONTENT NEEDED: What did not work, or worked only for some ages]]'],

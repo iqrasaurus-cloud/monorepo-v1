@@ -3,6 +3,7 @@ import { Reveal, RevealItem, RevealList } from '../../motion/Reveal.tsx'
 import { Container } from '../../primitives/Container.tsx'
 import { SectionHeading } from '../../primitives/SectionHeading.tsx'
 import { cn } from '../../utils/cn.ts'
+import { PhotoBanner } from './PhotoBanner.tsx'
 
 const columns = [
   {
@@ -36,6 +37,7 @@ export function WhatWeLearned({ learned }: { learned: SpokeContent['whatWeLearne
           className="mb-12"
         />
       </Reveal>
+      {learned.photo ? <PhotoBanner photo={learned.photo} /> : null}
       <RevealList className="grid gap-6 md:grid-cols-3">
         {columns.map((column) => (
           <RevealItem key={column.key} className="flex">

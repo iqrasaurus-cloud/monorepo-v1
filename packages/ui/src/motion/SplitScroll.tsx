@@ -12,9 +12,9 @@ type Frame = Photo & { fallback?: string }
 function Column({ photos, y }: { photos: Frame[]; y: MotionValue<string> }) {
   return (
     <motion.div style={{ y }} className="flex w-full flex-col gap-[3vh]">
-      {photos.map((photo) => (
+      {photos.map((photo, i) => (
         <div
-          key={photo.src}
+          key={`${photo.src}-${i}`}
           className="h-[38vh] w-full overflow-hidden rounded-card [&_picture]:contents"
         >
           <Picture {...photo} className="h-full w-full object-cover" />
@@ -29,9 +29,9 @@ function Grid({ photos, title }: { photos: Frame[]; title: ReactNode }) {
     <div>
       <div className="mb-10 text-center">{title}</div>
       <RevealList as="ul" className="grid grid-cols-2 gap-4 md:grid-cols-3">
-        {photos.map((photo) => (
+        {photos.map((photo, i) => (
           <RevealItem
-            key={photo.src}
+            key={`${photo.src}-${i}`}
             as="li"
             className="aspect-[3/4] overflow-hidden rounded-card [&_picture]:contents"
           >

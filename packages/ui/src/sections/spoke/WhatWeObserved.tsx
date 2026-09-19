@@ -2,8 +2,14 @@ import { brandCopy, type SpokeContent } from '@iqra/config'
 import { Reveal, RevealItem, RevealList } from '../../motion/Reveal.tsx'
 import { Container } from '../../primitives/Container.tsx'
 import { SectionHeading } from '../../primitives/SectionHeading.tsx'
+import { PhotoBanner } from './PhotoBanner.tsx'
 
-export function WhatWeObserved({ items }: { items: SpokeContent['whatWeObserved']['items'] }) {
+interface WhatWeObservedProps {
+  photo?: SpokeContent['whatWeObserved']['photo']
+  items: SpokeContent['whatWeObserved']['items']
+}
+
+export function WhatWeObserved({ photo, items }: WhatWeObservedProps) {
   return (
     <Container>
       <Reveal>
@@ -14,6 +20,7 @@ export function WhatWeObserved({ items }: { items: SpokeContent['whatWeObserved'
           className="mb-12"
         />
       </Reveal>
+      {photo ? <PhotoBanner photo={photo} /> : null}
       <RevealList as="ul" className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {items.map((item, i) => (
           <RevealItem key={i} as="li" className="flex">
