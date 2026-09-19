@@ -24,6 +24,13 @@ export const content: SpokeContent = {
     headline: 'ONE SURAH.\nMANY WAYS IN.', // DRAFT
     intro:
       'Activity booklets that take one surah at a time and let children read it, trace it, count with it, doodle it, question it and explain it to someone else.', // DRAFT
+    // OWNER: cover banner for the Al-Qadr booklet this whole page is built from.
+    image: {
+      src: '/photos/qi-alqadr-banner.webp',
+      alt: 'Surah Al-Qadr Quran Investigator booklet cover banner',
+      width: 600,
+      height: 203,
+    },
   },
 
   whatIsIt: {

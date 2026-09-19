@@ -153,8 +153,13 @@ export function MobileDrawer({ site, open, onClose }: MobileDrawerProps) {
                             href={item.target}
                             className={itemClass}
                             onClick={(e) => {
+                              // Closing the drawer unlocks smooth-scroll and restores body
+                              // overflow, but only once its effect cleanup runs. Deferring
+                              // the actual scroll a frame lets that happen first, otherwise
+                              // the page is still scroll-locked and the jump silently no-ops.
+                              e.preventDefault()
                               onClose()
-                              onAnchor(e, item.target)
+                              requestAnimationFrame(() => onAnchor(e, item.target))
                             }}
                           >
                             {item.label}

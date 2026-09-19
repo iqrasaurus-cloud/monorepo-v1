@@ -33,12 +33,22 @@ export function CircleCard({
 }: CircleCardProps) {
   return (
     <Tag className={cn('flex flex-col items-center text-center', className)}>
-      <div className="flex size-40 items-center justify-center overflow-hidden rounded-full bg-white shadow-soft ring-8 ring-sun">
-        {image ? (
-          <Picture {...image} className="size-28 object-contain" />
-        ) : (
-          <span className="font-heading text-6xl font-bold text-primary">{step}</span>
-        )}
+      <div className="relative">
+        <div className="flex size-40 items-center justify-center overflow-hidden rounded-full bg-white shadow-soft ring-8 ring-sun">
+          {image ? (
+            <Picture {...image} className="size-28 object-contain" />
+          ) : (
+            <span className="font-heading text-6xl font-bold text-primary">{step}</span>
+          )}
+        </div>
+        {image && step ? (
+          <span
+            aria-hidden="true"
+            className="absolute -right-1 -top-1 flex size-10 items-center justify-center rounded-full bg-sun font-heading text-lg font-bold text-plum ring-4 ring-white"
+          >
+            {step}
+          </span>
+        ) : null}
       </div>
       <Ribbon className="-mt-4">{label}</Ribbon>
       {children ? <div className="mt-5 max-w-xs text-ink/80">{children}</div> : null}

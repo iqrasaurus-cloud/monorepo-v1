@@ -1,5 +1,6 @@
-import { brandCopy, fourI, type SpokeContent } from '@iqra/config'
+import { brandCopy, fourI, type SiteConfig, type SpokeContent } from '@iqra/config'
 import { motion } from 'framer-motion'
+import { mascotImage } from '../../layout/brand.ts'
 import { Reveal, RevealItem, RevealList } from '../../motion/Reveal.tsx'
 import { duration, easeReveal, viewportOnce } from '../../motion/presets.ts'
 import { useReducedMotionSafe } from '../../motion/useReducedMotionSafe.ts'
@@ -7,8 +8,14 @@ import { CircleCard } from '../../primitives/CircleCard.tsx'
 import { Container } from '../../primitives/Container.tsx'
 import { SectionHeading } from '../../primitives/SectionHeading.tsx'
 
-export function Journey({ journey }: { journey: SpokeContent['journey'] }) {
+interface JourneyProps {
+  site: SiteConfig
+  journey: SpokeContent['journey']
+}
+
+export function Journey({ site, journey }: JourneyProps) {
   const reduced = useReducedMotionSafe()
+  const mascot = site.mascotTone !== 'none' ? mascotImage(site.mascot, 320) : undefined
   return (
     <Container>
       <Reveal>
@@ -35,7 +42,7 @@ export function Journey({ journey }: { journey: SpokeContent['journey'] }) {
         <RevealList as="ol" className="relative grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
           {fourI.map((step, i) => (
             <RevealItem key={step.key} as="li">
-              <CircleCard step={i + 1} label={step.label}>
+              <CircleCard step={i + 1} image={mascot} label={step.label}>
                 <p className="mb-3 font-semibold text-primary">{step.line}</p>
                 <p className="text-ink/80">{journey[step.key].body}</p>
                 <p className="mt-4 text-sm italic text-ink/60">

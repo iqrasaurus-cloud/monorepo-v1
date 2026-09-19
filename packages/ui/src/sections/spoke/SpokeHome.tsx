@@ -62,7 +62,7 @@ export function SpokeHome({ site, content }: SpokeHomeProps) {
       id: 'methodology',
       bg: 'paper-2',
       empty: journeyEmpty,
-      node: <Journey journey={c.journey} />,
+      node: <Journey site={site} journey={c.journey} />,
     },
     { bg: 'plum', empty: false, node: <QuoteBand /> },
     {

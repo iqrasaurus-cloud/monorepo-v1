@@ -83,7 +83,7 @@ export const sites: SiteConfig[] = [
     order: 1,
     mascot: 'mascot-magnifier.png',
     mascotTone: 'playful',
-    journal: { src: '/embeds/journal-sample/index.html', title: 'Quran Investigators Journal' }, // OWNER
+    journal: { src: 'https://mtfa-microsite-ikc-v1.sheetany.site', title: 'Quran Investigators Journal' }, // OWNER
     chat: {
       src: 'https://www.chatbase.co/chatbot-iframe/zlzFNm9ySuiomi-Mi-gNR',
       title: 'Ask the Quran Investigators guide',
