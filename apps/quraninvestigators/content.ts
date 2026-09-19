@@ -78,16 +78,12 @@ export const content: SpokeContent = {
       'The series is based on the Tafseer of Ibn Kathir and the Sahih International translation of the Qur\u2019an. Ahadith quoted in the series come from the Sahih collections of Al-Bukhari and Muslim.',
       '[[CONTENT NEEDED: Where and when have you run Quran Investigators sessions, and roughly how many surahs are covered so far?]]', // NEEDED
     ],
-    // OWNER: export these pages from PowerPoint yourself (File > Export > PNG) so the fonts
-    // and Arabic stay exactly as printed, then save with these names in assets-src/photos/.
+    // Real sample pages from the Al-Qadr booklet (owner-supplied). More can be
+    // added the same way — export from PowerPoint and drop into assets-src/photos/.
     photos: [
-      { src: '/photos/qi-alqadr-p03-story.webp', alt: 'Booklet page: the story behind Surah Al-Qadr with three questions to answer', width: 1414, height: 2000 },
-      { src: '/photos/qi-alqadr-p05-visualisation.webp', alt: 'Booklet page: a night scene to read and colour', width: 1414, height: 2000 },
-      { src: '/photos/qi-alqadr-p07-surah-hunt.webp', alt: 'Booklet page: finding Surah Al-Qadr in the mushaf and writing its number', width: 1414, height: 2000 },
-      { src: '/photos/qi-alqadr-p08-doodling.webp', alt: 'Booklet page: guided Quran doodling with clues about night and time', width: 1414, height: 2000 },
-      { src: '/photos/qi-alqadr-p21-moon.webp', alt: 'Booklet page: observing and ordering the phases of the moon', width: 1414, height: 2000 },
-      { src: '/photos/qi-alqadr-p31-tree-rings.webp', alt: 'Booklet page: counting tree rings as a sign of Allah', width: 1414, height: 2000 },
-      { src: '/photos/qi-alqadr-p38-journaling.webp', alt: 'Booklet page: Quran journaling and a personal action plan', width: 1414, height: 2000 },
+      { src: '/photos/qi-alqadr-p10-matching.webp', alt: 'Booklet page 10: a Quranic literacy matching activity, pairing each verse of Surah Al-Qadr with its meaning', width: 950, height: 1344 },
+      { src: '/photos/qi-alqadr-p11-quickfacts.webp', alt: 'Booklet page 11: an Islamic knowledge word-puzzle activity, unscrambling letters to find quick facts about Surah Al-Qadr', width: 950, height: 1344 },
+      { src: '/photos/qi-alqadr-p12-hiddenfacts.webp', alt: 'Booklet page 12: a numeracy activity, finding the crescent moon and Ka’bah hidden in a night scene', width: 950, height: 1344 },
     ],
   },
 
@@ -144,6 +140,17 @@ export const content: SpokeContent = {
     body: [
       'Quran Investigators is shared so that others can use it, adapt it and carry it forward. Your support helps us prepare, check and print the next surah.', // DRAFT
     ],
+  },
+
+  // OWNER: real press clipping, IqraSaurus's general founding story (not specific to this booklet).
+  press: {
+    image: {
+      src: '/photos/press-beritaharian-2016.webp',
+      alt: 'Berita Harian newspaper feature on IqraSaurus, 23 December 2016',
+      width: 1280,
+      height: 720,
+    },
+    caption: 'Berita Harian, 23 December 2016 — on how IqraSaurus began.',
   },
 
   seo: {

@@ -281,5 +281,7 @@ export interface SpokeContent {
   adaptIt: { body: string[] }
   workWithUs: { body: string[]; contactHref: string; contactLabel: string }
   supportUs: { body: string[] } // button comes from SiteConfig.support
+  /** Optional press clipping shown as a small trust strip before Support Us. */
+  press?: { image: Photo; caption: string }
   seo: { title: string; description: string; ogImage?: string }
 }

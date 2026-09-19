@@ -9,7 +9,7 @@ import { Picture } from '../../primitives/Picture.tsx'
 export function QuoteBand() {
   const mascot = mascotImage('mascot-binoculars.png', 640)
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative">
       <Pattern className="text-white opacity-[0.06]" />
       <Container className="relative grid items-end gap-8 md:grid-cols-[1fr_auto]">
         <Reveal slow>

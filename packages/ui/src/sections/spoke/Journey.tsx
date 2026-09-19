@@ -13,9 +13,18 @@ interface JourneyProps {
   journey: SpokeContent['journey']
 }
 
+// A different dino for each step of the journey, for visual variety — the same
+// reuse-across-contexts convention already used for "coming soon" spokes in the registry.
+const STEP_MASCOTS = [
+  'mascot-quran.png',
+  'mascot-magnifier.png',
+  'mascot-reader.png',
+  'mascot-walking.png',
+] as const
+
 export function Journey({ site, journey }: JourneyProps) {
   const reduced = useReducedMotionSafe()
-  const mascot = site.mascotTone !== 'none' ? mascotImage(site.mascot, 320) : undefined
+  const showMascots = site.mascotTone !== 'none'
   return (
     <Container>
       <Reveal>
@@ -42,7 +51,11 @@ export function Journey({ site, journey }: JourneyProps) {
         <RevealList as="ol" className="relative grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
           {fourI.map((step, i) => (
             <RevealItem key={step.key} as="li">
-              <CircleCard step={i + 1} image={mascot} label={step.label}>
+              <CircleCard
+                step={i + 1}
+                image={showMascots ? mascotImage(STEP_MASCOTS[i] ?? site.mascot, 320) : undefined}
+                label={step.label}
+              >
                 <p className="mb-3 font-semibold text-primary">{step.line}</p>
                 <p className="text-ink/80">{journey[step.key].body}</p>
                 <p className="mt-4 text-sm italic text-ink/60">

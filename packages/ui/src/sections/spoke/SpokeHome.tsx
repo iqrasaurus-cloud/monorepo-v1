@@ -7,6 +7,7 @@ import { bgClass, isBlank, nonBlank, scallopClass, type Bg } from './helpers.ts'
 import { Hero } from './Hero.tsx'
 import { Journey } from './Journey.tsx'
 import { JourneyStrip } from './JourneyStrip.tsx'
+import { PressMention } from './PressMention.tsx'
 import { QuoteBand } from './QuoteBand.tsx'
 import { SupportUs } from './SupportUs.tsx'
 import { TryIt } from './TryIt.tsx'
@@ -99,6 +100,12 @@ export function SpokeHome({ site, content }: SpokeHomeProps) {
       bg: 'paper',
       empty: nonBlank(c.workWithUs.body).length === 0,
       node: <WorkWithUs workWithUs={{ ...c.workWithUs, body: nonBlank(c.workWithUs.body) }} />,
+    },
+    {
+      bg: 'paper',
+      compact: true,
+      empty: !c.press,
+      node: c.press ? <PressMention image={c.press.image} caption={c.press.caption} /> : null,
     },
     {
       id: 'support',
