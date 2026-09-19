@@ -8,6 +8,7 @@ import { Container } from '../../primitives/Container.tsx'
 import { Eyebrow } from '../../primitives/Eyebrow.tsx'
 import { Picture } from '../../primitives/Picture.tsx'
 import { withFallback } from './helpers.ts'
+import { StatStrip } from './StatStrip.tsx'
 
 function VideoPoster({
   site,
@@ -74,6 +75,7 @@ export function WhatWeDid({ site, whatWeDid }: WhatWeDidProps) {
       )}
       <Container className="mt-12 grid gap-10 lg:grid-cols-[1fr_1fr]">
         <div className="space-y-5 text-lg text-ink/80">
+          {whatWeDid.stats ? <StatStrip stats={whatWeDid.stats} /> : null}
           {whatWeDid.body.map((paragraph, i) => (
             <Reveal key={i} delay={0.06 * i}>
               <p>{paragraph}</p>

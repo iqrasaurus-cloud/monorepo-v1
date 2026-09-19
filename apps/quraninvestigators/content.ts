@@ -70,6 +70,12 @@ export const content: SpokeContent = {
   },
 
   whatWeDid: {
+    // The three headline numbers from the paragraph below, pulled out as a quick-glance strip.
+    stats: [
+      { value: '~40', label: 'Pages per booklet' },
+      { value: '36', label: 'Activities in Al-Qadr' },
+      { value: '2', label: 'Levels on every page' },
+    ],
     body: [
       // DRAFT — facts taken from the Al-Qadr booklet contents page and cover note.
       'Each booklet is around forty pages. The Al-Qadr booklet holds thirty-six activities, and every one is labelled with its place in the 4-I journey and the skill it builds: Quran literacy, Arabic literacy, language, numeracy, science and signs, hadeeth, supplications or creative expression.',
@@ -92,31 +98,35 @@ export const content: SpokeContent = {
   },
 
   whatWeObserved: {
-    // LAYOUT PLACEHOLDER — the press clipping, standing in so you can see how a real
-    // photo (e.g. children at a session) looks here. Swap for a real photo or remove.
-    photo: {
-      src: '/photos/press-beritaharian-2016.webp',
-      alt: '[[PLACEHOLDER PHOTO — replace with a real photo from a session]]',
-      width: 1280,
-      height: 720,
-    },
     items: [
       // NEEDED — real observations only. Two or three is enough to start.
-      { text: '[[CONTENT NEEDED: Something a child said or did during a Quran Investigators session]]' },
-      { text: '[[CONTENT NEEDED: Something a parent or teacher told you afterwards]]' },
-      { text: '[[CONTENT NEEDED: Which activities children went back to on their own]]' },
+      // LAYOUT PLACEHOLDER images — IqraSaurus blog-question graphics, standing in
+      // so you can see the card with a photo on it. Swap each for a real photo or
+      // delete the `image` line to go back to text-only.
+      {
+        text: '[[CONTENT NEEDED: Something a child said or did during a Quran Investigators session]]',
+        image: { src: '/photos/blog-q-car-ride.webp', alt: '[[PLACEHOLDER PHOTO]]', width: 1024, height: 1024 },
+      },
+      {
+        text: '[[CONTENT NEEDED: Something a parent or teacher told you afterwards]]',
+        image: { src: '/photos/blog-q-cartoons.webp', alt: '[[PLACEHOLDER PHOTO]]', width: 1024, height: 1024 },
+      },
+      {
+        text: '[[CONTENT NEEDED: Which activities children went back to on their own]]',
+        image: { src: '/photos/blog-q-screentime.webp', alt: '[[PLACEHOLDER PHOTO]]', width: 1024, height: 1024 },
+      },
       // CANDIDATE from the 2019 catalogue — use only if it was about this kind of session:
       // { text: 'I was amazed on how this simple activity gave children a deeper understanding of the surah.', attribution: 'Sis Sy, programme parent' },
     ],
   },
 
   whatWeLearned: {
-    // LAYOUT PLACEHOLDER — same clipping, same purpose: swap for a real photo or remove.
-    photo: {
-      src: '/photos/press-beritaharian-2016.webp',
-      alt: '[[PLACEHOLDER PHOTO — replace with a real photo or remove]]',
-      width: 1280,
-      height: 720,
+    // LAYOUT PLACEHOLDER images — same blog-question graphics, same purpose: swap
+    // each for a real photo or delete the `images` block to go back to text-only.
+    images: {
+      worked: { src: '/photos/blog-q-routine.webp', alt: '[[PLACEHOLDER PHOTO]]', width: 96, height: 96 },
+      didnt: { src: '/photos/blog-q-consistent.webp', alt: '[[PLACEHOLDER PHOTO]]', width: 96, height: 96 },
+      changed: { src: '/photos/blog-q-fun.webp', alt: '[[PLACEHOLDER PHOTO]]', width: 96, height: 96 },
     },
     // NEEDED — this is the heart of a "living record of practice". Be honest about what did not work.
     worked: ['[[CONTENT NEEDED: What worked]]'],

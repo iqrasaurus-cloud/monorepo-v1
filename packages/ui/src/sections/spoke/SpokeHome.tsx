@@ -40,7 +40,7 @@ export function SpokeHome({ site, content }: SpokeHomeProps) {
   const journeyEmpty = Object.values(c.journey).every((step) => isBlank(step.body))
   const observed = c.whatWeObserved.items.filter((item) => !isBlank(item.text))
   const learned = {
-    photo: c.whatWeLearned.photo,
+    images: c.whatWeLearned.images,
     worked: nonBlank(c.whatWeLearned.worked),
     didnt: nonBlank(c.whatWeLearned.didnt),
     changed: nonBlank(c.whatWeLearned.changed),
@@ -78,7 +78,7 @@ export function SpokeHome({ site, content }: SpokeHomeProps) {
       id: 'impact',
       bg: 'paper-2',
       empty: observed.length === 0,
-      node: <WhatWeObserved photo={c.whatWeObserved.photo} items={observed} />,
+      node: <WhatWeObserved items={observed} />,
     },
     {
       bg: 'paper',

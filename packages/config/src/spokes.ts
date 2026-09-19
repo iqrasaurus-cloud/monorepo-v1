@@ -274,9 +274,21 @@ export interface SpokeContent {
   whatIsIt: { body: string } // one paragraph; revealed word by word
   whyWeCreatedIt: { body: string[] }
   journey: Record<'inspire' | 'investigate' | 'integrate' | 'impart', { body: string }>
-  whatWeDid: { body: string[]; photos: Photo[]; videoUrl?: string }
-  whatWeObserved: { photo?: Photo; items: { text: string; attribution?: string }[] }
-  whatWeLearned: { photo?: Photo; worked: string[]; didnt: string[]; changed: string[] }
+  whatWeDid: {
+    body: string[]
+    photos: Photo[]
+    videoUrl?: string
+    /** Key numbers pulled out of body as a quick-glance strip, e.g. { value: '40', label: 'Pages' }. */
+    stats?: { value: string; label: string }[]
+  }
+  whatWeObserved: { items: { text: string; attribution?: string; image?: Photo }[] }
+  whatWeLearned: {
+    worked: string[]
+    didnt: string[]
+    changed: string[]
+    /** One optional photo per column, shown above its heading. */
+    images?: { worked?: Photo; didnt?: Photo; changed?: Photo }
+  }
   tryIt: { intro: string; steps: string[]; download?: { label: string; href: string } }
   adaptIt: { body: string[] }
   workWithUs: { body: string[]; contactHref: string; contactLabel: string }
