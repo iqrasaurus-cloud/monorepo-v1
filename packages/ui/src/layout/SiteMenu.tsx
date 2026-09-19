@@ -7,14 +7,36 @@ import {
   type FocusEvent,
   type KeyboardEvent,
 } from 'react'
-import { NavLink, useLocation } from 'react-router'
+import { Link, NavLink, useLocation } from 'react-router'
 import { Container } from '../primitives/Container.tsx'
+import { Picture } from '../primitives/Picture.tsx'
 import { cn } from '../utils/cn.ts'
+import { brandImage, mascotImage } from './brand.ts'
 import { anchorIds, SITE_MENU_ID } from './links.ts'
 import { MobileDrawer } from './MobileDrawer.tsx'
 import { TOOLKIT_PANEL_ID, ToolkitMegaMenu } from './ToolkitMegaMenu.tsx'
 import { useActiveSection } from './useActiveSection.ts'
 import { useAnchorNavigate } from './useAnchorNavigate.ts'
+
+/** Small identity lockup so the collapsed mobile bar isn't bare once Band 2 scrolls away. */
+function MobileIdentity({ site }: { site: SiteConfig }) {
+  if (site.kind === 'hub') {
+    return (
+      <Link to="/" aria-label="IqraSaurus home" className="flex min-w-0 items-center">
+        <Picture {...brandImage('logo-horizontal')} className="h-6 w-auto" />
+      </Link>
+    )
+  }
+  const mascot = mascotImage(site.mascot, 160)
+  return (
+    <Link to="/" className="flex min-w-0 items-center gap-2">
+      {site.mascotTone !== 'none' ? (
+        <Picture {...mascot} className="size-7 shrink-0 object-contain" />
+      ) : null}
+      <span className="truncate font-heading text-base font-bold text-ink">{site.name}</span>
+    </Link>
+  )
+}
 
 const itemClass = (isActive: boolean) =>
   cn(
@@ -187,7 +209,7 @@ export function SiteMenu({ site }: { site: SiteConfig }) {
         </div>
 
         <div className="bg-paper-2 lg:hidden">
-          <Container className="flex h-12 items-center">
+          <Container className="flex h-12 items-center gap-3">
             <button
               ref={hamburgerRef}
               type="button"
@@ -195,10 +217,11 @@ export function SiteMenu({ site }: { site: SiteConfig }) {
               aria-expanded={drawerOpen}
               aria-controls="mobile-menu"
               onClick={() => setDrawerOpen(true)}
-              className="-ml-2 flex size-10 items-center justify-center rounded-pill text-ink"
+              className="-ml-2 flex size-10 shrink-0 items-center justify-center rounded-pill text-ink"
             >
               <Hamburger />
             </button>
+            <MobileIdentity site={site} />
           </Container>
           <MobileDrawer site={site} open={drawerOpen} onClose={closeDrawer} />
         </div>

@@ -26,13 +26,11 @@ export function EmbedPage({ site, kind }: EmbedPageProps) {
           <p className="max-w-xl text-sm text-ink/70 md:text-right">{brand.chatNotice}</p>
         ) : null}
       </Container>
-      <Container className="px-0 md:px-8">
-        <SafeEmbed
-          site={site}
-          embed={embed}
-          className="h-[calc(100svh-12rem)] min-h-[700px] md:h-[calc(100svh-15rem)]"
-        />
-      </Container>
+      <SafeEmbed
+        site={site}
+        embed={embed}
+        className="h-[calc(100svh-12rem)] min-h-[700px] md:h-[calc(100svh-15rem)]"
+      />
     </>
   )
 }
