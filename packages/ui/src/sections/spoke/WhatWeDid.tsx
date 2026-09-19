@@ -7,6 +7,7 @@ import { SplitScroll } from '../../motion/SplitScroll.tsx'
 import { Container } from '../../primitives/Container.tsx'
 import { Eyebrow } from '../../primitives/Eyebrow.tsx'
 import { Picture } from '../../primitives/Picture.tsx'
+import { cn } from '../../utils/cn.ts'
 import { withFallback } from './helpers.ts'
 import { StatStrip } from './StatStrip.tsx'
 
@@ -73,7 +74,12 @@ export function WhatWeDid({ site, whatWeDid }: WhatWeDidProps) {
       ) : (
         <Container className="text-center">{title}</Container>
       )}
-      <Container className="mt-12 grid gap-10 lg:grid-cols-[1fr_1fr]">
+      <Container
+        className={cn(
+          'mt-12',
+          whatWeDid.videoUrl ? 'grid gap-10 lg:grid-cols-[1fr_1fr]' : 'mx-auto max-w-3xl',
+        )}
+      >
         <div className="space-y-5 text-lg text-ink/80">
           {whatWeDid.stats ? <StatStrip stats={whatWeDid.stats} /> : null}
           {whatWeDid.body.map((paragraph, i) => (
