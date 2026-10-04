@@ -1,9 +1,8 @@
-import type { Photo } from '@iqra/config'
+import { isPlaceholder, type Photo } from '@iqra/config'
 
-export const isBlank = (value: string | undefined): boolean => !value || value.trim() === ''
-
-export const nonBlank = (values: string[] | undefined): string[] =>
-  (values ?? []).filter((v) => !isBlank(v))
+/** Keeps only lines the owner has actually written; placeholders never reach the page. */
+export const real = (values: string[] | undefined): string[] =>
+  (values ?? []).filter((v) => !isPlaceholder(v))
 
 /** `pnpm assets` writes a JPG beside every photo WebP. */
 export const withFallback = (photo: Photo): Photo & { fallback: string } => ({

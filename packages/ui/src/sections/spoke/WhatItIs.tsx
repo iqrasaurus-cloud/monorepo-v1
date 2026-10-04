@@ -1,15 +1,12 @@
-import type { SiteConfig, SpokeContent } from '@iqra/config'
+import { isPlaceholder, type SiteConfig, type SpokeContent } from '@iqra/config'
 import { useState } from 'react'
 import { SafeEmbed } from '../../embed/SafeEmbed.tsx'
 import { mascotImage } from '../../layout/brand.ts'
 import { Reveal } from '../../motion/Reveal.tsx'
 import { SplitScroll } from '../../motion/SplitScroll.tsx'
 import { Container } from '../../primitives/Container.tsx'
-import { Eyebrow } from '../../primitives/Eyebrow.tsx'
 import { Picture } from '../../primitives/Picture.tsx'
-import { cn } from '../../utils/cn.ts'
-import { withFallback } from './helpers.ts'
-import { StatStrip } from './StatStrip.tsx'
+import { real, withFallback } from './helpers.ts'
 
 function VideoPoster({
   site,
@@ -41,7 +38,7 @@ function VideoPoster({
     >
       <Picture {...image} className="h-full w-full object-cover" />
       <span className="absolute inset-0 flex items-center justify-center">
-        <span className="flex size-20 items-center justify-center rounded-full bg-sun text-plum shadow-soft transition-transform duration-300 group-hover:scale-110">
+        <span className="flex size-20 items-center justify-center rounded-full bg-sun text-plum shadow-soft transition-transform duration-300 motion-safe:group-hover:scale-110">
           <svg aria-hidden="true" viewBox="0 0 24 24" className="size-8">
             <path d="M8 5v14l11-7z" fill="currentColor" />
           </svg>
@@ -51,20 +48,19 @@ function VideoPoster({
   )
 }
 
-interface WhatWeDidProps {
+interface WhatItIsProps {
   site: SiteConfig
-  whatWeDid: SpokeContent['whatWeDid']
+  whatItIs: SpokeContent['whatItIs']
 }
 
-export function WhatWeDid({ site, whatWeDid }: WhatWeDidProps) {
-  const photos = whatWeDid.photos.map(withFallback)
+/** Section 2: what the material is, with the scrolling gallery of real pages. */
+export function WhatItIs({ site, whatItIs }: WhatItIsProps) {
+  const photos = whatItIs.photos.map(withFallback)
+  const body = real(whatItIs.body)
   const title = (
-    <div className="px-6">
-      <Eyebrow className="mb-4 justify-center">In practice</Eyebrow>
-      <h2 className="font-heading text-5xl font-bold uppercase leading-none text-primary md:text-7xl">
-        What we did
-      </h2>
-    </div>
+    <h2 className="px-6 font-heading text-5xl font-bold leading-none text-primary md:text-7xl">
+      What it is
+    </h2>
   )
 
   return (
@@ -74,23 +70,22 @@ export function WhatWeDid({ site, whatWeDid }: WhatWeDidProps) {
       ) : (
         <Container className="text-center">{title}</Container>
       )}
-      <Container
-        className={cn(
-          'mt-12',
-          whatWeDid.videoUrl ? 'grid gap-10 lg:grid-cols-[1fr_1fr]' : 'mx-auto max-w-3xl',
-        )}
-      >
-        <div className="space-y-5 text-lg text-ink/80">
-          {whatWeDid.stats ? <StatStrip stats={whatWeDid.stats} /> : null}
-          {whatWeDid.body.map((paragraph, i) => (
+      <Container className="mt-12 max-w-3xl">
+        <div className="space-y-5 text-lg text-ink/80 md:text-xl">
+          {body.map((paragraph, i) => (
             <Reveal key={i} delay={0.06 * i}>
               <p>{paragraph}</p>
             </Reveal>
           ))}
         </div>
-        {whatWeDid.videoUrl ? (
-          <Reveal slow>
-            <VideoPoster site={site} videoUrl={whatWeDid.videoUrl} poster={photos[0]} />
+        {!isPlaceholder(whatItIs.sources) ? (
+          <Reveal>
+            <p className="mt-8 border-l-4 border-sun pl-4 text-sm text-ink/60">{whatItIs.sources}</p>
+          </Reveal>
+        ) : null}
+        {whatItIs.videoUrl ? (
+          <Reveal slow className="mt-10">
+            <VideoPoster site={site} videoUrl={whatItIs.videoUrl} poster={photos[0]} />
           </Reveal>
         ) : null}
       </Container>

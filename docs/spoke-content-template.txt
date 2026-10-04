@@ -1,0 +1,109 @@
+====================================================================
+IQRASAURUS — PROGRAMME PAGE CONTENT TEMPLATE
+====================================================================
+One copy per programme. Fill in your own text where you see [ ... ].
+Every [ ] maps to a field in that programme's content.ts, so a filled-in
+copy can be transcribed straight across. Based on the five-section
+Quran Investigators page (BUILD_SPEC.md section 6B).
+
+Before you write (see CLAUDE.md for the full rules):
+  - Never write, translate or complete Quranic Arabic or hadith text
+    yourself. Paste only what you already have, exactly as written.
+  - No invented quotes, statistics or testimonials. If you don't have
+    a real one yet, leave the line blank. Blank lines and anything
+    marked [[CONTENT NEEDED]] are hidden on the live site.
+  - Write concretely: what a child does, what a parent needs, who to
+    contact. Short sentences. No slogans in capitals.
+  - The credential line is fixed and added automatically; don't
+    reword it: "Led by ARS-recognised asatizah and operated as an
+    IECP in Singapore."
+  - Spell the brand IqraSaurus.
+
+--------------------------------------------------------------------
+0. REGISTRY (packages/config/src/spokes.ts)
+--------------------------------------------------------------------
+Programme name:                                   [ ]
+One line for the Programmes menu (max ~90 chars): [ ]
+Mascot file (existing dino or new art):           [ ]
+Journal embed (https://… or leave empty):         [ ]
+Chat embed (https://… or leave empty):            [ ]
+
+--------------------------------------------------------------------
+1. HERO
+--------------------------------------------------------------------
+The programme name is the headline (from the registry).
+One plain line under it:          [ ]
+Real photo (file + what it shows): [ ]
+Tools to show under "Use this at home" (pick from Tadabbur, Mini Hafiz,
+Worksheets, Calendar, Museum, Dino):  [ ]
+(The "How a session runs" and "Ask our guide" buttons are automatic.)
+
+--------------------------------------------------------------------
+2. WHAT IT IS
+--------------------------------------------------------------------
+Two or three short paragraphs: what the material is, what children
+do with it, where you've used it.
+  1. [ ]
+  2. [ ]
+  3. [ ]
+Sources note (optional, e.g. which tafseer/translation it follows): [ ]
+Photos of the real material (6+ turns on the scrolling gallery;
+fewer shows a grid):
+  Photo 1: [ file ] — [ what it shows ]
+  Photo 2: [ file ] — [ what it shows ]
+  (add rows as needed)
+Video (optional, embed URL): [ ]
+
+--------------------------------------------------------------------
+3. HOW A SESSION RUNS
+--------------------------------------------------------------------
+Length (e.g. "About 40 minutes"): [ ]
+What happens at each step in this programme:
+  Inspire:     [ ]
+  Investigate: [ ]
+  Integrate:   [ ]
+  Impart:      [ ]
+(The 4-I labels and their one-line descriptions are fixed and added
+automatically.)
+Tip for younger children: [ ]
+Tip for older children:   [ ]
+
+--------------------------------------------------------------------
+4. WHAT WE'VE SEEN  (hidden until at least one real item exists)
+--------------------------------------------------------------------
+Quotes (real only):
+  1. Quote: [ ]   Who said it (optional): [ ]   Photo (optional): [ ]
+  2. Quote: [ ]   Who said it (optional): [ ]   Photo (optional): [ ]
+Lessons (what worked, what didn't, what you changed):
+  - [ ]
+  - [ ]
+Photos from sessions (optional):
+  - [ file ] — [ what it shows ]
+(A "Read our journal" link appears here when a journal is set.)
+
+--------------------------------------------------------------------
+5. BRING IT TO YOUR CLASS
+--------------------------------------------------------------------
+The invitation (one or two sentences): [ ]
+What donations pay for (one line):     [ ]
+(WhatsApp, email, the Donate button and the credential line are added
+automatically from the shared brand settings.)
+
+--------------------------------------------------------------------
+6. SEARCH RESULTS
+--------------------------------------------------------------------
+Page title (e.g. "<Programme> | IqraSaurus"): [ ]
+Description (1–2 sentences):                  [ ]
+
+--------------------------------------------------------------------
+ASSET CHECKLIST
+--------------------------------------------------------------------
+Drop raw files in apps/<slug>/assets-src/photos/ with lowercase-dash
+names, then run `pnpm assets`. Large galleries can be hosted on the
+image CDN instead; ask before switching, as the CSP needs that host
+added.
+  [ ] Hero photo
+  [ ] "What it is" photos
+  [ ] Session or "What we've seen" photos (optional)
+  [ ] Video embed URL (optional)
+====================================================================

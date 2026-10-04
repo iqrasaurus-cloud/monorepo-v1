@@ -1,15 +1,13 @@
 /**
- * apps/quraninvestigators/content.ts
+ * apps/quraninvestigators/content.ts — the five-section programme page.
  *
- * SOURCES USED (owner's own material only):
- *  - QI-097 Al-Qadr "Mini-Juniors" booklet v11 (the printed booklet used in programmes)
- *  - IqraSaurus Catalog 2019 (4-I wording, programme descriptions)
- * NOT USED: the two AI-generated worksheet drafts (Al-Buruj, Az-Zalzalah). Their Arabic
- *  and science facts are unverified, and they follow the 5D structure, not 4-I.
+ * SOURCES (owner's own material only):
+ *  - QI-097 Al-Qadr "Mini-Juniors" booklet v11 and its sample pages
+ *  - Draft copy in tadabbur-for-kids-v1/docs/BRAND-SITE-REVIEW.md §3, approved in direction
+ *    by the owner on 2026-10-04
  *
- * Status tags in comments:
- *  DRAFT  = written from the sources above; owner to read and correct
- *  NEEDED = only the owner knows this; placeholder renders until supplied
+ * [[CONTENT NEEDED]] lines are for the owner to fill in. They are hidden on the built site;
+ * "What we've seen" stays hidden until it holds at least one real quote, lesson or photo.
  *
  * No Quranic Arabic, hadith text or translation appears in this file on purpose.
  * Verse text is shown only inside the owner's own booklet page images.
@@ -19,74 +17,27 @@ import type { SpokeContent } from '@iqra/config'
 
 export const content: SpokeContent = {
   hero: {
-    eyebrow: 'Toolkit · Quran Investigators',
-    // Two lines, split on \n. First line ink, second line accent.
-    headline: 'ONE SURAH.\nMANY WAYS IN.', // DRAFT
-    intro:
-      'Activity booklets that take one surah at a time and let children read it, trace it, count with it, doodle it, question it and explain it to someone else.', // DRAFT
-    // OWNER: cover banner for the Al-Qadr booklet this whole page is built from.
+    line: 'Activity booklets that help children explore one surah at a time.',
+    // Cover banner of the Al-Qadr booklet this page is built from.
     image: {
       src: '/photos/qi-alqadr-banner.webp',
       alt: 'Surah Al-Qadr Quran Investigator booklet cover banner',
       width: 600,
       height: 203,
     },
+    useAtHome: ['tadabbur', 'museum'],
   },
 
-  whatIsIt: {
-    // DRAFT — revealed word by word, so keep it to one paragraph.
-    body:
-      'Quran Investigators is a series of surah-by-surah activity booklets. Each booklet stays with a single surah and approaches it from every side a child already enjoys: stories, colouring, tracing, puzzles, numbers, science, doodling and du\u2019a. Children do not just memorise the surah. They open a mushaf and find it, match each verse to its meaning, and finish by explaining what they discovered to someone else.',
-  },
-
-  whyWeCreatedIt: {
+  whatItIs: {
     body: [
-      // DRAFT — built from the 2019 catalogue line: "genuine learning only happens when our
-      // learners are able to grasp the meaning of the verses they are reading".
-      'We have long believed that genuine learning happens when children grasp the meaning of the verses they are reading. Many of the children we met could recite a short surah beautifully and still not know what it was about, or where to find it in the mushaf.',
-      'We wanted something a parent or teacher could pick up and use straight away: one booklet, one surah, enough variety that a preschooler and a primary-school child could sit at the same table and both have something real to do.',
-      '[[CONTENT NEEDED: In your own words — what moment, child or class made you start Quran Investigators? When did it begin?]]', // NEEDED
+      'Each booklet covers one surah in about 40 pages. Children find the surah in a mushaf, match each ayah to its meaning, then colour, count, solve puzzles and doodle. Every page has two levels, so a 5-year-old and a 10-year-old can work at the same table.',
+      'We have used the booklets in our own classes, at home, and to prepare children for madrasah entrance tests.',
+      '[[CONTENT NEEDED: when Quran Investigators started and how many surahs are covered so far]]',
     ],
-  },
-
-  journey: {
-    // DRAFT — every example below is a real page from the Al-Qadr booklet.
-    inspire: {
-      body:
-        'Every booklet opens with the adab of seeking knowledge, then the story behind the surah and a picture page to read and colour. Children meet the surah with wonder before any worksheet begins.',
-    },
-    investigate: {
-      body:
-        'Children open a real mushaf, hunt for the surah, and write down its number and page. They match each verse to its meaning using a translation, solve puzzles that hide the key facts, and look at the signs around them, such as the phases of the moon or the rings inside a tree trunk.',
-    },
-    integrate: {
-      body:
-        'The surah moves into the child\u2019s week. A Quran journaling page asks what they believe and how they will prepare, and they write their own action plan. The booklet suggests small, doable ideas, such as a light switched on as a reminder for the family, or a du\u2019a wish-list.',
-    },
-    impart: {
-      body:
-        'Most activities have a second level, and very often it is simply this: explain your doodle to someone else. Children leave as the person who tells the story at home.',
-    },
-  },
-
-  whatWeDid: {
-    // The three headline numbers from the paragraph below, pulled out as a quick-glance strip.
-    stats: [
-      { value: '~40', label: 'Pages per booklet' },
-      { value: '36', label: 'Activities in Al-Qadr' },
-      { value: '2', label: 'Levels on every page' },
-    ],
-    body: [
-      // DRAFT — facts taken from the Al-Qadr booklet contents page and cover note.
-      'Each booklet is around forty pages. The Al-Qadr booklet holds thirty-six activities, and every one is labelled with its place in the 4-I journey and the skill it builds: Quran literacy, Arabic literacy, language, numeracy, science and signs, hadeeth, supplications or creative expression.',
-      'Every activity comes in two levels on the same page, so mixed ages can work side by side. The contents page doubles as a checklist children tick off, the first page sets the intention for studying, and the last page is an answer sheet for the adult.',
-      'We have used the booklets in our own programmes as a read-along with an adult for preschool to lower primary, as independent work for mid-primary children, and as preparation material for madrasah entrance tests.',
-      'The series is based on the Tafseer of Ibn Kathir and the Sahih International translation of the Qur\u2019an. Ahadith quoted in the series come from the Sahih collections of Al-Bukhari and Muslim.',
-      '[[CONTENT NEEDED: Where and when have you run Quran Investigators sessions, and roughly how many surahs are covered so far?]]', // NEEDED
-    ],
-    // Real sample pages from the Al-Qadr booklet (owner-supplied), repeated once to
-    // reach the six photos the scrolling gallery needs (SplitScroll.tsx, minPhotos).
-    // OWNER: once more pages are exported, replace the repeats with new real ones.
+    sources:
+      'The series is based on the Tafseer of Ibn Kathir and the Sahih International translation of the Qur’an. Ahadith quoted in the series come from the Sahih collections of Al-Bukhari and Muslim.',
+    // Real sample pages from the Al-Qadr booklet, repeated once to reach the six photos
+    // the scrolling gallery needs. OWNER: replace the repeats as more pages are exported.
     photos: [
       { src: '/photos/qi-alqadr-p10-matching.webp', alt: 'Booklet page 10: a Quranic literacy matching activity, pairing each verse of Surah Al-Qadr with its meaning', width: 950, height: 1344 },
       { src: '/photos/qi-alqadr-p11-quickfacts.webp', alt: 'Booklet page 11: an Islamic knowledge word-puzzle activity, unscrambling letters to find quick facts about Surah Al-Qadr', width: 950, height: 1344 },
@@ -97,94 +48,42 @@ export const content: SpokeContent = {
     ],
   },
 
-  whatWeObserved: {
-    items: [
-      // NEEDED — real observations only. Two or three is enough to start.
-      // LAYOUT PLACEHOLDER images — IqraSaurus blog-question graphics, standing in
-      // so you can see the card with a photo on it. Swap each for a real photo or
-      // delete the `image` line to go back to text-only.
-      {
-        text: '[[CONTENT NEEDED: Something a child said or did during a Quran Investigators session]]',
-        image: { src: '/photos/blog-q-car-ride.webp', alt: '[[PLACEHOLDER PHOTO]]', width: 1024, height: 1024 },
-      },
-      {
-        text: '[[CONTENT NEEDED: Something a parent or teacher told you afterwards]]',
-        image: { src: '/photos/blog-q-cartoons.webp', alt: '[[PLACEHOLDER PHOTO]]', width: 1024, height: 1024 },
-      },
-      {
-        text: '[[CONTENT NEEDED: Which activities children went back to on their own]]',
-        image: { src: '/photos/blog-q-screentime.webp', alt: '[[PLACEHOLDER PHOTO]]', width: 1024, height: 1024 },
-      },
-      // CANDIDATE from the 2019 catalogue — use only if it was about this kind of session:
-      // { text: 'I was amazed on how this simple activity gave children a deeper understanding of the surah.', attribution: 'Sis Sy, programme parent' },
-    ],
-  },
-
-  whatWeLearned: {
-    // LAYOUT PLACEHOLDER images — same blog-question graphics, same purpose: swap
-    // each for a real photo or delete the `images` block to go back to text-only.
-    images: {
-      worked: { src: '/photos/blog-q-routine.webp', alt: '[[PLACEHOLDER PHOTO]]', width: 96, height: 96 },
-      didnt: { src: '/photos/blog-q-consistent.webp', alt: '[[PLACEHOLDER PHOTO]]', width: 96, height: 96 },
-      changed: { src: '/photos/blog-q-fun.webp', alt: '[[PLACEHOLDER PHOTO]]', width: 96, height: 96 },
+  session: {
+    duration: 'About 40 minutes',
+    steps: {
+      inspire:
+        'Read the etiquettes of learning together. Tell the story behind the surah while the children colour the picture page.',
+      investigate:
+        'Children find the surah in a real mushaf and note its number and page. Then pick 3–4 activities, such as one tracing, one puzzle and one science page.',
+      integrate:
+        'On the journaling page, each child writes or draws one thing they will do this week because of the surah.',
+      impart: 'Each child explains their doodle to someone at home.',
     },
-    // NEEDED — this is the heart of a "living record of practice". Be honest about what did not work.
-    worked: ['[[CONTENT NEEDED: What worked]]'],
-    didnt: ['[[CONTENT NEEDED: What did not work, or worked only for some ages]]'],
-    changed: ['[[CONTENT NEEDED: What you changed between versions — this booklet is already v11]]'],
-  },
-
-  tryIt: {
-    intro: 'You can run a first session at home or in class with one short surah and about forty minutes.', // DRAFT
-    steps: [
-      // DRAFT — mirrors the booklet's own sequence.
-      'Begin with intention. Read the etiquettes of seeking knowledge together and let each child say why they are learning today.',
-      'Tell the story behind the surah, then give children a picture page to colour while you talk about it.',
-      'Open a real mushaf. Let the children find the surah, its number and its page themselves.',
-      'Choose three or four activities from different areas, such as one tracing, one puzzle and one science page. Start everyone on Level 1.',
-      'Offer Level 2 to children who are ready. Often it is simply: explain it to someone else.',
-      'Close with the journaling page. Each child writes or draws one thing they will do this week because of the surah.',
-    ],
-    // download: { label: 'Sample pages (PDF)', href: '' }, // OWNER: add when you have a sample to share
-  },
-
-  adaptIt: {
-    body: [
-      // DRAFT
-      'The two levels on every page are there so you can adapt without preparing twice. With younger children, do fewer pages and read everything aloud. With older children, hand over the mushaf and the translation and let them lead.',
-      'Swap the everyday contexts for ones your learners know. Counting, rhyming and spot-the-difference pages work with any local example.',
-      'If you make your own pages, copy Quranic text from a printed mushaf rather than retyping it, keep to sources your asatizah recognise, and ask them to check anything you are unsure of.',
-    ],
-  },
-
-  workWithUs: {
-    body: [
-      'If you would like to run Quran Investigators in your madrasah, centre or home-learning group, or help us test a new surah booklet, we would love to hear from you.', // DRAFT
-    ],
-    contactHref: '', // NEEDED — e.g. 'mailto:…'. The 2019 catalogue addresses may be out of date.
-    contactLabel: 'Get in touch',
-  },
-
-  supportUs: {
-    body: [
-      'Quran Investigators is shared so that others can use it, adapt it and carry it forward. Your support helps us prepare, check and print the next surah.', // DRAFT
-    ],
-  },
-
-  // OWNER: real press clipping, IqraSaurus's general founding story (not specific to this booklet).
-  press: {
-    image: {
-      src: '/photos/press-beritaharian-2016.webp',
-      alt: 'Berita Harian newspaper feature on IqraSaurus, 23 December 2016',
-      width: 1280,
-      height: 720,
+    tips: {
+      younger: 'Do fewer pages and read everything aloud.',
+      older: 'Hand them the mushaf and the translation and let them lead.',
     },
-    caption: 'Berita Harian, 23 December 2016 — on how IqraSaurus began.',
+  },
+
+  seen: {
+    // OWNER: real quotes, lessons and photos only. This section appears on the site as soon
+    // as one real item is here.
+    quotes: [
+      { text: '[[CONTENT NEEDED: something a child said or did during a session]]' },
+      { text: '[[CONTENT NEEDED: something a parent or teacher told you afterwards]]' },
+    ],
+    lessons: ['[[CONTENT NEEDED: what worked, what did not, and what you changed between versions]]'],
+    photos: [],
+  },
+
+  bringIt: {
+    body: 'Want to use Quran Investigators in your madrasah, centre or home group, or help test a new booklet?',
+    donateLine: 'Donations pay for checking and printing the next surah.',
   },
 
   seo: {
-    title: 'Quran Investigators — IqraSaurus Toolkit',
+    title: 'Quran Investigators | IqraSaurus',
     description:
-      'Surah-by-surah activity booklets from IqraSaurus. Children find the surah in the mushaf, match verses to meanings, investigate, doodle, journal and explain it to others.',
+      'Activity booklets from IqraSaurus that help children explore one surah at a time: find it in the mushaf, match each ayah to its meaning, then colour, count and doodle.',
   },
 }

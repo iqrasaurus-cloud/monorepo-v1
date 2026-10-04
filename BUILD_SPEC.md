@@ -196,7 +196,7 @@ Fill `content.ts` with clearly marked `[[CONTENT NEEDED: …]]` placeholders for
 
 ### 6.2 The one-page spoke: sections in this exact order
 
-> To be replaced by the five-section page in Phase 5 (section 6B).
+> **Replaced by the five-section page in Phase 5 (section 6B).** The table below is the original 13-section design, kept as a record.
 
 | # | Section | Anchor | Pattern |
 |---|---|---|---|

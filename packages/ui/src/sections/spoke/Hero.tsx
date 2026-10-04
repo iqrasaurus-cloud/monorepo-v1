@@ -1,144 +1,172 @@
-import { fourI, type SiteConfig, type SpokeContent } from '@iqra/config'
+import { isPlaceholder, type SiteConfig, type SpokeContent } from '@iqra/config'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import { mascotImage } from '../../layout/brand.ts'
+import { toolTiles } from '../../layout/links.ts'
+import { MenuTile } from '../../layout/MenuTile.tsx'
 import { useAnchorNavigate } from '../../layout/useAnchorNavigate.ts'
 import { LetterRise } from '../../motion/LetterRise.tsx'
 import { duration, easeReveal, heroScrollOut, heroText } from '../../motion/presets.ts'
 import { useReducedMotionSafe } from '../../motion/useReducedMotionSafe.ts'
+import { Button } from '../../primitives/Button.tsx'
 import { Container } from '../../primitives/Container.tsx'
 import { Eyebrow } from '../../primitives/Eyebrow.tsx'
 import { Pattern } from '../../primitives/Pattern.tsx'
 import { Picture } from '../../primitives/Picture.tsx'
 import { cn } from '../../utils/cn.ts'
+import { withFallback } from './helpers.ts'
+
+export const SESSION_ANCHOR = '#session'
+
+/** "Quran Investigators" -> "Quran\nInvestigators": last word on its own line, in the accent. */
+const twoLines = (name: string): string => {
+  const words = name.split(' ')
+  const last = words.pop() ?? name
+  return words.length > 0 ? `${words.join(' ')}\n${last}` : last
+}
+
+function ChatIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="size-4">
+      <path
+        d="M4 5h16v10H9l-5 4z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
 
 interface HeroProps {
   site: SiteConfig
   hero: SpokeContent['hero']
-  nextAnchor: string
 }
 
-export function Hero({ site, hero, nextAnchor }: HeroProps) {
+/** Section 1: the programme's name, one plain line, a real photo and the tools to use at home. */
+export function Hero({ site, hero }: HeroProps) {
   const ref = useRef<HTMLElement>(null)
   const reduced = useReducedMotionSafe()
   const onAnchor = useAnchorNavigate()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
   const y = useTransform(scrollYProgress, [0, 1], heroScrollOut.y)
-  const opacity = useTransform(
-    scrollYProgress,
-    heroScrollOut.opacityInput,
-    heroScrollOut.opacityOutput,
-  )
+  const opacity = useTransform(scrollYProgress, heroScrollOut.opacityInput, heroScrollOut.opacityOutput)
 
-  const mascot = mascotImage(site.mascot, 640)
   const showMascot = site.mascotTone !== 'none'
+  const mascot = mascotImage(site.mascot, 640)
+  const photo = hero.image ? withFallback(hero.image) : undefined
+  const tiles = toolTiles().filter((t) => hero.useAtHome.includes(t.key))
   const fade = (delay: number) =>
-    reduced
-      ? { duration: duration.fade }
-      : { delay, duration: duration.revealSlow, ease: easeReveal }
+    reduced ? { duration: duration.fade } : { delay, duration: duration.revealSlow, ease: easeReveal }
 
   return (
-    <section
-      ref={ref}
-      id="top"
-      className="relative overflow-hidden bg-paper pb-16 pt-12 md:pb-24 md:pt-20"
-    >
+    <section ref={ref} id="top" className="relative overflow-hidden bg-paper pb-16 pt-10 md:pb-24 md:pt-16">
       <Pattern className="text-plum opacity-[0.04]" />
       <Container>
         <motion.div
           style={reduced ? undefined : { y, opacity }}
-          className="grid items-center gap-10 lg:grid-cols-[1.25fr_1fr]"
+          className="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr]"
         >
           <div className="min-w-0">
-            {hero.eyebrow ? (
-              <motion.div
-                data-reveal=""
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={fade(heroText.delayFrom)}
-              >
-                <Eyebrow className="mb-6">{hero.eyebrow}</Eyebrow>
-              </motion.div>
-            ) : null}
+            <motion.div data-reveal="" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={fade(0.1)}>
+              <Eyebrow className="mb-5">Programme</Eyebrow>
+            </motion.div>
 
             <LetterRise
-              text={hero.headline}
-              className="font-heading text-[clamp(2.5rem,9.5vw,5.25rem)] font-bold uppercase leading-[0.98] tracking-tight"
+              text={twoLines(site.name)}
+              // Words never break mid-letter (LetterRise), so size to the narrow two-column layout.
+              className="font-heading text-[clamp(2.5rem,9vw,4.5rem)] font-bold leading-[0.98] tracking-tight lg:text-[clamp(3rem,5vw,4.75rem)]"
               lineClassName={(i) => (i === 0 ? 'text-ink' : 'text-accent')}
             />
 
-            <motion.p
-              data-reveal=""
-              initial={{ opacity: 0, y: heroText.y }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={fade(heroText.delayFrom + 0.2)}
-              className="mt-8 max-w-xl text-lg text-ink/80 md:text-xl"
-            >
-              {hero.intro}
-            </motion.p>
-
-            <motion.ul
-              data-reveal=""
-              aria-label="The 4-I journey"
-              initial={{ opacity: 0, y: heroText.y }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={fade(heroText.delayTo)}
-              className="mt-8 flex flex-wrap gap-2"
-            >
-              {fourI.map((step) => (
-                <li
-                  key={step.key}
-                  className="label rounded-pill border border-taupe/40 bg-white px-4 py-2 text-ink"
-                >
-                  {step.label}
-                </li>
-              ))}
-            </motion.ul>
+            {!isPlaceholder(hero.line) ? (
+              <motion.p
+                data-reveal=""
+                initial={{ opacity: 0, y: heroText.y }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={fade(heroText.delayFrom)}
+                className="mt-6 max-w-xl text-xl text-ink/80 md:text-2xl"
+              >
+                {hero.line}
+              </motion.p>
+            ) : null}
 
             <motion.div
               data-reveal=""
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={fade(heroText.delayTo)}
-              className="mt-10"
+              initial={{ opacity: 0, y: heroText.y }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={fade(heroText.delayFrom + 0.15)}
+              className="mt-8 flex flex-wrap items-center gap-3"
             >
-              <a
-                href={nextAnchor}
-                aria-label="Scroll to the next section"
-                onClick={(e) => onAnchor(e, nextAnchor)}
-                className="inline-flex size-14 items-center justify-center rounded-full bg-sun text-plum shadow-soft transition-transform duration-300 hover:translate-y-1"
+              <Button
+                href={SESSION_ANCHOR}
+                size="lg"
+                onClick={(e) => onAnchor(e, SESSION_ANCHOR)}
+                className="font-heading"
               >
-                <svg aria-hidden="true" viewBox="0 0 24 24" className="size-6">
-                  <path
-                    d="M12 4v16m0 0l-6-6m6 6l6-6"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  />
-                </svg>
-              </a>
+                How a session runs
+              </Button>
+              <Button to="/chat" variant="outline" size="lg" className="bg-white font-heading">
+                <ChatIcon />
+                Ask our guide
+              </Button>
             </motion.div>
+
+            {tiles.length > 0 ? (
+              <motion.div
+                data-reveal=""
+                initial={{ opacity: 0, y: heroText.y }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={fade(heroText.delayTo)}
+                className="mt-10"
+              >
+                <p className="label mb-3 text-ink/60">Use this at home</p>
+                <ul className="grid gap-3 sm:grid-cols-2">
+                  {tiles.map((entry) => (
+                    <li key={entry.key}>
+                      <MenuTile entry={entry} compact />
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ) : null}
           </div>
 
-          {showMascot ? (
-            <motion.div
-              data-reveal=""
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={fade(0.6)}
-              className="flex justify-center lg:justify-end"
-            >
+          <motion.div
+            data-reveal=""
+            initial={{ opacity: 0, scale: 0.94 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={fade(0.5)}
+            className="relative mx-auto w-full max-w-md lg:max-w-none"
+          >
+            {photo ? (
+              <>
+                <div className="overflow-hidden rounded-card bg-white shadow-soft ring-8 ring-white lg:rotate-2 [&_picture]:contents">
+                  <Picture {...photo} priority className="h-auto w-full object-cover" />
+                </div>
+                {showMascot ? (
+                  <Picture
+                    {...mascot}
+                    priority
+                    className={cn(
+                      'absolute -bottom-14 -left-4 w-32 object-contain drop-shadow-md md:-left-10 md:w-44',
+                      site.mascotTone === 'playful' && 'motion-safe:animate-float',
+                    )}
+                  />
+                ) : null}
+              </>
+            ) : showMascot ? (
               <Picture
                 {...mascot}
                 priority
                 className={cn(
-                  'w-full max-w-xs object-contain lg:max-w-md',
-                  site.mascotTone === 'playful' && 'animate-float',
-                  site.mascotTone === 'calm' && 'max-w-[220px] lg:max-w-xs',
+                  'mx-auto w-full max-w-xs object-contain lg:max-w-md',
+                  site.mascotTone === 'playful' && 'motion-safe:animate-float',
                 )}
               />
-            </motion.div>
-          ) : null}
+            ) : null}
+          </motion.div>
         </motion.div>
       </Container>
     </section>

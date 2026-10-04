@@ -287,31 +287,52 @@ export interface Photo {
   height: number
 }
 
+export type FourIKey = (typeof fourI)[number]['key']
+
+export interface Quote {
+  text: string
+  attribution?: string
+  image?: Photo
+}
+
+/**
+ * The five-section programme page (BUILD_SPEC.md section 6B). The programme's name
+ * comes from the registry; contact details and the credential line come from `brand`.
+ * Any [[CONTENT NEEDED]] string is dropped on the built site.
+ */
 export interface SpokeContent {
-  hero: { eyebrow: string; headline: string; intro: string; image?: Photo }
-  whatIsIt: { body: string } // one paragraph; revealed word by word
-  whyWeCreatedIt: { body: string[] }
-  journey: Record<'inspire' | 'investigate' | 'integrate' | 'impart', { body: string }>
-  whatWeDid: {
+  hero: {
+    /** One plain line under the programme name. */
+    line: string
+    /** A real photo of the material or a session. Without one, the mascot stands alone. */
+    image?: Photo
+    /** Slugs from `tools`, shown under "Use this at home". */
+    useAtHome: string[]
+  }
+  whatItIs: {
+    /** Two or three short paragraphs. */
     body: string[]
+    /** Small note on the sources the material is built on. */
+    sources?: string
+    /** Photos of the real material. Six or more turns on the scrolling gallery. */
     photos: Photo[]
+    /** Optional video embed, shown as a click-to-load poster (goes through SafeEmbed). */
     videoUrl?: string
-    /** Key numbers pulled out of body as a quick-glance strip, e.g. { value: '40', label: 'Pages' }. */
-    stats?: { value: string; label: string }[]
   }
-  whatWeObserved: { items: { text: string; attribution?: string; image?: Photo }[] }
-  whatWeLearned: {
-    worked: string[]
-    didnt: string[]
-    changed: string[]
-    /** One optional photo per column, shown above its heading. */
-    images?: { worked?: Photo; didnt?: Photo; changed?: Photo }
+  session: {
+    /** e.g. "About 40 minutes". */
+    duration?: string
+    /** What happens at each 4-I step in this programme. */
+    steps: Record<FourIKey, string>
+    tips: { younger: string; older: string }
   }
-  tryIt: { intro: string; steps: string[]; download?: { label: string; href: string } }
-  adaptIt: { body: string[] }
-  workWithUs: { body: string[]; contactHref: string; contactLabel: string }
-  supportUs: { body: string[] } // button comes from SiteConfig.support
-  /** Optional press clipping shown as a small trust strip before Support Us. */
-  press?: { image: Photo; caption: string }
+  /** Hidden until at least one real quote, lesson or photo exists. */
+  seen: { quotes: Quote[]; lessons: string[]; photos: Photo[] }
+  bringIt: {
+    /** The invitation to use the programme. */
+    body: string
+    /** One line on what donations pay for. */
+    donateLine?: string
+  }
   seo: { title: string; description: string; ogImage?: string }
 }
