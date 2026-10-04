@@ -15,6 +15,8 @@ export interface BrandImage {
 // Master file sizes, used to keep the aspect ratio exact.
 const masters = {
   'logo-horizontal': { w: 1277, h: 391, width: 640, alt: 'IqraSaurus' },
+  /** Owner-approved variant for dark backgrounds: lettering lightened, dino untouched. */
+  'logo-horizontal-light': { w: 1277, h: 391, width: 640, alt: 'IqraSaurus' },
   'logo-square': { w: 1122, h: 1660, width: 320, alt: 'IqraSaurus' },
   icon: { file: 'icon-512', w: 512, h: 512, width: 160, alt: 'IqraSaurus' },
 } as const

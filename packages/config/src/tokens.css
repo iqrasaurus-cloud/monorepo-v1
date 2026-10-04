@@ -23,6 +23,50 @@
   --accent: var(--primary);
   --accent-rgb: var(--primary-rgb);
 
+  /* Shared with the tools (tadabbur-for-kids-v1/packages/design/tokens.css), owner-approved
+     2026-10-04. Same values in both files. The tools call their pinker purple "accent"; here
+     "accent" already means each site's own headline accent, so theirs is "accent-tools". */
+  --surface: #ffffff;
+  --surface-rgb: 255 255 255;
+  --muted: #5f7275;
+  --muted-rgb: 95 114 117;
+  --line: #e2dccd;
+  --line-rgb: 226 220 205;
+  --primary-soft: #ece5f6;
+  --primary-soft-rgb: 236 229 246;
+  --on-primary: #ffffff;
+  --on-primary-rgb: 255 255 255;
+  --accent-tools: #a12f96;
+  --accent-tools-rgb: 161 47 150;
+  --accent-tools-soft: #fff4c2;
+  --accent-tools-soft-rgb: 255 244 194;
+  --on-accent-tools: #ffffff;
+  --on-accent-tools-rgb: 255 255 255;
+  --on-plum: #f6f4ee;
+  --on-plum-rgb: 246 244 238;
+  --on-sun: #441c4b;
+  --on-sun-rgb: 68 28 75;
+
+  /* The 4-I colours, each with a readable text colour on top. Inspire text uses inspire-ink. */
+  --inspire: #f9d648;
+  --inspire-rgb: 249 214 72;
+  --on-inspire: #441c4b;
+  --on-inspire-rgb: 68 28 75;
+  --inspire-ink: #7d5f00;
+  --inspire-ink-rgb: 125 95 0;
+  --investigate: #5c3d8f;
+  --investigate-rgb: 92 61 143;
+  --on-investigate: #ffffff;
+  --on-investigate-rgb: 255 255 255;
+  --integrate: #2f6f73;
+  --integrate-rgb: 47 111 115;
+  --on-integrate: #ffffff;
+  --on-integrate-rgb: 255 255 255;
+  --impart: #b0359f;
+  --impart-rgb: 176 53 159;
+  --on-impart: #ffffff;
+  --on-impart-rgb: 255 255 255;
+
   --font-heading: 'Fredoka Variable', 'Fredoka', 'Segoe UI', system-ui, sans-serif;
   --font-body: 'Nunito Sans Variable', 'Nunito Sans', 'Segoe UI', system-ui, sans-serif;
   --font-arabic: 'Noto Naskh Arabic', 'Traditional Arabic', 'Amiri', serif;
@@ -31,4 +75,63 @@
   --radius-pill: 999px;
   --shadow-soft: 0 2px 6px rgb(var(--ink-rgb) / 0.06), 0 12px 32px rgb(var(--ink-rgb) / 0.08);
   --content-max: 1200px;
+}
+
+/* Night (deep plum), same values as the tools. The brand sites are Day-only for now and never
+   set data-theme, so this block is inactive until Night is switched on here. There is
+   deliberately no prefers-color-scheme block yet, so a visitor's dark-mode setting can't
+   half-switch the sites. paper-2 and white have no Night values yet. */
+:root[data-theme='night'] {
+  --paper: #1d0f21;
+  --paper-rgb: 29 15 33;
+  --surface: #2a1630;
+  --surface-rgb: 42 22 48;
+  --ink: #f6f4ee;
+  --ink-rgb: 246 244 238;
+  --muted: #c9bccb;
+  --muted-rgb: 201 188 203;
+  --line: #45304b;
+  --line-rgb: 69 48 75;
+  --primary: #c9a8f5;
+  --primary-rgb: 201 168 245;
+  --primary-soft: #3a2450;
+  --primary-soft-rgb: 58 36 80;
+  --on-primary: #1d0f21;
+  --on-primary-rgb: 29 15 33;
+  --accent-tools: #ef94f2;
+  --accent-tools-rgb: 239 148 242;
+  --accent-tools-soft: #3a2f12;
+  --accent-tools-soft-rgb: 58 47 18;
+  --on-accent-tools: #3a0f39;
+  --on-accent-tools-rgb: 58 15 57;
+  --inspire: #ffe45d;
+  --inspire-rgb: 255 228 93;
+  --on-inspire: #441c4b;
+  --on-inspire-rgb: 68 28 75;
+  --inspire-ink: #ffe45d;
+  --inspire-ink-rgb: 255 228 93;
+  --investigate: #c9a8f5;
+  --investigate-rgb: 201 168 245;
+  --on-investigate: #1d0f21;
+  --on-investigate-rgb: 29 15 33;
+  --integrate: #8fd3cf;
+  --integrate-rgb: 143 211 207;
+  --on-integrate: #12302f;
+  --on-integrate-rgb: 18 48 47;
+  --impart: #ef94f2;
+  --impart-rgb: 239 148 242;
+  --on-impart: #3a0f39;
+  --on-impart-rgb: 58 15 57;
+  --plum: #12071a;
+  --plum-rgb: 18 7 26;
+  --on-plum: #f6f4ee;
+  --on-plum-rgb: 246 244 238;
+  --sun: #ffe45d;
+  --sun-rgb: 255 228 93;
+  --on-sun: #441c4b;
+  --on-sun-rgb: 68 28 75;
+  --magenta: #ef94f2;
+  --magenta-rgb: 239 148 242;
+  --taupe: #c7b99f;
+  --taupe-rgb: 199 185 159;
 }

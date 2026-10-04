@@ -359,7 +359,8 @@ Place in `apps/<slug>/assets-src/brand/` (the scaffold script copies the shared 
 | File | What it is | Used |
 |---|---|---|
 | `logo-horizontal.png` | dino + wordmark + tagline, wide, transparent | Band 2 right (spokes), Band 2 left (hub) |
-| `logo-square.png` | stacked version, transparent | footer |
+| `logo-horizontal-light.png` | owner-approved light version for dark backgrounds (lettering lightened, dino untouched), shared with the tools | footer (on plum) |
+| `logo-square.png` | stacked version, transparent | not currently used (the footer switched to the light horizontal logo, 2026-10-04) |
 | `icon-512.png` | dino only, square | favicon set, mobile header mark |
 | `mascot-quran.png` | dino reading (placeholder for 3 spokes + hub) | identity header, hero, megamenu |
 | `mascot-magnifier.png` | Quran Investigators | 〃 |

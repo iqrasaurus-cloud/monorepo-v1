@@ -40,7 +40,8 @@ function TileList({ label, entries }: { label: string; entries: TileEntry[] }) {
 }
 
 export function Footer({ site }: { site: SiteConfig }) {
-  const logo = brandImage('logo-square')
+  // The footer sits on plum, so it uses the owner-approved light logo (CLAUDE.md rule 9).
+  const logo = brandImage('logo-horizontal-light')
   const year = new Date().getFullYear()
   const aboutPage = site.kind === 'hub' || hubLive()
   const verify = [
@@ -54,7 +55,7 @@ export function Footer({ site }: { site: SiteConfig }) {
       <div className="bg-plum text-white">
         <Container className="grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-[1.2fr_1fr_1fr_1.3fr_1.1fr]">
           <div>
-            <Picture {...logo} className="h-32 w-auto object-contain" />
+            <Picture {...logo} className="h-auto w-full max-w-[240px] object-contain" />
             <p className="mt-5 font-heading text-lg font-semibold text-sun">{brand.tagline}</p>
             <p className="mt-1 text-white/85">{brand.motto}</p>
           </div>
