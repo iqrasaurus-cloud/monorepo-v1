@@ -1,2 +1,5 @@
 export { SpokeHome } from './spoke/SpokeHome.tsx'
+export { HubHome } from './hub/HubHome.tsx'
+export { HubAbout } from './hub/HubAbout.tsx'
+export { HubWorkWithUs } from './hub/HubWorkWithUs.tsx'
 export { NotFound } from './NotFound.tsx'

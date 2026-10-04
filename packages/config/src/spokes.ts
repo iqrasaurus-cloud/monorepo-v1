@@ -336,3 +336,37 @@ export interface SpokeContent {
   }
   seo: { title: string; description: string; ogImage?: string }
 }
+
+export interface Person {
+  name: string
+  /** What they bring, in a few words. */
+  role: string
+  photo?: Photo
+}
+
+interface PageSeo {
+  title: string
+  description: string
+}
+
+/**
+ * The hub, iqrasaurus.com (BUILD_SPEC.md section 6C): tools-first home, About, Work with us.
+ * The positioning line, credential, contact details and belief quote come from `brand` and
+ * `brandCopy`. Any [[CONTENT NEEDED]] string is dropped on the built site.
+ */
+export interface HubContent {
+  home: {
+    /** Two lines, split on \n. First line ink, second accent. */
+    headline: string
+    /** Link-only card that opens Tadabbur. No ayah text is written into the site (rule 1). */
+    ayah: { line: string }
+  }
+  about: {
+    story: string[]
+    people: Person[]
+    foundation: string[]
+    press?: { image: Photo; caption: string }
+  }
+  workWithUs: { body: string }
+  seo: { home: PageSeo; about: PageSeo; workWithUs: PageSeo }
+}

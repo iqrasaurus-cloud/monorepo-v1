@@ -8,14 +8,7 @@ import { CircleCard } from '../../primitives/CircleCard.tsx'
 import { Container } from '../../primitives/Container.tsx'
 import { Picture } from '../../primitives/Picture.tsx'
 import { SectionHeading } from '../../primitives/SectionHeading.tsx'
-
-// A different dino for each step, reusing the registry's placeholder-pose convention.
-const STEP_MASCOTS = [
-  'mascot-quran.png',
-  'mascot-magnifier.png',
-  'mascot-reader.png',
-  'mascot-walking.png',
-] as const
+import { STEP_MASCOTS } from './helpers.ts'
 
 interface SessionProps {
   site: SiteConfig

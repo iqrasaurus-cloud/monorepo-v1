@@ -9,7 +9,7 @@ import {
   type KeyboardEvent,
   type MouseEvent,
 } from 'react'
-import { useLocation } from 'react-router'
+import { NavLink, useLocation } from 'react-router'
 import { duration, easeReveal, headerEntrance } from '../motion/presets.ts'
 import { useReducedMotionSafe } from '../motion/useReducedMotionSafe.ts'
 import { Container } from '../primitives/Container.tsx'
@@ -146,13 +146,23 @@ export function SiteHeader({ site }: { site: SiteConfig }) {
                     const href = hubItemHref(site, item.path, item.fallback)
                     return (
                       <li key={item.label}>
-                        <a
-                          href={href}
-                          onClick={(e) => followLink(e, href)}
-                          className={itemClass(false)}
-                        >
-                          {item.label}
-                        </a>
+                        {href.startsWith('/') ? (
+                          <NavLink
+                            to={href}
+                            onClick={close}
+                            className={({ isActive }) => itemClass(isActive)}
+                          >
+                            {item.label}
+                          </NavLink>
+                        ) : (
+                          <a
+                            href={href}
+                            onClick={(e) => followLink(e, href)}
+                            className={itemClass(false)}
+                          >
+                            {item.label}
+                          </a>
+                        )}
                       </li>
                     )
                   }

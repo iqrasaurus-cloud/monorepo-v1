@@ -14,7 +14,7 @@ Bismillah. Read `CLAUDE.md` first; its rules override anything here. Work throug
 | First build | Shared packages + **Quran Investigators** spoke only. Hub and the other 6 spokes come later |
 | App type | Each site is a single-page app like the KERN reference, but **pre-rendered to static HTML** at build time so it is fast and indexable |
 | Spoke routes | `/` (one long page with anchored sections), `/journal` (iframe), `/chat` (iframe), plus a 404 |
-| Hub routes | `/`, `/our-story`, `/our-people`, `/our-foundation`, `/this-week`, `/collaborate`, `/journal`, `/chat`, 404 |
+| Hub routes | `/`, `/about`, `/work-with-us`, 404 (Phase 6; the earlier `/our-story`, `/our-people`, `/our-foundation`, `/this-week`, `/collaborate` pages were folded into About and Work with us, and This Week becomes the Calendar tool) |
 | Framework | 4-I only: Inspire → Investigate → Integrate → Impart |
 | Layout model | One header bar: logo · Tools ▾ · Programmes ▾ · About · Work with us · Donate (Phase 4, replacing the original three-band header) |
 | Look | Patterns modelled on reggioalliance.org, recoloured to the IqraSaurus logo palette. **Copy patterns, never their artwork, photos or text** |
@@ -287,7 +287,9 @@ Home: hero ("Something meaningful to do with your child today") with the six too
 
 Pages: **About** (our story, our people, our foundation, the credential line, MUIS verify links, the press clipping), **Work with us**, and a Donate target.
 
-Open before building: the ayah card's text must come verbatim from the owner or Tadabbur (rule 1), and sites may not fetch at runtime (`connect-src 'self'`, rule 12). Decide between a link-only card and text copied in at build time.
+**Today's ayah is a link-only card** (decided 2026-10-04): a sun-coloured card with the reading dino, "Today's ayah", one line, and an "Open Tadabbur" button. No ayah text is written into the site (rule 1) and nothing is fetched at runtime (`connect-src 'self'`, rule 12). "This week" is left out until the Calendar tool is live.
+
+Built as: `apps/hub` (routes `/`, `/about`, `/work-with-us`, 404, with its own `entry.server.tsx` like the programme apps), content in `apps/hub/content.ts` typed by `HubContent`, sections in `packages/ui/src/sections/hub`. The About page renders story, people and foundation only once they hold real text; "How we teach: the 4-I method", "Who guides us" (credential line, MUIS links when present) and "In the news" (the press clipping) always show. The hub stays `coming-soon` in the registry until the owner deploys it, so programme sites keep pointing About and Work with us at their footer blocks until then.
 
 Going live is owner-run: flip the hub to `live`, `pnpm gen:vercel`, Vercel project with Root Directory `apps/hub`, domains `iqrasaurus.com` + `www`, and route `/tadabbur` and the other tool paths to their own deployments.
 

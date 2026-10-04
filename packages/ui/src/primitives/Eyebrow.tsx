@@ -11,9 +11,10 @@ interface EyebrowProps {
 export function Eyebrow({ as: Tag = 'p', className, children }: EyebrowProps) {
   return (
     <Tag className={cn('label text-primary', className)}>
-      <span aria-hidden="true">( </span>
+      {/* Non-breaking spaces keep a bracket from wrapping onto a line of its own. */}
+      <span aria-hidden="true">(&nbsp;</span>
       {children}
-      <span aria-hidden="true"> )</span>
+      <span aria-hidden="true">&nbsp;)</span>
     </Tag>
   )
 }

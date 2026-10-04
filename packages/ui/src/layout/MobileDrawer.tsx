@@ -1,6 +1,7 @@
 import { mainMenu, type SiteConfig } from '@iqra/config'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from 'react'
+import { Link } from 'react-router'
 import { duration, easeWipe, stagger } from '../motion/presets.ts'
 import { useSmoothScroll } from '../motion/SmoothScroll.tsx'
 import { useReducedMotionSafe } from '../motion/useReducedMotionSafe.ts'
@@ -153,9 +154,15 @@ export function MobileDrawer({ site, open, onClose }: MobileDrawerProps) {
                     return (
                       <li key={item.label}>
                         <Rise index={i} reduced={reduced}>
-                          <a href={href} onClick={(e) => follow(e, href)} className={itemClass}>
-                            {item.label}
-                          </a>
+                          {href.startsWith('/') ? (
+                            <Link to={href} onClick={onClose} className={itemClass}>
+                              {item.label}
+                            </Link>
+                          ) : (
+                            <a href={href} onClick={(e) => follow(e, href)} className={itemClass}>
+                              {item.label}
+                            </a>
+                          )}
                         </Rise>
                       </li>
                     )
