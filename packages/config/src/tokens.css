@@ -24,8 +24,8 @@
   --accent-rgb: var(--primary-rgb);
 
   /* Shared with the tools (tadabbur-for-kids-v1/packages/design/tokens.css), owner-approved
-     2026-10-04. Same values in both files. The tools call their pinker purple "accent"; here
-     "accent" already means each site's own headline accent, so theirs is "accent-tools". */
+     2026-10-04. Same values in both files. "accent" is not shared: here it means each site's
+     own headline accent, and the tools' accent isn't used on the brand sites. */
   --surface: #ffffff;
   --surface-rgb: 255 255 255;
   --muted: #5f7275;
@@ -36,12 +36,6 @@
   --primary-soft-rgb: 236 229 246;
   --on-primary: #ffffff;
   --on-primary-rgb: 255 255 255;
-  --accent-tools: #a12f96;
-  --accent-tools-rgb: 161 47 150;
-  --accent-tools-soft: #fff4c2;
-  --accent-tools-soft-rgb: 255 244 194;
-  --on-accent-tools: #ffffff;
-  --on-accent-tools-rgb: 255 255 255;
   --on-plum: #f6f4ee;
   --on-plum-rgb: 246 244 238;
   --on-sun: #441c4b;
@@ -98,12 +92,6 @@
   --primary-soft-rgb: 58 36 80;
   --on-primary: #1d0f21;
   --on-primary-rgb: 29 15 33;
-  --accent-tools: #ef94f2;
-  --accent-tools-rgb: 239 148 242;
-  --accent-tools-soft: #3a2f12;
-  --accent-tools-soft-rgb: 58 47 18;
-  --on-accent-tools: #3a0f39;
-  --on-accent-tools-rgb: 58 15 57;
   --inspire: #ffe45d;
   --inspire-rgb: 255 228 93;
   --on-inspire: #441c4b;
