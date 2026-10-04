@@ -4,12 +4,16 @@ Bismillah. This file holds the permanent rules for this repo. The phased build p
 
 ## What this is
 
-A pnpm-workspace monorepo that produces **8 small static websites** from one shared codebase:
+A pnpm-workspace monorepo that produces **7 small static websites** from one shared codebase:
 
-- **1 hub** — `iqrasaurus.com`
-- **7 spokes** ("Toolkit" verticals) — one subdomain each, e.g. `quraninvestigators.iqrasaurus.com`
+- **1 hub** — `iqrasaurus.com`, tools-first
+- **6 programmes** (spokes) — one subdomain each, e.g. `quraninvestigators.iqrasaurus.com`
 
-Every site is a pre-rendered React single-page app deployed as its own Vercel project (Root Directory = `apps/<slug>`). The single source of truth for which sites exist is `packages/config/src/spokes.ts`.
+**Tools** are separate apps that live at short hub paths (`iqrasaurus.com/tadabbur`, `/hafiz`, `/worksheets`, `/calendar`, `/museum`, `/dino`). They are not built in this repo; this repo only links to them.
+
+Every site is a pre-rendered React single-page app deployed as its own Vercel project (Root Directory = `apps/<slug>`). The single source of truth for which sites and tools exist is `packages/config/src/spokes.ts`.
+
+The direction of the brand site (tools-first hub, four-item menu, five-section programme page) was agreed by the owner on 2026-10-04 and is written up in `tadabbur-for-kids-v1/docs/BRAND-SITE-REVIEW.md`.
 
 IqraSaurus is a family-led Dakwah initiative from Singapore that helps children discover, understand and live Islam. The site is a *living record of practice*, not an EdTech sales site. The owner is not a developer: explain what you did in plain language, and never leave the repo in a half-working state.
 
@@ -50,16 +54,19 @@ pnpm assets                     # optimise images in apps/*/assets-src into publ
 ## Hard rules
 
 ### Content integrity (most important)
-1. **Never write, generate, complete, translate or "fix" Quranic Arabic, hadith text, or their translations.** Render only what the owner supplies in content files, character for character. If a verse or reference is missing, leave a visible `[[CONTENT NEEDED: …]]` placeholder.
+1. **Never write, generate, complete, translate or "fix" Quranic Arabic, hadith text, or their translations.** Render only what the owner supplies in content files, character for character. If a verse or reference is missing, leave a `[[CONTENT NEEDED: …]]` placeholder in the content file.
 2. Never invent testimonials, statistics, credentials, partner names, people or quotes. Placeholders only.
+   Placeholders stay in the content and registry files where the owner can see them, but anything that is only a placeholder is **hidden on the built site** (a missing line is dropped; a section with nothing real in it does not render). Owner decision 2026-10-04: ship a clean MVP and fill in later.
 3. Credential wording is fixed: "Led by ARS-recognised asatizah and operated as an IECP in Singapore." Do not paraphrase it into "certified", "accredited" or similar.
 4. No imagery depicting prophets or companions. No AI-generated photos of people.
 5. Voice: warm, curious, clear, humble. Banned words in any copy you draft: revolutionary, game-changing, world-class, ultimate, proven, guaranteed, "the only", "the best".
+   Write concretely: what a child does, what a parent needs, who to contact. Avoid "not just X, but Y", lists of three for rhythm, poetic closing lines and slogan headlines.
+   Spell the brand **IqraSaurus**. "Tools" means the apps; the spokes are "programmes". Do not call them a "Toolkit".
 6. The pedagogical framework is **4-I: Inspire → Investigate → Integrate → Impart**. Do not mention 5D or SPARK anywhere on the sites.
 
 ### Design
 7. **No hex colours, font names or raw easing arrays in components.** Use the tokens in `packages/config` (Tailwind classes such as `bg-paper`, `text-ink`, `bg-plum`) and the motion presets in `packages/ui/src/motion`.
-8. The three-band header is identical on all 8 sites: utility strip → identity header (site identity LEFT, IqraSaurus brand RIGHT) → centred site menu. Never rearrange it per site.
+8. **One header bar, identical on every site:** IqraSaurus logo (left) → Tools ▾ · Programmes ▾ · About · Work with us → Donate button (right). Tools and Programmes open panels of mascot tiles; items that aren't ready show "Coming soon". A programme's own name lives in its hero, not in the header. On mobile the same four items and Donate sit behind one menu button. Never rearrange it per site. (Replaced the three-band header on 2026-10-04, owner decision.)
 9. Logos and mascots are swappable image files. Never redraw them, recolour them, or bake logo text (including the tagline) into code.
 10. Every animation must respect `prefers-reduced-motion` (no Lenis, no parallax, no letter-rise; simple fades only).
 

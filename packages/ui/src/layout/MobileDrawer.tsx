@@ -1,19 +1,18 @@
-import { hubMenu, siteMenu, siteUrl, type SiteConfig } from '@iqra/config'
+import { mainMenu, type SiteConfig } from '@iqra/config'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useEffect, useRef, useState, type ReactNode } from 'react'
-import { Link } from 'react-router'
+import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from 'react'
 import { duration, easeWipe, stagger } from '../motion/presets.ts'
 import { useSmoothScroll } from '../motion/SmoothScroll.tsx'
 import { useReducedMotionSafe } from '../motion/useReducedMotionSafe.ts'
 import { cn } from '../utils/cn.ts'
-import { HubLink } from './HubLink.tsx'
-import { hubLive, toolkitEntries, toolkitLabel } from './links.ts'
-import { ComingSoonPill } from './ToolkitMegaMenu.tsx'
-import { useAnchorNavigate } from './useAnchorNavigate.ts'
+import { DonateButton, Logo } from './HeaderParts.tsx'
+import { hubItemHref, programmeTiles, toolTiles } from './links.ts'
+import { MenuTile } from './MenuTile.tsx'
+import { useHashJump } from './useHashJump.ts'
 
 const FOCUSABLE = 'a[href], button:not([disabled])'
-const itemClass = 'block py-2.5 font-heading text-2xl font-semibold text-ink'
-const hubItemClass = 'block py-2 label'
+const itemClass =
+  'flex w-full items-center justify-between py-3 font-heading text-2xl font-semibold text-ink'
 
 interface RiseProps {
   index: number
@@ -49,15 +48,14 @@ interface MobileDrawerProps {
   onClose: () => void
 }
 
-/** Left-hand drawer for screens under 1024px: site menu, then the hub menu. */
+/** Right-hand drawer for screens under 1024px: the same four items as the header bar. */
 export function MobileDrawer({ site, open, onClose }: MobileDrawerProps) {
   const reduced = useReducedMotionSafe()
   const panelRef = useRef<HTMLDivElement>(null)
   const closeRef = useRef<HTMLButtonElement>(null)
-  const [toolkitOpen, setToolkitOpen] = useState(false)
-  const onAnchor = useAnchorNavigate()
+  const [section, setSection] = useState<'tools' | 'programmes' | null>(null)
   const { lock } = useSmoothScroll()
-  const hubActive = site.kind === 'hub' || hubLive()
+  const jump = useHashJump()
 
   useEffect(() => {
     if (!open) return
@@ -93,8 +91,14 @@ export function MobileDrawer({ site, open, onClose }: MobileDrawerProps) {
     }
   }, [open, onClose, lock])
 
-  // Hub items continue the rise stagger after the site items.
-  const hubOffset = siteMenu.length
+  // Closing unlocks smooth scrolling and body overflow only once the effect cleanup
+  // runs, so an in-page jump waits a frame or it silently does nothing.
+  const follow = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
+    onClose()
+    if (!href.startsWith('#')) return
+    e.preventDefault()
+    requestAnimationFrame(() => jump(href))
+  }
 
   return (
     <AnimatePresence>
@@ -115,19 +119,19 @@ export function MobileDrawer({ site, open, onClose }: MobileDrawerProps) {
             role="dialog"
             aria-modal="true"
             aria-label="Menu"
-            // Lenis hijacks wheel/touch scrolling for the whole page, including while
-            // stopped, so without this the drawer's own overflow-y-auto never gets a
-            // scroll gesture to act on.
+            // Lenis takes over wheel and touch scrolling even while stopped; this lets
+            // the drawer scroll on its own.
             data-lenis-prevent=""
-            className="fixed inset-y-0 left-0 z-50 flex w-[85%] max-w-[380px] flex-col overflow-y-auto bg-paper px-6 pb-10 pt-4 shadow-soft"
-            initial={reduced ? { opacity: 0 } : { clipPath: 'inset(0 100% 0 0)' }}
-            animate={reduced ? { opacity: 1 } : { clipPath: 'inset(0 0% 0 0)' }}
-            exit={reduced ? { opacity: 0 } : { clipPath: 'inset(0 100% 0 0)' }}
+            className="fixed inset-y-0 right-0 z-50 flex w-[88%] max-w-[400px] flex-col overflow-y-auto bg-paper px-5 pb-8 pt-4 shadow-soft"
+            initial={reduced ? { opacity: 0 } : { clipPath: 'inset(0 0 0 100%)' }}
+            animate={reduced ? { opacity: 1 } : { clipPath: 'inset(0 0 0 0%)' }}
+            exit={reduced ? { opacity: 0 } : { clipPath: 'inset(0 0 0 100%)' }}
             transition={
               reduced ? { duration: duration.fade } : { duration: duration.wipe, ease: easeWipe }
             }
           >
-            <div className="flex justify-end">
+            <div className="mb-4 flex items-center justify-between">
+              <Logo site={site} className="h-8" />
               <button
                 ref={closeRef}
                 type="button"
@@ -136,92 +140,56 @@ export function MobileDrawer({ site, open, onClose }: MobileDrawerProps) {
                 className="-mr-2 flex size-10 items-center justify-center rounded-pill text-ink"
               >
                 <svg aria-hidden="true" viewBox="0 0 24 24" className="size-6">
-                  <path
-                    d="M6 6l12 12M18 6L6 18"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  />
+                  <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" strokeWidth="2" />
                 </svg>
               </button>
             </div>
 
-            <nav aria-label={site.name}>
-              <ul>
-                {siteMenu.map((item, i) => {
-                  if (item.type === 'anchor') {
+            <nav aria-label="Main" className="flex-1">
+              <ul className="divide-y divide-taupe/25">
+                {mainMenu.map((item, i) => {
+                  if (item.type === 'hub') {
+                    const href = hubItemHref(site, item.path, item.fallback)
                     return (
                       <li key={item.label}>
                         <Rise index={i} reduced={reduced}>
-                          <a
-                            href={item.target}
-                            className={itemClass}
-                            onClick={(e) => {
-                              // Closing the drawer unlocks smooth-scroll and restores body
-                              // overflow, but only once its effect cleanup runs. Deferring
-                              // the actual scroll a frame lets that happen first, otherwise
-                              // the page is still scroll-locked and the jump silently no-ops.
-                              e.preventDefault()
-                              onClose()
-                              requestAnimationFrame(() => onAnchor(e, item.target))
-                            }}
-                          >
+                          <a href={href} onClick={(e) => follow(e, href)} className={itemClass}>
                             {item.label}
                           </a>
                         </Rise>
                       </li>
                     )
                   }
-                  if (item.type === 'route') {
-                    return (
-                      <li key={item.label}>
-                        <Rise index={i} reduced={reduced}>
-                          <Link to={item.target} className={itemClass} onClick={onClose}>
-                            {item.label}
-                          </Link>
-                        </Rise>
-                      </li>
-                    )
-                  }
+                  const isOpen = section === item.type
+                  const listId = `mobile-${item.type}`
+                  const tiles = item.type === 'tools' ? toolTiles() : programmeTiles(site)
                   return (
                     <li key={item.label}>
                       <Rise index={i} reduced={reduced}>
                         <button
                           type="button"
-                          aria-expanded={toolkitOpen}
-                          aria-controls="mobile-toolkit"
-                          onClick={() => setToolkitOpen((o) => !o)}
-                          className={cn(itemClass, 'flex w-full items-center justify-between')}
+                          aria-expanded={isOpen}
+                          aria-controls={listId}
+                          onClick={() => setSection((s) => (s === item.type ? null : item.type))}
+                          className={itemClass}
                         >
                           {item.label}
-                          <span aria-hidden="true" className="text-primary">
-                            {toolkitOpen ? '−' : '+'}
+                          <span
+                            aria-hidden="true"
+                            className={cn(
+                              'flex size-8 items-center justify-center rounded-full text-xl transition-colors',
+                              isOpen ? 'bg-sun text-plum' : 'bg-paper-2 text-primary',
+                            )}
+                          >
+                            {isOpen ? '−' : '+'}
                           </span>
                         </button>
                       </Rise>
-                      {toolkitOpen ? (
-                        <ul id="mobile-toolkit" className="mb-2 border-l-2 border-sun pl-4">
-                          {toolkitEntries().map((entry) => (
-                            <li key={entry.slug} className="flex items-center gap-2 py-1.5">
-                              {entry.status !== 'live' ? (
-                                <>
-                                  <span className="text-ink/40">{toolkitLabel(entry)}</span>
-                                  <ComingSoonPill />
-                                </>
-                              ) : entry.slug === site.slug ? (
-                                <Link
-                                  to="/"
-                                  aria-current="true"
-                                  onClick={onClose}
-                                  className="text-ink"
-                                >
-                                  {toolkitLabel(entry)}
-                                </Link>
-                              ) : (
-                                <a href={siteUrl(entry)} className="text-ink">
-                                  {toolkitLabel(entry)}
-                                </a>
-                              )}
+                      {isOpen ? (
+                        <ul id={listId} className="grid gap-2 pb-4">
+                          {tiles.map((entry) => (
+                            <li key={entry.key}>
+                              <MenuTile entry={entry} compact onNavigate={onClose} />
                             </li>
                           ))}
                         </ul>
@@ -232,29 +200,12 @@ export function MobileDrawer({ site, open, onClose }: MobileDrawerProps) {
               </ul>
             </nav>
 
-            <hr className="my-5 border-taupe/40" />
-
-            <nav aria-label="IqraSaurus">
-              <ul>
-                {hubMenu.map((item, i) => (
-                  <li key={item.path}>
-                    <Rise index={hubOffset + i} reduced={reduced}>
-                      <HubLink
-                        site={site}
-                        path={item.path}
-                        onClick={onClose}
-                        className={cn(hubItemClass, hubActive ? 'text-ink/70' : 'text-ink/40')}
-                      >
-                        {item.label}
-                      </HubLink>
-                    </Rise>
-                  </li>
-                ))}
-              </ul>
-              {!hubActive ? (
-                <p className="label mt-2 text-ink/40">IqraSaurus home: coming soon</p>
-              ) : null}
-            </nav>
+            {/* shrink-0: Rise clips its overflow, so flexbox would otherwise squash it to nothing. */}
+            <div className="shrink-0 pt-6">
+              <Rise index={mainMenu.length} reduced={reduced}>
+                <DonateButton size="lg" onClick={follow} />
+              </Rise>
+            </div>
           </motion.div>
         </>
       ) : null}

@@ -1,9 +1,9 @@
 /**
  * packages/config/src/spokes.ts
  *
- * SINGLE SOURCE OF TRUTH for every IqraSaurus site.
- * - Adding a spoke = add one entry here, run `pnpm new:spoke <slug>`, fill in its content.ts.
- * - Menus, the Toolkit megamenu, cross-site links, CSP frame-src allowlists and
+ * SINGLE SOURCE OF TRUTH for every IqraSaurus site and tool.
+ * - Adding a programme = add one entry here, run `pnpm new:spoke <slug>`, fill in its content.ts.
+ * - The header menus (Tools, Programmes), cross-site links, CSP frame-src allowlists and
  *   every apps/<slug>/vercel.json are generated from this file.
  *
  * Owner-editable values are marked  // OWNER
@@ -32,14 +32,14 @@ export interface SiteConfig {
   /** Folder name under apps/ and the key used everywhere. Lowercase, no dashes. */
   slug: string
   kind: 'hub' | 'spoke'
-  /** Display name shown in the identity header and megamenu. */
+  /** Display name shown in the Programmes menu, footer and the programme's hero. */
   name: string
-  /** One line shown under the name in the identity header (max ~90 chars). */
+  /** One line shown under the name in the Programmes menu (max ~90 chars). */
   description: string
   /** Production hostname, lowercase. DNS is case-insensitive; the owner may advertise mixed case. */
   host: string
   status: SiteStatus
-  /** Order in the Toolkit megamenu and the hub grid. */
+  /** Order in the Programmes menu and the hub grid. */
   order: number
   /** File in apps/<slug>/public/brand/. Placeholder poses repeat until new art arrives. */
   mascot: string
@@ -92,46 +92,33 @@ export const sites: SiteConfig[] = [
     support: { href: '', label: 'Support Quran Investigators' }, // OWNER
   },
   {
+    // StoryBus and EduDrama were merged into one programme (owner decision 2026-10-04).
+    slug: 'storybuzz',
+    kind: 'spoke',
+    name: 'StoryBuzz',
+    description: '[[CONTENT NEEDED: one-line description]]',
+    host: `storybuzz.${HUB_HOST}`,
+    status: 'coming-soon',
+    order: 2,
+    mascot: 'mascot-walking.png',
+    mascotTone: 'playful',
+    journal: { src: '', title: 'StoryBuzz Journal' },
+    chat: { src: '', title: 'Ask the StoryBuzz guide' },
+    support: { href: '', label: 'Support StoryBuzz' },
+  },
+  {
     slug: 'quranhadeethdoodling',
     kind: 'spoke',
     name: 'Quran & Hadeeth Doodling',
     description: '[[CONTENT NEEDED: one-line description]]',
     host: `quranhadeethdoodling.${HUB_HOST}`,
     status: 'coming-soon',
-    order: 2,
+    order: 3,
     mascot: 'mascot-quran.png', // placeholder pose
     mascotTone: 'playful',
     journal: { src: '', title: 'Quran & Hadeeth Doodling Journal' },
     chat: { src: '', title: 'Ask the Doodling guide' },
     support: { href: '', label: 'Support Quran & Hadeeth Doodling' },
-  },
-  {
-    slug: 'edudrama',
-    kind: 'spoke',
-    name: 'EduDrama',
-    description: '[[CONTENT NEEDED: one-line description]]',
-    host: `edudrama.${HUB_HOST}`,
-    status: 'coming-soon',
-    order: 3,
-    mascot: 'mascot-walking.png',
-    mascotTone: 'playful',
-    journal: { src: '', title: 'EduDrama Journal' },
-    chat: { src: '', title: 'Ask the EduDrama guide' },
-    support: { href: '', label: 'Support EduDrama' },
-  },
-  {
-    slug: 'umrahforkids',
-    kind: 'spoke',
-    name: 'Umrah for Kids',
-    description: '[[CONTENT NEEDED: one-line description]]',
-    host: `umrahforkids.${HUB_HOST}`,
-    status: 'coming-soon',
-    order: 4,
-    mascot: 'mascot-binoculars.png',
-    mascotTone: 'playful',
-    journal: { src: '', title: 'Umrah for Kids Journal' },
-    chat: { src: '', title: 'Ask the Umrah for Kids guide' },
-    support: { href: '', label: 'Support Umrah for Kids' },
   },
   {
     slug: 'madrasahpreparation',
@@ -140,7 +127,7 @@ export const sites: SiteConfig[] = [
     description: '[[CONTENT NEEDED: one-line description]]',
     host: `madrasahpreparation.${HUB_HOST}`,
     status: 'coming-soon',
-    order: 5,
+    order: 4,
     mascot: 'mascot-reader.png',
     mascotTone: 'playful',
     journal: { src: '', title: 'Madrasah Preparation Journal' },
@@ -154,7 +141,7 @@ export const sites: SiteConfig[] = [
     description: '[[CONTENT NEEDED: one-line description]]',
     host: `baitimadrasati.${HUB_HOST}`,
     status: 'coming-soon',
-    order: 6,
+    order: 5,
     mascot: 'mascot-quran.png', // placeholder pose
     mascotTone: 'playful',
     journal: { src: '', title: 'Baiti Madrasati Journal' },
@@ -162,48 +149,62 @@ export const sites: SiteConfig[] = [
     support: { href: '', label: 'Support Baiti Madrasati' },
   },
   {
-    slug: 'tinytafseer',
+    slug: 'umrahforkids',
     kind: 'spoke',
-    name: 'Tiny Tafseer',
+    name: 'Umrah for Kids',
     description: '[[CONTENT NEEDED: one-line description]]',
-    host: `tinytafseer.${HUB_HOST}`,
+    host: `umrahforkids.${HUB_HOST}`,
     status: 'coming-soon',
-    order: 7,
-    mascot: 'mascot-quran.png', // placeholder pose
+    order: 6,
+    mascot: 'mascot-binoculars.png',
     mascotTone: 'playful',
-    journal: { src: '', title: 'Tiny Tafseer Journal' },
-    chat: { src: '', title: 'Ask the Tiny Tafseer guide' },
-    support: { href: '', label: 'Support Tiny Tafseer' },
+    journal: { src: '', title: 'Umrah for Kids Journal' },
+    chat: { src: '', title: 'Ask the Umrah for Kids guide' },
+    support: { href: '', label: 'Support Umrah for Kids' },
   },
 ]
 
 /* ------------------------------------------------------------------ */
-/* Menus — identical structure on all 8 sites                          */
+/* Tools — apps that live at iqrasaurus.com/<path>                     */
 /* ------------------------------------------------------------------ */
 
-/** Band 1: utility strip. Always absolute links to the hub, on every site. */
-export const hubMenu = [
-  { label: 'Our Story', path: '/our-story' },
-  { label: 'Our People', path: '/our-people' },
-  { label: 'Our Foundation', path: '/our-foundation' },
-  { label: 'This Week', path: '/this-week' },
-  { label: 'Collaborate', path: '/collaborate' },
-] as const
+export interface ToolConfig {
+  slug: string
+  name: string
+  /** One line under the name. A [[CONTENT NEEDED]] line is hidden on the built site. */
+  line: string
+  /** Path on the hub domain, e.g. '/tadabbur'. */
+  path: string
+  /** 'live' tools link out; 'coming-soon' tools show the name with a "Coming soon" pill. */
+  status: SiteStatus
+  /** File in apps/<slug>/public/brand/. Placeholder poses repeat until new art arrives. */
+  mascot: string
+}
+
+export const tools: ToolConfig[] = [
+  // OWNER: Tadabbur is linked now so it works the day iqrasaurus.com/tadabbur is routed.
+  { slug: 'tadabbur', name: 'Tadabbur', line: 'One ayah a day', path: '/tadabbur', status: 'live', mascot: 'mascot-quran.png' },
+  { slug: 'hafiz', name: 'Mini Hafiz', line: '[[CONTENT NEEDED: one line]]', path: '/hafiz', status: 'coming-soon', mascot: 'mascot-reader.png' },
+  { slug: 'worksheets', name: 'Worksheets', line: '[[CONTENT NEEDED: one line]]', path: '/worksheets', status: 'coming-soon', mascot: 'mascot-magnifier.png' },
+  { slug: 'calendar', name: 'Calendar', line: '[[CONTENT NEEDED: one line]]', path: '/calendar', status: 'coming-soon', mascot: 'mascot-binoculars.png' },
+  { slug: 'museum', name: 'Museum', line: '[[CONTENT NEEDED: one line]]', path: '/museum', status: 'coming-soon', mascot: 'mascot-magnifier.png' },
+  { slug: 'dino', name: 'Dino', line: '[[CONTENT NEEDED: one line]]', path: '/dino', status: 'coming-soon', mascot: 'mascot-walking.png' },
+]
+
+/* ------------------------------------------------------------------ */
+/* Header menu — identical on every site (CLAUDE.md rule 8)            */
+/* ------------------------------------------------------------------ */
 
 /**
- * Band 3: centred site menu. `anchor` items scroll within the home page
- * (and navigate home first when on /journal or /chat). `route` items are pages.
- * `toolkit` opens the megamenu listing every site in `sites`.
+ * `tools` and `programmes` open a panel of tiles. `hub` items are pages on
+ * iqrasaurus.com; until the hub is live they jump to the matching footer block
+ * (`fallback`), which is present on every page of every site.
  */
-export const siteMenu = [
-  { label: 'Home', type: 'anchor', target: '#top' },
-  { label: 'About', type: 'anchor', target: '#about' },
-  { label: 'Impact', type: 'anchor', target: '#impact' },
-  { label: '4-I Method', type: 'anchor', target: '#methodology' },
-  { label: 'Journal', type: 'route', target: '/journal' },
-  { label: 'Chat', type: 'route', target: '/chat' },
-  { label: 'Support Us', type: 'anchor', target: '#support' },
-  { label: 'Toolkit', type: 'toolkit', target: '' },
+export const mainMenu = [
+  { label: 'Tools', type: 'tools' },
+  { label: 'Programmes', type: 'programmes' },
+  { label: 'About', type: 'hub', path: '/about', fallback: '#about-iqrasaurus' },
+  { label: 'Work with us', type: 'hub', path: '/work-with-us', fallback: '#work-with-us' },
 ] as const
 
 /* ------------------------------------------------------------------ */
@@ -224,8 +225,19 @@ export const brand = {
     ars: '', // OWNER
     iecp: '', // OWNER
   },
+  /** Confirmed current by the owner on 2026-10-04. */
+  contact: {
+    whatsapp: '+65 8365 8221',
+    whatsappHref: 'https://wa.me/6583658221',
+    email: 'admin@iqrasaurus.com',
+  },
+  /** Header button on every site. Empty href = the button jumps to the footer's Work with us block. */
+  donate: {
+    label: 'Donate',
+    href: '', // OWNER: donation page URL (placeholder for now)
+  },
   disclaimer:
-    'Our Toolkit documents our practice, not a prescription for every learning environment. These are approaches we have tried with children and families over the years. Educators are encouraged to adapt them according to their learners, context and professional judgement while maintaining sound Islamic foundations.',
+    'Our programmes document our practice, not a prescription for every learning environment. These are approaches we have tried with children and families over the years. Educators are encouraged to adapt them according to their learners, context and professional judgement while maintaining sound Islamic foundations.',
   chatNotice:
     'This guide draws only from material IqraSaurus has prepared. It is a helper, not a religious authority. For rulings and personal guidance, please ask a recognised asatizah.',
 } as const
@@ -249,7 +261,13 @@ export const getSite = (slug: string): SiteConfig => {
 
 export const hub = (): SiteConfig => getSite('hub')
 export const siteUrl = (s: SiteConfig, path = '/'): string => `https://${s.host}${path}`
-export const toolkit = (): SiteConfig[] => [...sites].sort((a, b) => a.order - b.order)
+/** The six programmes (spokes) in menu order. */
+export const programmes = (): SiteConfig[] =>
+  sites.filter((s) => s.kind === 'spoke').sort((a, b) => a.order - b.order)
+export const toolUrl = (t: ToolConfig): string => siteUrl(hub(), t.path)
+/** Owner placeholders are kept in content files but never shown on the built site. */
+export const isPlaceholder = (text: string | undefined): boolean =>
+  !text || text.trim() === '' || text.trim().startsWith('[[')
 
 /** Origins allowed in CSP frame-src for one site (external embeds only). */
 export const frameOrigins = (s: SiteConfig): string[] =>

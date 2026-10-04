@@ -8,13 +8,15 @@ Bismillah. Read `CLAUDE.md` first; its rules override anything here. Work throug
 
 | Topic | Decision |
 |---|---|
-| Sites | 1 hub + 7 spokes = 8 Vercel projects from this one repo. Registry: `packages/config/src/spokes.ts` (supplied by the owner; copy it in verbatim in Phase 1) |
+| Sites | 1 hub + 6 programmes (spokes) = 7 Vercel projects from this one repo. Registry: `packages/config/src/spokes.ts` (originally supplied by the owner; now edited per owner decisions). StoryBus and EduDrama are one programme, **StoryBuzz**; Tiny Tafseer was dropped (2026-10-04) |
+| Tools | Separate apps at `iqrasaurus.com/tadabbur`, `/hafiz`, `/worksheets`, `/calendar`, `/museum`, `/dino`. Not built here; listed in the registry's `tools` array and linked from the header. Only Tadabbur is marked live |
+| Brand direction | Tools-first hub, one header bar, five-section programme pages. Agreed by the owner 2026-10-04; full write-up in `tadabbur-for-kids-v1/docs/BRAND-SITE-REVIEW.md`. Delivered as Phases 4–6 below |
 | First build | Shared packages + **Quran Investigators** spoke only. Hub and the other 6 spokes come later |
 | App type | Each site is a single-page app like the KERN reference, but **pre-rendered to static HTML** at build time so it is fast and indexable |
 | Spoke routes | `/` (one long page with anchored sections), `/journal` (iframe), `/chat` (iframe), plus a 404 |
 | Hub routes | `/`, `/our-story`, `/our-people`, `/our-foundation`, `/this-week`, `/collaborate`, `/journal`, `/chat`, 404 |
 | Framework | 4-I only: Inspire → Investigate → Integrate → Impart |
-| Layout model | Three-band header modelled on the Rajah & Tann regional sites (structure only) |
+| Layout model | One header bar: logo · Tools ▾ · Programmes ▾ · About · Work with us · Donate (Phase 4, replacing the original three-band header) |
 | Look | Patterns modelled on reggioalliance.org, recoloured to the IqraSaurus logo palette. **Copy patterns, never their artwork, photos or text** |
 | Motion | Carried over from the KERN reference (section 5) |
 | Hosting | Vercel, Root Directory per app, static output, security headers from generated `vercel.json` |
@@ -89,9 +91,9 @@ Contrast rule: `--sun` and `--magenta` are **never** used as text on light backg
 
 ```
 src/motion/         presets.ts (easings, durations), Reveal, LetterRise, WordReveal, Parallax,
-                    SplitScroll, HoverPreview, SmoothScroll (Lenis provider), useReducedMotionSafe
-src/layout/         SiteShell, UtilityStrip, IdentityHeader, SiteMenu, ToolkitMegaMenu,
-                    MobileDrawer, Footer, SkipLink
+                    SplitScroll, SmoothScroll (Lenis provider), useReducedMotionSafe
+src/layout/         SiteShell, SiteHeader, MenuTile, HeaderParts (logo, Donate), MobileDrawer,
+                    Footer, SkipLink   (Phase 4; the Phase 2 three-band components were removed)
 src/sections/       spoke sections (Phase 3) and hub sections (Phase 6)
 src/embed/          SafeEmbed, EmbedPage
 src/primitives/     Button, Ribbon, CircleCard, SectionHeading, Eyebrow, Picture, Scallop, Container
@@ -103,6 +105,8 @@ Acceptance: `pnpm install`, `pnpm typecheck`, `pnpm lint` pass. A throwaway stor
 ---
 
 ## 4. Phase 2 — The shell (header, menus, footer)
+
+> **Superseded for the header and footer by Phase 4 (section 6A), 2026-10-04.** The three-band design below was built and shipped, then replaced by one header bar on the owner's instruction. Kept as a record; build against 6A.
 
 This is the signature of the whole system. Build it in `packages/ui/src/layout`, driven entirely by `spokes.ts`.
 
@@ -154,15 +158,14 @@ Put the numbers in `packages/ui/src/motion/presets.ts`; components import preset
 | **Reveal** (default in-view) | `opacity 0, y 40 → 1, 0`, 0.6–0.9s, `easeReveal`, `viewport: { once: true, margin: '-60px' }`, list stagger 0.06s |
 | **Parallax** image break | image `y: -18% → 18%`, scale `1.15 → 1.05 → 1.15`, image 136% tall |
 | **SplitScroll** ("What we did") | section `h-[280vh]`, sticky `h-screen`; left column `y: 2% → -34%`, right `-34% → 2%`, centre title scale `0.92 → 1 → 0.92`. Needs ≥ 6 photos; with fewer, fall back to a simple Reveal grid. On mobile always use the grid |
-| **HoverPreview** (megamenu) | follows cursor with spring `{ stiffness: 200, damping: 25, mass: 0.5 }`; rotation from x-velocity mapped `[-1200, 1200] → [-10°, 10°]`; enter/exit scale 0.6 ↔ 1, 0.35s; image cross-fade 0.45s |
-| Row hover | title `translate-x` 16–32px, 0.5s |
+| Header menu panel (Phase 4) | opacity 0 → 1, `y: -8 → 0`, 0.35s, `easeReveal`. Tiles lift 4px and the mascot tilts slightly on hover (CSS, `motion-safe:` only) |
 | Link sweep | 1px underline, `scaleX 0 → 1`, origin right → left, 0.5s, `cubic-bezier(0.76, 0, 0.24, 1)` |
 | Drawer / wipes | clip-path or translate, 0.6s, `easeWipe`; inner items rise `y: 110% → 0` stagger `0.15 + i × 0.06`s |
 | Marquee | 28s linear infinite (optional, hub only) |
 
 **Dropped from KERN on purpose:** custom cursor and `cursor: none`, film-grain overlay, `mix-blend-difference` header, the live clock, the dark theme.
 
-**Reduced motion:** when `prefers-reduced-motion: reduce`, disable Lenis, Parallax, SplitScroll (use grid), LetterRise, WordReveal and HoverPreview; everything becomes a 0.2s opacity fade.
+**Reduced motion:** when `prefers-reduced-motion: reduce`, disable Lenis, Parallax, SplitScroll (use grid), LetterRise, WordReveal and hover lifts; everything becomes a 0.2s opacity fade.
 
 **Pre-render safety:** animated elements start hidden in the static HTML. Add a `<noscript>` style that forces `opacity: 1; transform: none` on `[data-reveal]` so content is visible without JavaScript.
 
@@ -192,6 +195,8 @@ vercel.json                  GENERATED by `pnpm gen:vercel` — do not hand-edit
 Fill `content.ts` with clearly marked `[[CONTENT NEEDED: …]]` placeholders for every field. The owner will supply real text; when they paste it, put it in verbatim.
 
 ### 6.2 The one-page spoke: sections in this exact order
+
+> To be replaced by the five-section page in Phase 5 (section 6B).
 
 | # | Section | Anchor | Pattern |
 |---|---|---|---|
@@ -230,7 +235,67 @@ Acceptance: `pnpm dev --filter quraninvestigators` shows the full page with plac
 
 ---
 
-## 7. Phase 4 — Hardening
+## 6A. Phase 4 — The single header bar (replaces the three bands)
+
+Owner decision 2026-10-04. Applies to every site through `packages/ui/src/layout`.
+
+**Desktop (≥ 1024px)**, one sticky white bar with a soft shadow once the page scrolls:
+```
+[IqraSaurus logo]    Tools ▾   Programmes ▾   About   Work with us    [♥ Donate]
+```
+- **Tools ▾ / Programmes ▾** open a full-width panel of tiles (3 per row) under the bar. A tile shows the mascot in a white circle with a `sun` ring, the name, one line, and either nothing (live, links out), "You are here" (current programme) or a muted, non-clickable "Coming soon" pill. One panel at a time; click opens, and Escape (focus returns to the trigger), an outside click, focus leaving the header or any navigation closes it.
+- Data comes from the registry: `tools`, `programmes()` and `mainMenu` in `spokes.ts`. A `[[CONTENT NEEDED]]` line is hidden, not shown.
+- **Donate** is the single bright call to action (`sun` pill with plum text). `brand.donate.href` is a placeholder for now.
+- The programme's name is **not** in the header; it belongs in the programme's hero (Phase 5).
+
+**Until the hub is live** (`hub.status !== 'live'`): About jumps to the footer block `#about-iqrasaurus`, Work with us to `#work-with-us`, Donate (while its href is empty) to `#work-with-us`, and the logo to this site's home. Setting the hub to `live` switches all of them to iqrasaurus.com pages at once. The Tadabbur tile already links to iqrasaurus.com/tadabbur, which will work once that path is routed.
+
+**Mobile (< 1024px):** the same bar with logo, a small Donate pill and a menu button. The drawer slides in from the right (88% wide, max 400px, `bg-paper`): Tools and Programmes as accordions of compact tiles, then About and Work with us, then a full-width Donate. Focus is trapped, Escape closes, body scroll is locked, the drawer carries `data-lenis-prevent` so it scrolls on its own, and in-page jumps wait one frame after the drawer closes.
+
+**Footer** (`bg-plum`): logo, tagline and motto · Programmes · Tools · **About IqraSaurus** (`#about-iqrasaurus`: credential line, MUIS verify links when present, link to the About page) · **Work with us** (`#work-with-us`: WhatsApp and email from `brand.contact`). Beneath: the disclaimer (spokes), copyright, and on spokes the Journal and "Ask our guide" links, since those left the header.
+
+Acceptance: typecheck, lint, build; keyboard-only through the bar, both panels and the drawer; no layout shift; nothing overflows at 360px. Commit `phase 4: single header bar`.
+
+**STOP A — owner checks the header on a laptop and a phone.**
+
+---
+
+## 6B. Phase 5 — The five-section programme page (replaces 6.2)
+
+At most five sections, replacing the thirteen in 6.2. Copy is the draft in BRAND-SITE-REVIEW.md §3, with owner-only facts left as `[[CONTENT NEEDED]]` (hidden on the built site).
+
+| # | Section | What goes in |
+|---|---|---|
+| 1 | Hero | Programme name, one plain line, real photo. "Use this at home" with the matching tool tiles (Tadabbur and Museum for Quran Investigators). A button to the session guide below and a small "Ask our guide" button (the Chat page) |
+| 2 | What it is | 2–3 sentences, the booklet sources line, and the booklet photos |
+| 3 | How a session runs | Four steps labelled Inspire, Investigate, Integrate, Impart (a different dino each), one tip for younger and one for older children |
+| 4 | What we've seen | Real quotes, photos and lessons, plus the Journal link. **Hidden until real content exists** |
+| 5 | Bring it to your class | WhatsApp and email, one line on donations, the credential line |
+
+- Journal and Chat stay as routes (`/journal`, `/chat`); they are no longer menu items. The journal embed URL stays editable so the owner can preview a new one.
+- The press clipping moves to the hub's About page (Phase 6).
+- Remove the section components that no longer have a place. Update `SpokeContent`, the Quran Investigators `content.ts`, `scripts/new-spoke.mjs` and `docs/spoke-content-template.txt` to the new shape.
+- The brand belief quote ("Don't just give them answers…") leaves the programme page; it appears once, on the hub.
+
+Commit `phase 5: five-section programme page`. **STOP B.**
+
+---
+
+## 6C. Phase 6 — The hub, tools-first (replaces section 11)
+
+Home: hero ("Something meaningful to do with your child today") with the six tool tiles → today's ayah card from Tadabbur and, once it exists, this week from the Calendar → six programme cards → "Who we are": two sentences, the credential line, a link to About, and the brand belief quote (its only appearance) → footer.
+
+Pages: **About** (our story, our people, our foundation, the credential line, MUIS verify links, the press clipping), **Work with us**, and a Donate target.
+
+Open before building: the ayah card's text must come verbatim from the owner or Tadabbur (rule 1), and sites may not fetch at runtime (`connect-src 'self'`, rule 12). Decide between a link-only card and text copied in at build time.
+
+Going live is owner-run: flip the hub to `live`, `pnpm gen:vercel`, Vercel project with Root Directory `apps/hub`, domains `iqrasaurus.com` + `www`, and route `/tadabbur` and the other tool paths to their own deployments.
+
+Commit `phase 6: hub home`. **STOP C.**
+
+---
+
+## 7. Phase 7 — Hardening
 
 1. **Pre-render check:** view-source of `build/client/index.html` contains the real section text.
 2. **404:** post-build script copies `build/client/404/index.html` to `build/client/404.html` (Vercel serves it automatically).
@@ -239,7 +304,7 @@ Acceptance: `pnpm dev --filter quraninvestigators` shows the full page with plac
 5. **Accessibility:** skip link, landmarks, one `h1` per page, visible focus rings in `primary`, colour contrast AA, menus operable by keyboard, `lang="en"` on html and `lang="ar" dir="rtl"` on Arabic.
 6. **Performance:** hero mascot/photo preloaded and not lazy; fonts `font-display: swap` with only the needed weights/subsets; no layout shift; check the budget in CLAUDE.md with Lighthouse against `pnpm preview`.
 
-Acceptance: budgets met; `curl -I` on the preview shows every header from section 8. Commit `phase 4`.
+Acceptance: budgets met; `curl -I` on the preview shows every header from section 8. Commit `phase 7: hardening`.
 
 ---
 
@@ -269,7 +334,9 @@ If the owner's chatbot needs the microphone later, that is a deliberate per-site
 
 ---
 
-## 9. Phase 5 — First deployment (owner does the clicks)
+## 9. Phase 8 — First deployment (owner does the clicks)
+
+> Quran Investigators was deployed early (quraninvestigators.vercel.app) while Phase 3 was being reviewed. Steps 1–2 are done for it; this checklist still applies to every later site.
 
 **STOP 2.** Give the owner this checklist and wait for their confirmation that the live site looks right:
 
@@ -277,7 +344,7 @@ If the owner's chatbot needs the microphone later, that is a deliberate per-site
 2. Vercel → Add New Project → import the repo → **Root Directory: `apps/quraninvestigators`** → leave everything else as detected (settings come from `vercel.json`) → Deploy.
 3. Project → Settings → Domains → add `quraninvestigators.iqrasaurus.com`; at the DNS provider add the CNAME record Vercel displays.
 4. Project → Settings → Git (or Build & Deployment) → enable skipping deployments when there are no changes to the Root Directory or its dependencies.
-5. Open the site on a phone and a laptop: check the header bands, the Toolkit megamenu, Journal and Chat pages, and a hard refresh on `/journal`.
+5. Open the site on a phone and a laptop: check the header bar, the Tools and Programmes panels, the mobile drawer, Journal and Chat pages, and a hard refresh on `/journal`.
 
 Note for the owner: Vercel's free Hobby plan allows up to 25 projects per repository (8 are needed) but is for non-commercial use; check whether donations/"Support Us" means the Pro plan is required.
 
@@ -296,13 +363,15 @@ Place in `apps/<slug>/assets-src/brand/` (the scaffold script copies the shared 
 | `mascot-magnifier.png` | Quran Investigators | 〃 |
 | `mascot-binoculars.png` | Umrah for Kids | 〃 |
 | `mascot-reader.png` | Madrasah Preparation | 〃 |
-| `mascot-walking.png` | EduDrama | 〃 |
+| `mascot-walking.png` | StoryBuzz | 〃 |
 
 The owner will replace the two logo files when the tagline is updated; because logos are only ever referenced by filename, nothing in code changes. Photos go in `assets-src/photos/` with descriptive lowercase-dash names; every photo needs alt text in `content.ts`.
 
 ---
 
-## 11. Phase 6 — The hub (`apps/hub`)
+## 11. Original hub plan (superseded by Phase 6, section 6C)
+
+> Kept for reference until Phase 6 is built. Parts may still be reused (for example the `/this-week` CSV, which may feed the Calendar tool). The hub menu here (Our Story · Our People · Our Foundation · This Week · Collaborate) is replaced by the four-item header.
 
 Same shell. Home page sections: Hero (LetterRise "BLENDING FAITH / WITH FUN IN LEARNING", positioning sentence, supporting sentence) → Trust strip (credential sentence + verify links) → `#about` short story teaser linking to Our Story → **Toolkit grid**: seven CircleCards with mascot, Ribbon label and description, in the manner of the NAREA circle-and-ribbon row (live ones link out; coming-soon ones muted) → `#methodology` 4-I overview from `fourI` → `#impact` placeholder block → `#support`.
 
@@ -316,10 +385,10 @@ Flip the hub to `live` in the registry, run `pnpm gen:vercel`, then the owner de
 
 ---
 
-## 12. Phase 7 — Remaining spokes
+## 12. Phase 9 — Remaining programmes
 
 1. Write `scripts/new-spoke.mjs`: given a slug that exists in the registry, copy the Quran Investigators app skeleton, swap the slug, reset `content.ts` to placeholders, copy shared brand masters, run `gen:vercel`.
-2. Do **not** scaffold all six at once. Scaffold a spoke when the owner supplies its content, set it to `live`, and hand over the deployment checklist from Phase 5 with the new Root Directory and domain.
+2. Do **not** scaffold all five at once. Scaffold a programme when the owner supplies its content, set it to `live`, and hand over the deployment checklist from Phase 8 with the new Root Directory and domain.
 3. After each new spoke goes live, all sites need a rebuild so their megamenus show it as live (a change in `packages/config` triggers this automatically on Vercel).
 
 Finally, once all sites are live and the owner agrees, delete `_reference/kern/`.

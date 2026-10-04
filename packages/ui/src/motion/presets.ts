@@ -13,9 +13,8 @@ export const duration = {
   header: 0.8,
   wipe: 0.6,
   sweep: 0.5,
-  rowHover: 0.5,
+  /** Header menu panels opening and closing. */
   preview: 0.35,
-  crossfade: 0.45,
 } as const
 
 export const stagger = {
@@ -65,10 +64,5 @@ export const splitScroll = {
   titleScale: [0.92, 1, 0.92],
 }
 
-export const previewSpring = { stiffness: 200, damping: 25, mass: 0.5 } as const
-export const previewRotation = { input: [-1200, 1200], output: [-10, 10] }
-export const previewScale = { hidden: 0.6, visible: 1 } as const
-
-export const rowHover = { x: 24 } as const
 export const lenisOptions = { lerp: 0.09 } as const
 export const marquee = { duration: 28 } as const

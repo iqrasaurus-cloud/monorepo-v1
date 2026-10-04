@@ -1,10 +1,16 @@
 export { SiteShell } from './SiteShell.tsx'
-export { UtilityStrip } from './UtilityStrip.tsx'
-export { IdentityHeader } from './IdentityHeader.tsx'
-export { SiteMenu } from './SiteMenu.tsx'
-export { ToolkitMegaMenu, ComingSoonPill } from './ToolkitMegaMenu.tsx'
+export { SiteHeader } from './SiteHeader.tsx'
 export { MobileDrawer } from './MobileDrawer.tsx'
+export { MenuTile, ComingSoonPill } from './MenuTile.tsx'
+export { DonateButton, Logo } from './HeaderParts.tsx'
 export { Footer } from './Footer.tsx'
 export { SkipLink, MAIN_ID } from './SkipLink.tsx'
 export { brandImage, mascotImage, type BrandImage } from './brand.ts'
-export { hubHref, toolkitEntries, toolkitLabel, stickyOffset } from './links.ts'
+export {
+  hubLive,
+  hubItemHref,
+  programmeTiles,
+  toolTiles,
+  stickyOffset,
+  type TileEntry,
+} from './links.ts'
