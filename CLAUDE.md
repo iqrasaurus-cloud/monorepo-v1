@@ -32,7 +32,7 @@ apps/hub/                     iqrasaurus.com
 apps/<spoke-slug>/            one thin app per spoke (routes + content + public assets)
 packages/config/              spokes registry, types, design tokens, Tailwind preset, header builder
 packages/ui/                  ALL shared layout, sections, motion primitives, SafeEmbed
-scripts/                      new-spoke, gen-vercel, optimise-assets, post-build
+scripts/                      new-spoke, gen-vercel, optimise-assets, post-build (404.html, robots.txt, sitemap.xml)
 _reference/kern/              the original KERN template. READ-ONLY. Never import from it
 ```
 

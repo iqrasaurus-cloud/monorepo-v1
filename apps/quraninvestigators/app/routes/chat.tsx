@@ -1,10 +1,10 @@
 import { getSite } from '@iqra/config'
-import { EmbedPage } from '@iqra/ui'
+import { EmbedPage, pageMeta } from '@iqra/ui'
 
 const site = getSite('quraninvestigators')
 
 export function meta() {
-  return [{ title: `Chat — ${site.name}` }]
+  return pageMeta(site, { title: `Chat — ${site.name}`, path: '/chat' })
 }
 
 export default function Chat() {

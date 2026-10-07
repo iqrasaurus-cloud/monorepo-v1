@@ -63,7 +63,7 @@ export function HubAbout({ site, about }: HubAboutProps) {
                 </div>
               ) : null}
               <p className="font-heading text-xl font-semibold text-ink">{person.name}</p>
-              {!isPlaceholder(person.role) ? <p className="mt-1 text-ink/70">{person.role}</p> : null}
+              {!isPlaceholder(person.role) ? <p className="mt-1 text-ink/80">{person.role}</p> : null}
             </RevealItem>
           ))}
         </RevealList>

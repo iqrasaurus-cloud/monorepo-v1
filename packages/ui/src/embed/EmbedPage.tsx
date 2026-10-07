@@ -23,7 +23,7 @@ export function EmbedPage({ site, kind }: EmbedPageProps) {
           <h1 className="font-heading text-3xl font-bold md:text-4xl">{title}</h1>
         </div>
         {kind === 'chat' ? (
-          <p className="max-w-xl text-sm text-ink/70 md:text-right">{brand.chatNotice}</p>
+          <p className="max-w-xl text-sm text-ink/80 md:text-right">{brand.chatNotice}</p>
         ) : null}
       </Container>
       <SafeEmbed

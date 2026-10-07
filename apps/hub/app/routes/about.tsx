@@ -1,14 +1,11 @@
 import { getSite } from '@iqra/config'
-import { HubAbout } from '@iqra/ui'
+import { HubAbout, pageMeta } from '@iqra/ui'
 import { content } from '../../content'
 
 const site = getSite('hub')
 
 export function meta() {
-  return [
-    { title: content.seo.about.title },
-    { name: 'description', content: content.seo.about.description },
-  ]
+  return pageMeta(site, { ...content.seo.about, path: '/about' })
 }
 
 export default function About() {

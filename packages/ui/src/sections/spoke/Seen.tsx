@@ -45,7 +45,7 @@ export function Seen({ site, seen }: SeenProps) {
                   </span>
                   <blockquote className="flex-1 text-lg text-ink">{quote.text}</blockquote>
                   {quote.attribution ? (
-                    <figcaption className="label mt-5 text-ink/60">{quote.attribution}</figcaption>
+                    <figcaption className="label mt-5 text-ink/80">{quote.attribution}</figcaption>
                   ) : null}
                 </div>
               </figure>

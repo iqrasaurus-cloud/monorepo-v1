@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "react-router dev --port 3000",
-    "build": "react-router build",
+    "build": "react-router build && node --experimental-strip-types --disable-warning=ExperimentalWarning ../../scripts/post-build.mts",
     "preview": "vite preview --outDir build/client",
     "typecheck": "tsc -p tsconfig.json"
   },

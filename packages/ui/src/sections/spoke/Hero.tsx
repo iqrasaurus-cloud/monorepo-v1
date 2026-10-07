@@ -121,7 +121,7 @@ export function Hero({ site, hero }: HeroProps) {
                 transition={fade(heroText.delayTo)}
                 className="mt-10"
               >
-                <p className="label mb-3 text-ink/60">Use this at home</p>
+                <p className="label mb-3 text-ink/80">Use this at home</p>
                 <ul className="grid gap-3 sm:grid-cols-2">
                   {tiles.map((entry) => (
                     <li key={entry.key}>

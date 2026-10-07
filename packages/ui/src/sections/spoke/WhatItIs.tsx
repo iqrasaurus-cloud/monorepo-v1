@@ -80,7 +80,7 @@ export function WhatItIs({ site, whatItIs }: WhatItIsProps) {
         </div>
         {!isPlaceholder(whatItIs.sources) ? (
           <Reveal>
-            <p className="mt-8 border-l-4 border-sun pl-4 text-sm text-ink/60">{whatItIs.sources}</p>
+            <p className="mt-8 border-l-4 border-sun pl-4 text-sm text-ink/85">{whatItIs.sources}</p>
           </Reveal>
         ) : null}
         {whatItIs.videoUrl ? (

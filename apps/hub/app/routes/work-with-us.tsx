@@ -1,14 +1,11 @@
 import { getSite } from '@iqra/config'
-import { HubWorkWithUs } from '@iqra/ui'
+import { HubWorkWithUs, pageMeta } from '@iqra/ui'
 import { content } from '../../content'
 
 const site = getSite('hub')
 
 export function meta() {
-  return [
-    { title: content.seo.workWithUs.title },
-    { name: 'description', content: content.seo.workWithUs.description },
-  ]
+  return pageMeta(site, { ...content.seo.workWithUs, path: '/work-with-us' })
 }
 
 export default function WorkWithUs() {

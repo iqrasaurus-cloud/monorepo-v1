@@ -34,7 +34,7 @@ function Placeholder({ alt, className }: { alt: string; className?: string }) {
           strokeWidth="1.5"
         />
       </svg>
-      {alt ? <span className="label max-w-[26ch] text-ink/60">{alt}</span> : null}
+      {alt ? <span className="label max-w-[26ch] text-ink/85">{alt}</span> : null}
     </div>
   )
 }

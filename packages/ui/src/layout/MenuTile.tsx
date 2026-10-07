@@ -8,7 +8,7 @@ export function ComingSoonPill({ className }: { className?: string }) {
   return (
     <span
       className={cn(
-        'label inline-block rounded-pill bg-paper-2 px-2.5 py-0.5 text-[10px] text-ink/60',
+        'label inline-block rounded-pill bg-paper-2 px-2.5 py-0.5 text-[10px] text-ink/85',
         className,
       )}
     >
@@ -59,13 +59,13 @@ export function MenuTile({ entry, compact = false, onNavigate }: MenuTileProps) 
         <span
           className={cn(
             'block font-heading font-semibold leading-tight',
-            live ? 'text-ink' : 'text-ink/50',
+            live ? 'text-ink' : 'text-ink/85',
             compact ? 'text-base' : 'text-lg',
           )}
         >
           {entry.name}
         </span>
-        {entry.line ? <span className="mt-0.5 block text-sm text-ink/70">{entry.line}</span> : null}
+        {entry.line ? <span className="mt-0.5 block text-sm text-ink/80">{entry.line}</span> : null}
         {!live ? <ComingSoonPill className="mt-1.5" /> : entry.current ? <HerePill /> : null}
       </span>
     </>

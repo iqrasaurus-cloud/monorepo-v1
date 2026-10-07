@@ -4,11 +4,13 @@
 //   assets-src/brand/icon-*.png    -> public/brand/<name>-160.{webp,png} + favicon set
 //   assets-src/photos/*            -> public/photos/<name>-{640,1280,1920}.{webp,jpg} + <name>.{webp,jpg}
 // Also writes public/brand/og.png (1200x630) for each site. Run with: pnpm assets
+// og.png text uses Fredoka from the machine's installed fonts (sharp can't read the web-font files);
+// install Fredoka (Google Fonts, static TTF) first or the heading falls back to a plain sans.
 import { existsSync, mkdirSync, readdirSync, readFileSync } from 'node:fs'
 import { basename, dirname, extname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import sharp from 'sharp'
-import { brand, sites } from '../packages/config/src/index.ts'
+import { brand, sites, type SiteConfig } from '../packages/config/src/index.ts'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const WEBP = { quality: 82 }
@@ -85,17 +87,18 @@ async function writeFavicons(source: string, outDir: string) {
   }
 }
 
-async function writeOg(mascot: string, logo: string | undefined, siteName: string, outDir: string) {
+async function writeOg(mascot: string, logo: string | undefined, site: SiteConfig, outDir: string) {
   const width = 1200
   const height = 630
   const mascotBuffer = await sharp(mascot).resize({ height: 500 }).png().toBuffer()
   const mascotMeta = await sharp(mascotBuffer).metadata()
-  const words = siteName.split(' ')
+  const words = site.name.split(' ')
+  const eyebrow = site.kind === 'spoke' ? `AN ${brand.name.toUpperCase()} PROGRAMME` : ''
   const lines = words.length > 2 ? [words.slice(0, 2).join(' '), words.slice(2).join(' ')] : words
   const textX = 560
   const svg = `
     <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
-      <text x="${textX}" y="250" font-family="Fredoka, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="600" letter-spacing="4" fill="${token('ink')}">${escapeXml(brand.name.toUpperCase())} TOOLKIT</text>
+      <text x="${textX}" y="250" font-family="Fredoka, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="600" letter-spacing="4" fill="${token('ink')}">${escapeXml(eyebrow)}</text>
       ${lines
         .map(
           (line, i) =>
@@ -140,7 +143,7 @@ for (const site of sites) {
   const mascot = join(brandSrc, site.mascot)
   const logo = join(brandSrc, 'logo-horizontal.png')
   if (existsSync(mascot)) {
-    await writeOg(mascot, existsSync(logo) ? logo : undefined, site.name, brandOut)
+    await writeOg(mascot, existsSync(logo) ? logo : undefined, site, brandOut)
   }
 
   const photosSrc = join(src, 'photos')

@@ -9,7 +9,8 @@ import { hubLive, programmeTiles, toolTiles, type TileEntry } from './links.ts'
 
 const heading = 'label mb-4 text-sun'
 const link = 'link-sweep text-white/85 transition-colors hover:text-white'
-const muted = 'text-white/45'
+// 60% white on plum is 5.9:1, above the AA minimum of 4.5:1.
+const muted = 'text-white/60'
 
 function TileList({ label, entries }: { label: string; entries: TileEntry[] }) {
   return (
@@ -24,7 +25,11 @@ function TileList({ label, entries }: { label: string; entries: TileEntry[] }) {
                 <span className="label block text-[10px]">Coming soon</span>
               </span>
             ) : entry.href.startsWith('/') ? (
-              <Link to={entry.href} className={link} aria-current={entry.current ? 'page' : undefined}>
+              <Link
+                to={entry.href}
+                className={link}
+                aria-current={entry.current ? 'page' : undefined}
+              >
                 {entry.name}
               </Link>
             ) : (
