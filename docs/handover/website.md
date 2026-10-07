@@ -11,7 +11,7 @@ All code is committed and pushed to `iqrasaurus-cloud/monorepo-v1` (`master`, la
 | 4 (was "A") | One header bar replaces the three bands | Done, live |
 | 5 (was "B") | Five-section programme page | Done, live at https://quraninvestigators.vercel.app |
 | 6 (was "C") | Hub: home, About, Work with us (`apps/hub`) | Code pushed, **not deployed yet** |
-| 7 | Hardening (was Phase 4): SEO files, `404.html` script, Lighthouse, header check with `curl -I` | Not started |
+| 7 | Hardening (was Phase 4): SEO tags, `404.html`/robots/sitemap script, AA contrast, Lighthouse, header check | Done 2026-10-07 (`ab36e77`), committed, not pushed. Lighthouse mobile on the live Quran Investigators site: 91 / 96 / 100 / 100 |
 | 8 | Deployment checklist for each new site (was Phase 5) | Done for Quran Investigators only |
 | 9 | Remaining programmes via `pnpm new:spoke` (was Phase 7) | Not started; the script is a stub |
 
@@ -52,8 +52,12 @@ Reference docs that live in the **Tadabbur repo**, not this one: `tadabbur-for-k
 - The new journal URL.
 - Confirm Tiny Tafseer stays dropped.
 
+## Possible next steps
+- Responsive images: `<Picture>` sends phones the full-size booklet pages and the 640px hero mascot; the smaller files already exist. Offering them (`srcset`/`sizes`) would save about 490 KB on the Quran Investigators page.
+- Regenerating `og.png` with `pnpm assets` needs the Fredoka font installed on the machine (sharp can't read the web-font files); without it the heading comes out in a plain sans.
+
 ## Running it on the Mac
-- Node 22 or newer, pnpm 12.4.2 (set in `package.json`). Then `pnpm install`.
+- Node 22 or newer, pnpm 12.4.2 (set in `package.json`). Then `pnpm install`. On the Mac mini they live in `~/.local` (added to PATH in `~/.zshrc`); a non-interactive shell may need `export PATH="$HOME/.local/bin:$HOME/.local/node/bin:$PATH"`.
 - `pnpm dev --filter quraninvestigators` or `--filter hub`. Before a commit: `pnpm typecheck && pnpm lint && pnpm build`.
 - Images: put originals in `apps/<slug>/assets-src/`, run `pnpm assets`; the optimised files in `public/` are committed.
 - `.claude/launch.json` (dev-server settings for the Claude desktop preview) is not in git; recreate it if you use the preview pane.
