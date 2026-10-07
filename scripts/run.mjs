@@ -10,5 +10,6 @@ const args = ['-r', '--filter', filter ?? './apps/**']
 if (script === 'dev' && !filter) args.push('--parallel')
 args.push('run', script)
 
-const result = spawnSync('pnpm', args, { stdio: 'inherit', shell: true })
+// The shell is only needed on Windows (to find pnpm.cmd); elsewhere it would glob-expand './apps/**'.
+const result = spawnSync('pnpm', args, { stdio: 'inherit', shell: process.platform === 'win32' })
 process.exit(result.status ?? 1)
