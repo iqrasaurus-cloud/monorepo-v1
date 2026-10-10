@@ -5,6 +5,7 @@
  *  - QI-097 Al-Qadr "Mini-Juniors" booklet v11 and its sample pages
  *  - Draft copy in tadabbur-for-kids-v1/docs/BRAND-SITE-REVIEW.md §3, approved in direction
  *    by the owner on 2026-10-04
+ *  - The founder interview of 2026-10-11 (how the booklets grew from doodling and journaling)
  *
  * [[CONTENT NEEDED]] lines are for the owner to fill in. They are hidden on the built site;
  * "What we've seen" stays hidden until it holds at least one real quote, lesson or photo.
@@ -32,6 +33,7 @@ export const content: SpokeContent = {
     body: [
       'Each booklet covers one surah in about 40 pages. Children find the surah in a mushaf, match each ayah to its meaning, then colour, count, solve puzzles and doodle. Every page has two levels, so a 5-year-old and a 10-year-old can work at the same table.',
       'We have used the booklets in our own classes, at home, and to prepare children for madrasah entrance tests.',
+      'Quran Investigators grew out of our family halaqah. When our children were small, they doodled their reflections on a surah. As they grew older, we moved to reflection journaling and asked how they could apply each surah in their own lives. The booklets came from that.',
       '[[CONTENT NEEDED: when Quran Investigators started and how many surahs are covered so far]]',
     ],
     sources:
@@ -72,7 +74,10 @@ export const content: SpokeContent = {
       { text: '[[CONTENT NEEDED: something a child said or did during a session]]' },
       { text: '[[CONTENT NEEDED: something a parent or teacher told you afterwards]]' },
     ],
-    lessons: ['[[CONTENT NEEDED: what worked, what did not, and what you changed between versions]]'],
+    lessons: [
+      'Doodling suited our children while they were too young to write much. Journaling, and then the booklets, came as they grew older.',
+      '[[CONTENT NEEDED: what worked, what did not, and what you changed between versions]]',
+    ],
     photos: [],
   },
 

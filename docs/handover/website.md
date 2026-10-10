@@ -13,7 +13,7 @@ All code is committed and pushed to `iqrasaurus-cloud/monorepo-v1` (`master`, la
 | 6 (was "C") | Hub: home, About, Work with us (`apps/hub`) | Code pushed, **not deployed yet** |
 | 7 | Hardening (was Phase 4): SEO tags, `404.html`/robots/sitemap script, AA contrast, Lighthouse, header check | Done 2026-10-07 (`ab36e77`), committed, not pushed. Lighthouse mobile on the live Quran Investigators site: 91 / 96 / 100 / 100 |
 | 8 | Deployment checklist for each new site (was Phase 5) | Done for Quran Investigators only |
-| 9 | Remaining programmes via `pnpm new:spoke` (was Phase 7) | Not started; the script is a stub |
+| 9 | Remaining programmes via `pnpm new:spoke` (was Phase 7) | 2026-10-11: script written; all five apps created and filled from the founder interview. Still `coming-soon` in the registry until each has a Vercel project and DNS |
 
 Also done: the shared design tokens (4-I colours, Night values kept inactive) and the light logo in the footer.
 
@@ -32,6 +32,11 @@ Reference docs that live in the **Tadabbur repo**, not this one: `tadabbur-for-k
 - Design system: the shared colours match the tools. `accent` stays the brand sites' own headline accent (not shared). Night exists only under `:root[data-theme='night']` and is off. The footer uses the owner-approved light horizontal logo.
 - Declined on rule 4: the image in `owner-files/stories/` (looks like Prophet Nuh's ark with figures). Do not use it.
 - The Mobbin connector needs a paid plan, so no Mobbin research was done.
+
+## Founder interview (2026-10-11)
+The founder's spoken interview was used to fill the hub's Our story and Our foundation, the Quran Investigators origin paragraph, and the five new programme pages. Session steps and tips on the new pages are drafts written from how the founder describes the work; each content file says so at the top. Baiti Madrasati is not named in the interview; its page reads it as "learning Islam at home" and needs the owner's confirmation. Names heard unclearly in the recording were left out: "Cave Nor" kindergarten, the Khalifah institute / model school in Malaysia, "Dr Nakati and Fahri", and the hill facing Mount Uhud. The claim "among the first to run MET preparation in the west" was left out until confirmed.
+
+Going live for a new programme: create its Vercel project (Root Directory `apps/<slug>`), add `<slug>.iqrasaurus.com`, add the CNAME, then set its `status` to `live` in the registry, run `pnpm gen:vercel` and push. `pnpm assets <slug>` regenerates one site's images only.
 
 ## [[CONTENT NEEDED]] (hidden on the site until filled)
 - `apps/quraninvestigators/content.ts`: when Quran Investigators started and how many surahs so far; at least one real quote, lesson or photo for "What we've seen" (the whole section appears as soon as one exists); more real booklet pages (the gallery repeats three pages to reach six).

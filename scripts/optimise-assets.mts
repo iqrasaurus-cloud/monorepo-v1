@@ -124,7 +124,9 @@ async function writeOg(mascot: string, logo: string | undefined, site: SiteConfi
   console.log(`  og.png  ${width}x${height}`)
 }
 
-for (const site of sites) {
+// `pnpm assets <slug> …` limits the run to those sites; no arguments means every site.
+const only = process.argv.slice(2)
+for (const site of sites.filter((s) => only.length === 0 || only.includes(s.slug))) {
   const app = join(root, 'apps', site.slug)
   const src = join(app, 'assets-src')
   if (!existsSync(src)) continue

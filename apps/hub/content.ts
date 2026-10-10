@@ -18,11 +18,22 @@ export const content: HubContent = {
   },
 
   about: {
-    story: ['[[CONTENT NEEDED: how IqraSaurus began and what it does today, in your own words]]'],
+    // From the founder interview of 2026-10-11. OWNER: please check the wording and the partner names.
+    story: [
+      'IqraSaurus began with our son. At about five, he did not like reading Iqra, so we made it a game. He loved Thomas the Train, so we built a card game around it.',
+      'We raised our children on true stories of the prophets and the hardships they went through, in place of fairy tales. We wanted them to grow up rooted in faith, and to come back to Allah when life is hard, including on the day we are no longer with them.',
+      'Our children enjoyed sharing what they learned with their friends, and their friends’ families asked to join. Over the years the sessions grew from a few families we knew into programmes open to the public: storytelling and drama, Quran and hadeeth doodling, reflection journaling and Quran Investigators, Madrasah Entrance Test preparation, and Umrah for Kids.',
+      'Today we run programmes at satellite centres in Bukit Batok and Tampines, and schools and kindergartens such as Brainy Bunch invite us to run sessions with their children. We also train teachers.',
+      'With Little Caliph we worked on a tafsir book for primary school children. The asatizah wrote the tafsir, and we wrote the tadabbur part, with activities built on the eight multiple intelligences.',
+      '[[CONTENT NEEDED: the year IqraSaurus started, and the other schools and centres that have invited you]]',
+    ],
     people: [
       { name: '[[CONTENT NEEDED: name]]', role: '[[CONTENT NEEDED: what they bring]]' },
     ],
-    foundation: ['[[CONTENT NEEDED: what "our foundation" means for IqraSaurus]]'],
+    foundation: [
+      'We want to raise resilient children who stay rooted in faith and turn to Allah when they meet hardship. That is why we start with true stories from the Quran.',
+      'Every programme ends with the child doing something with what they learned and passing it on. We want children to see themselves as agents of change, with a mission on this earth.',
+    ],
     // Real press clipping (owner-supplied).
     press: {
       image: {
@@ -36,7 +47,7 @@ export const content: HubContent = {
   },
 
   workWithUs: {
-    body: 'Want to run one of our programmes in your madrasah, centre or home group, or help us test new material? Get in touch.',
+    body: 'Want to run one of our programmes in your madrasah, centre or home group, or help us test new material? Get in touch. Our founder’s advice to anyone starting something similar: be creative, always seek Allah’s help, and pray istikharah.',
   },
 
   seo: {

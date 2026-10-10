@@ -96,7 +96,7 @@ export const sites: SiteConfig[] = [
     slug: 'storybuzz',
     kind: 'spoke',
     name: 'StoryBuzz',
-    description: '[[CONTENT NEEDED: one-line description]]',
+    description: 'True stories of the prophets, told aloud and acted out by children.', // OWNER (draft from founder interview)
     host: `storybuzz.${HUB_HOST}`,
     status: 'coming-soon',
     order: 2,
@@ -110,7 +110,7 @@ export const sites: SiteConfig[] = [
     slug: 'quranhadeethdoodling',
     kind: 'spoke',
     name: 'Quran & Hadeeth Doodling',
-    description: '[[CONTENT NEEDED: one-line description]]',
+    description: 'Children draw what a surah or hadeeth means to them, before they can write it down.', // OWNER (draft from founder interview)
     host: `quranhadeethdoodling.${HUB_HOST}`,
     status: 'coming-soon',
     order: 3,
@@ -124,7 +124,7 @@ export const sites: SiteConfig[] = [
     slug: 'madrasahpreparation',
     kind: 'spoke',
     name: 'Madrasah Preparation',
-    description: '[[CONTENT NEEDED: one-line description]]',
+    description: 'Madrasah Entrance Test preparation, with Islamic values in every lesson.', // OWNER (draft from founder interview)
     host: `madrasahpreparation.${HUB_HOST}`,
     status: 'coming-soon',
     order: 4,
@@ -138,7 +138,7 @@ export const sites: SiteConfig[] = [
     slug: 'baitimadrasati',
     kind: 'spoke',
     name: 'Baiti Madrasati',
-    description: '[[CONTENT NEEDED: one-line description]]',
+    description: 'How our homeschooling family learns Islam at home, shared for other families.', // OWNER (draft from founder interview)
     host: `baitimadrasati.${HUB_HOST}`,
     status: 'coming-soon',
     order: 5,
@@ -152,7 +152,7 @@ export const sites: SiteConfig[] = [
     slug: 'umrahforkids',
     kind: 'spoke',
     name: 'Umrah for Kids',
-    description: '[[CONTENT NEEDED: one-line description]]',
+    description: 'Stories, drama and rhymes that prepare children for Umrah.', // OWNER (draft from founder interview)
     host: `umrahforkids.${HUB_HOST}`,
     status: 'coming-soon',
     order: 6,
