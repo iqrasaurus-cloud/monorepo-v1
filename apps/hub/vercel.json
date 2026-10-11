@@ -77,12 +77,22 @@
   "redirects": [
     {
       "source": "/tadabbur",
-      "destination": "https://tadabbur.vercel.app/tadabbur",
+      "destination": "https://tadabbur.iqrasaurus.com/tadabbur",
       "permanent": false
     },
     {
       "source": "/tadabbur/:rest*",
-      "destination": "https://tadabbur.vercel.app/tadabbur/:rest*",
+      "destination": "https://tadabbur.iqrasaurus.com/tadabbur/:rest*",
+      "permanent": false
+    },
+    {
+      "source": "/hafiz",
+      "destination": "https://hafiz.iqrasaurus.com/hafiz",
+      "permanent": false
+    },
+    {
+      "source": "/hafiz/:rest*",
+      "destination": "https://hafiz.iqrasaurus.com/hafiz/:rest*",
       "permanent": false
     }
   ]

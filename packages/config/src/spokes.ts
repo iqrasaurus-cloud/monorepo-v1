@@ -195,13 +195,16 @@ export interface ToolConfig {
   name: string
   /** One line under the name. A [[CONTENT NEEDED]] line is hidden on the built site. */
   line: string
-  /** Path on the hub domain, e.g. '/tadabbur'. */
+  /**
+   * The tool's pages live under this path inside its own app, e.g. '/tadabbur'. The hub
+   * also uses it as a short link: iqrasaurus.com/tadabbur forwards to the tool.
+   */
   path: string
   /**
-   * Where the tool runs today. The hub forwards <path> (and everything under it) there, so
-   * iqrasaurus.com/tadabbur works while the tools keep their own deployments.
+   * The tool's own address (owner decision 2026-10-11: tools get subdomains like the
+   * programmes). Set it once the subdomain is added in Vercel and DNS.
    */
-  deployUrl?: string
+  host?: string
   /** 'live' tools link out; 'coming-soon' tools show the name with a "Coming soon" pill. */
   status: SiteStatus
   /** File in apps/<slug>/public/brand/. Placeholder poses repeat until new art arrives. */
@@ -213,8 +216,8 @@ export interface ToolConfig {
 
 export const tools: ToolConfig[] = [
   // OWNER: Tadabbur is linked now so it works the day iqrasaurus.com/tadabbur is routed.
-  { slug: 'tadabbur', name: 'Tadabbur', line: 'One ayah a day', path: '/tadabbur', deployUrl: 'https://tadabbur.vercel.app/tadabbur', status: 'live', mascot: 'mascot-quran.png', pose: 'reading-quran', colour: 'inspire' },
-  { slug: 'hafiz', name: 'Mini Hafiz', line: '[[CONTENT NEEDED: one line]]', path: '/hafiz', status: 'coming-soon', mascot: 'mascot-reader.png', pose: 'hugging-quran', colour: 'integrate' },
+  { slug: 'tadabbur', name: 'Tadabbur', line: 'One ayah a day', path: '/tadabbur', host: `tadabbur.${HUB_HOST}`, status: 'live', mascot: 'mascot-quran.png', pose: 'reading-quran', colour: 'inspire' },
+  { slug: 'hafiz', name: 'Mini Hafiz', line: '[[CONTENT NEEDED: one line]]', path: '/hafiz', host: `hafiz.${HUB_HOST}`, status: 'live', mascot: 'mascot-reader.png', pose: 'hugging-quran', colour: 'integrate' },
   // Worksheets became Numbers & Counting (owner, 2026-10-11): the Numbersaurus app in the tools repo.
   { slug: 'numbers', name: 'Numbers & Counting', line: '[[CONTENT NEEDED: one line]]', path: '/numbers', status: 'coming-soon', mascot: 'mascot-magnifier.png', pose: 'pointing', colour: 'investigate' },
   { slug: 'calendar', name: 'Calendar', line: '[[CONTENT NEEDED: one line]]', path: '/calendar', status: 'coming-soon', mascot: 'mascot-binoculars.png', pose: 'crescent-moon', colour: 'impart' },
@@ -301,7 +304,9 @@ export const siteUrl = (s: SiteConfig, path = '/'): string => `https://${s.host}
 /** The six programmes (spokes) in menu order. */
 export const programmes = (): SiteConfig[] =>
   sites.filter((s) => s.kind === 'spoke').sort((a, b) => a.order - b.order)
-export const toolUrl = (t: ToolConfig): string => siteUrl(hub(), t.path)
+/** A tool's page: on its own subdomain once it has one, otherwise the hub's short link. */
+export const toolUrl = (t: ToolConfig): string =>
+  t.host ? `https://${t.host}${t.path}` : siteUrl(hub(), t.path)
 /** Owner placeholders are kept in content files but never shown on the built site. */
 export const isPlaceholder = (text: string | undefined): boolean =>
   !text || text.trim() === '' || text.trim().startsWith('[[')

@@ -3,7 +3,13 @@
 import { existsSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { securityHeaders, sites, tools, type SiteConfig } from '../packages/config/src/index.ts'
+import {
+  securityHeaders,
+  sites,
+  toolUrl,
+  tools,
+  type SiteConfig,
+} from '../packages/config/src/index.ts'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 
@@ -36,18 +42,15 @@ for (const site of sites) {
     cleanUrls: true,
     trailingSlash: false,
     headers: securityHeaders(site),
-    // The hub forwards each live tool's short path to wherever that tool runs.
+    // iqrasaurus.com/tadabbur (and anything under it) forwards to the tool's own subdomain,
+    // so short links on posters and inside the tools keep working.
     ...(site.kind === 'hub'
       ? {
           redirects: tools
-            .filter((t) => t.status === 'live' && t.deployUrl)
+            .filter((t) => t.status === 'live' && t.host)
             .flatMap((t) => [
-              { source: t.path, destination: t.deployUrl, permanent: false },
-              {
-                source: `${t.path}/:rest*`,
-                destination: `${t.deployUrl}/:rest*`,
-                permanent: false,
-              },
+              { source: t.path, destination: toolUrl(t), permanent: false },
+              { source: `${t.path}/:rest*`, destination: `${toolUrl(t)}/:rest*`, permanent: false },
             ]),
         }
       : {}),
