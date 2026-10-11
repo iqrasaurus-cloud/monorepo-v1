@@ -34,7 +34,7 @@ export function CircleCard({
   return (
     <Tag className={cn('flex flex-col items-center text-center', className)}>
       <div className="relative">
-        <div className="flex size-40 items-center justify-center overflow-hidden rounded-full bg-white shadow-soft ring-8 ring-sun">
+        <div className="flex size-40 items-center justify-center overflow-hidden rounded-full bg-surface shadow-soft ring-8 ring-sun">
           {image ? (
             <Picture {...image} className="size-28 object-contain" />
           ) : (
@@ -44,7 +44,7 @@ export function CircleCard({
         {image && step ? (
           <span
             aria-hidden="true"
-            className="absolute -right-1 -top-1 flex size-10 items-center justify-center rounded-full bg-sun font-heading text-lg font-bold text-plum ring-4 ring-white"
+            className="absolute -right-1 -top-1 flex size-10 items-center justify-center rounded-full bg-sun font-heading text-lg font-bold text-plum ring-4 ring-surface"
           >
             {step}
           </span>

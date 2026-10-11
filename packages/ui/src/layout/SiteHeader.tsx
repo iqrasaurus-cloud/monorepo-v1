@@ -1,5 +1,5 @@
-import { mainMenu, type SiteConfig } from '@iqra/config'
-import { AnimatePresence, motion } from 'framer-motion'
+import { brand, hub, mainMenu, siteUrl, type SiteConfig } from '@iqra/config'
+import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion'
 import {
   useCallback,
   useEffect,
@@ -9,13 +9,14 @@ import {
   type KeyboardEvent,
   type MouseEvent,
 } from 'react'
-import { NavLink, useLocation } from 'react-router'
-import { duration, easeReveal, headerEntrance } from '../motion/presets.ts'
+import { Link, NavLink, useLocation } from 'react-router'
+import { Mascot, type PoseName } from '../mascot/Mascot.tsx'
+import { duration, easeReveal, headerEntrance, springPop, tileStagger } from '../motion/presets.ts'
 import { useReducedMotionSafe } from '../motion/useReducedMotionSafe.ts'
 import { Container } from '../primitives/Container.tsx'
 import { cn } from '../utils/cn.ts'
 import { DonateButton, Logo } from './HeaderParts.tsx'
-import { hubItemHref, programmeTiles, SITE_MENU_ID, toolTiles } from './links.ts'
+import { hubItemHref, hubLive, programmeTiles, SITE_MENU_ID, toolTiles } from './links.ts'
 import { MenuTile } from './MenuTile.tsx'
 import { MobileDrawer } from './MobileDrawer.tsx'
 import { useHashJump } from './useHashJump.ts'
@@ -23,10 +24,24 @@ import { useHashJump } from './useHashJump.ts'
 type PanelKey = 'tools' | 'programmes'
 const panelId = (key: PanelKey) => `menu-panel-${key}`
 
+/** The left-hand card in each panel: what the group is, in one line. */
+const PANEL_INTRO: Record<PanelKey, { title: string; line: string; pose: PoseName }> = {
+  tools: {
+    title: 'Tools',
+    line: 'Apps to open with your child at home, a few minutes at a time.',
+    pose: 'laptop',
+  },
+  programmes: {
+    title: 'Programmes',
+    line: 'What we run with children, written up so you can run it too.',
+    pose: 'signpost',
+  },
+}
+
 const itemClass = (active: boolean) =>
   cn(
     'inline-flex items-center gap-1.5 rounded-pill px-4 py-2 font-heading text-base font-semibold transition-colors duration-300',
-    active ? 'bg-paper-2 text-primary' : 'text-ink hover:bg-paper-2 hover:text-primary',
+    active ? 'bg-primary-soft text-primary' : 'text-ink hover:bg-primary-soft hover:text-primary',
   )
 
 function Chevron({ open }: { open: boolean }) {
@@ -44,8 +59,27 @@ function Chevron({ open }: { open: boolean }) {
 function Hamburger() {
   return (
     <svg aria-hidden="true" viewBox="0 0 24 24" className="size-6">
-      <path d="M3 6h18M3 12h18M3 18h18" fill="none" stroke="currentColor" strokeWidth="2" />
+      <path
+        d="M4 7h16M4 12h10M4 17h16"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+      />
     </svg>
+  )
+}
+
+/** Thin 4-I coloured line under the bar showing how far down the page you are. */
+function ScrollProgress() {
+  const { scrollYProgress } = useScroll()
+  const scaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 40, restDelta: 0.001 })
+  return (
+    <motion.div
+      aria-hidden="true"
+      style={{ scaleX }}
+      className="absolute inset-x-0 bottom-0 h-[3px] origin-left bg-gradient-to-r from-inspire via-investigate to-impart"
+    />
   )
 }
 
@@ -116,6 +150,9 @@ export function SiteHeader({ site }: { site: SiteConfig }) {
   }, [])
 
   const tiles = openKey === 'tools' ? toolTiles() : openKey ? programmeTiles(site) : []
+  const intro = openKey ? PANEL_INTRO[openKey] : null
+  // Once the hub is live, each panel offers the full list on iqrasaurus.com.
+  const seeAll = site.kind === 'hub' ? null : hubLive() ? siteUrl(hub(), '/') : null
 
   return (
     <>
@@ -126,8 +163,10 @@ export function SiteHeader({ site }: { site: SiteConfig }) {
         onKeyDown={onKeyDown}
         onBlur={onBlur}
         className={cn(
-          'sticky top-0 z-40 border-b border-taupe/20 bg-white transition-shadow duration-300',
-          (stuck || openKey) && 'shadow-soft',
+          'sticky top-0 z-40 border-b transition-[background-color,box-shadow,border-color] duration-300',
+          stuck || openKey
+            ? 'border-line bg-surface/90 shadow-soft backdrop-blur-md'
+            : 'border-transparent bg-surface',
         )}
       >
         <motion.div
@@ -136,8 +175,19 @@ export function SiteHeader({ site }: { site: SiteConfig }) {
           animate={reduced ? { opacity: 1 } : headerEntrance.animate}
           transition={reduced ? { duration: duration.fade } : headerEntrance.transition}
         >
-          <Container className="flex h-16 items-center justify-between gap-4 lg:h-20">
-            <Logo site={site} className="h-9 lg:h-12" />
+          <Container
+            className={cn(
+              'flex items-center justify-between gap-4 transition-[height] duration-300 ease-reveal',
+              stuck ? 'h-16' : 'h-16 lg:h-20',
+            )}
+          >
+            <Logo
+              site={site}
+              className={cn(
+                'transition-[height] duration-300 ease-reveal',
+                stuck ? 'h-9 lg:h-10' : 'h-9 lg:h-12',
+              )}
+            />
 
             <nav aria-label="Main" className="hidden lg:block">
               <ul className="flex items-center gap-1">
@@ -197,7 +247,7 @@ export function SiteHeader({ site }: { site: SiteConfig }) {
                 aria-expanded={drawerOpen}
                 aria-controls="mobile-menu"
                 onClick={() => setDrawerOpen(true)}
-                className="-mr-2 flex size-10 items-center justify-center rounded-pill text-ink lg:hidden"
+                className="-mr-1 flex size-11 items-center justify-center rounded-pill bg-primary-soft text-primary transition-transform duration-200 active:scale-90 lg:hidden"
               >
                 <Hamburger />
               </button>
@@ -205,26 +255,71 @@ export function SiteHeader({ site }: { site: SiteConfig }) {
           </Container>
         </motion.div>
 
+        {reduced ? null : <ScrollProgress />}
+
         <AnimatePresence>
-          {openKey ? (
+          {openKey && intro ? (
             <motion.div
               key={openKey}
               id={panelId(openKey)}
               data-lenis-prevent=""
-              className="absolute inset-x-0 top-full hidden max-h-[calc(100vh-6rem)] overflow-y-auto border-t border-taupe/20 bg-white shadow-soft lg:block"
-              initial={{ opacity: 0, y: reduced ? 0 : -8 }}
+              className="absolute inset-x-0 top-full hidden max-h-[calc(100vh-6rem)] overflow-y-auto border-t border-line bg-surface shadow-soft lg:block"
+              initial={{ opacity: 0, y: reduced ? 0 : -12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: reduced ? 0 : -8 }}
-              transition={{ duration: reduced ? duration.fade : duration.preview, ease: easeReveal }}
+              transition={{
+                duration: reduced ? duration.fade : duration.preview,
+                ease: easeReveal,
+              }}
             >
-              <Container className="py-8">
-                <ul className="grid grid-cols-3 gap-4">
+              <Container className="grid grid-cols-[260px_1fr] gap-8 py-8">
+                <div className="relative flex flex-col overflow-hidden rounded-card bg-primary-soft p-6">
+                  <p className="font-heading text-2xl font-bold text-primary">{intro.title}</p>
+                  <p className="mt-2 text-sm text-ink/80">{intro.line}</p>
+                  {seeAll ? (
+                    <a
+                      href={seeAll}
+                      className="link-sweep mt-4 self-start text-sm font-semibold text-primary"
+                    >
+                      See them all on {brand.name}
+                    </a>
+                  ) : site.kind === 'hub' && pathname !== '/' ? (
+                    <Link
+                      to="/"
+                      onClick={close}
+                      className="link-sweep mt-4 self-start text-sm font-semibold text-primary"
+                    >
+                      See them all
+                    </Link>
+                  ) : null}
+                  <div className="mt-auto flex justify-end pt-4">
+                    <Mascot pose={intro.pose} size={110} motion="nod" />
+                  </div>
+                </div>
+                <motion.ul
+                  className="grid content-start grid-cols-3 gap-3"
+                  initial="hidden"
+                  animate="shown"
+                  variants={{
+                    shown: { transition: { staggerChildren: reduced ? 0 : tileStagger } },
+                  }}
+                >
                   {tiles.map((entry) => (
-                    <li key={entry.key}>
+                    <motion.li
+                      key={entry.key}
+                      variants={
+                        reduced
+                          ? { hidden: { opacity: 0 }, shown: { opacity: 1 } }
+                          : {
+                              hidden: { opacity: 0, y: 14, scale: 0.96 },
+                              shown: { opacity: 1, y: 0, scale: 1, transition: springPop },
+                            }
+                      }
+                    >
                       <MenuTile entry={entry} onNavigate={close} />
-                    </li>
+                    </motion.li>
                   ))}
-                </ul>
+                </motion.ul>
               </Container>
             </motion.div>
           ) : null}

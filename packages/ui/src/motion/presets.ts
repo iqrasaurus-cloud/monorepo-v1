@@ -66,3 +66,10 @@ export const splitScroll = {
 
 export const lenisOptions = { lerp: 0.09 } as const
 export const marquee = { duration: 28 } as const
+
+/** Springy slide for the mobile drawer and the video player (phase 10). */
+export const springSheet = { type: 'spring', stiffness: 280, damping: 32, mass: 0.9 } as const
+/** Small bouncy pop for tiles appearing in menus. */
+export const springPop = { type: 'spring', stiffness: 420, damping: 24 } as const
+/** Tiles in an opened menu appear this far apart. */
+export const tileStagger = 0.035

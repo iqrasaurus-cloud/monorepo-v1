@@ -6,12 +6,12 @@ type Variant = 'sun' | 'primary' | 'outline' | 'ghost'
 type Size = 'sm' | 'md' | 'lg'
 
 const base =
-  'inline-flex items-center justify-center gap-2 rounded-pill font-body font-semibold transition-colors duration-300 disabled:pointer-events-none disabled:opacity-50'
+  'inline-flex items-center justify-center gap-2 rounded-pill font-body font-semibold transition duration-200 disabled:pointer-events-none disabled:opacity-50'
 
 // sun and magenta are never used as text on light backgrounds (BUILD_SPEC.md §3.2).
 const variants: Record<Variant, string> = {
-  sun: 'bg-sun text-plum hover:bg-sun/85',
-  primary: 'bg-primary text-white hover:bg-plum',
+  sun: 'bg-sun text-on-sun shadow-[0_4px_0_rgb(var(--plum-rgb)/0.22)] hover:brightness-105 active:translate-y-1 active:shadow-none',
+  primary: 'bg-primary text-on-primary hover:brightness-110',
   outline: 'border border-taupe/60 bg-transparent text-primary hover:border-primary',
   ghost: 'bg-transparent text-primary hover:bg-paper-2',
 }

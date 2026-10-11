@@ -16,6 +16,25 @@
     @apply bg-paper font-body text-ink antialiased;
   }
 
+  /* Night: the header logo swaps to the owner-approved light version (CLAUDE.md rule 9). */
+  .logo-night {
+    display: none;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='day']) .logo-day {
+      display: none;
+    }
+    :root:not([data-theme='day']) .logo-night {
+      display: block;
+    }
+  }
+  :root[data-theme='night'] .logo-day {
+    display: none;
+  }
+  :root[data-theme='night'] .logo-night {
+    display: block;
+  }
+
   h1,
   h2,
   h3,
@@ -50,8 +69,9 @@
     @apply font-body text-xs font-semibold uppercase tracking-label;
   }
 
+  /* Tighter than the original py-20 md:py-32 (phase 10), so sections read as one page. */
   .section {
-    @apply py-20 md:py-32;
+    @apply py-16 md:py-24;
   }
 
   .ribbon {
@@ -69,6 +89,312 @@
   .link-sweep:focus-visible::after,
   .link-sweep.is-active::after {
     @apply origin-left scale-x-100;
+  }
+}
+
+/* Scallops and the background tile are masks over a background colour rather than SVG fills,
+   so they change colour together with their section in Night and under dark-mode browser
+   extensions (which recolour backgrounds and text differently). */
+@layer components {
+  .scallop {
+    --s: 24px;
+    height: var(--s);
+    -webkit-mask: radial-gradient(
+        circle at 50% 0,
+        black calc(var(--s) - 0.5px),
+        transparent var(--s)
+      )
+      0 0 / calc(var(--s) * 2) var(--s) repeat-x;
+    mask: radial-gradient(circle at 50% 0, black calc(var(--s) - 0.5px), transparent var(--s)) 0 0 /
+      calc(var(--s) * 2) var(--s) repeat-x;
+  }
+  .pattern-tile {
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72'%3E%3Cpath d='M36 6 L66 36 L36 66 L6 36 Z' fill='none' stroke='black' stroke-width='2'/%3E%3Ccircle cx='36' cy='36' r='7' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E")
+      0 0 / 72px 72px repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72'%3E%3Cpath d='M36 6 L66 36 L36 66 L6 36 Z' fill='none' stroke='black' stroke-width='2'/%3E%3Ccircle cx='36' cy='36' r='7' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E")
+      0 0 / 72px 72px repeat;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ---------- Mascot (same motion as the tools' packages/design/motion.css) ---------- */
+
+/* In the components layer so Tailwind classes such as `hidden` or `translate-y-1` still apply. */
+@layer components {
+  .iq-mascot {
+    position: relative;
+    display: inline-block;
+    flex-shrink: 0;
+    container-type: size;
+  }
+  /* On Night screens the dino sits on a soft glow, because its dark hat disappears on plum. */
+  .iq-mascot::before {
+    content: '';
+    position: absolute;
+    inset: -6%;
+    border-radius: 50%;
+    background: radial-gradient(
+      closest-side,
+      var(--mascot-glow) 0%,
+      var(--mascot-glow) 62%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
+  .iq-mascot-enter,
+  .iq-mascot-body {
+    position: absolute;
+    inset: 0;
+  }
+  .iq-mascot-body {
+    transform-origin: 50% 92%;
+  }
+  .iq-mascot-body img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+/* The pop-in runs on its own layer, so it never fights the dino's motion or its position. */
+.iq-mascot[data-enter='wait'] > .iq-mascot-enter {
+  opacity: 0;
+}
+.iq-mascot[data-enter='in'] > .iq-mascot-enter {
+  animation: iq-pop var(--dur-pop) var(--ease-pop) both;
+  transform-origin: 50% 90%;
+}
+
+@keyframes iq-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+  50% {
+    transform: translateY(-6px) rotate(-2deg);
+  }
+}
+@keyframes iq-pop {
+  0% {
+    transform: scale(0.55);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes iq-hop {
+  0%,
+  100% {
+    transform: translateY(0) scale(1, 1);
+  }
+  12% {
+    transform: translateY(0) scale(1.06, 0.92);
+  }
+  30% {
+    transform: translateY(-12%) scale(0.96, 1.05);
+  }
+  46% {
+    transform: translateY(0) scale(1.05, 0.94);
+  }
+  62% {
+    transform: translateY(-7%) scale(0.98, 1.03);
+  }
+  78% {
+    transform: translateY(0) scale(1.02, 0.98);
+  }
+}
+@keyframes iq-tilt {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  35%,
+  65% {
+    transform: rotate(-7deg);
+  }
+}
+@keyframes iq-nod {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  20% {
+    transform: rotate(4deg);
+  }
+  40% {
+    transform: rotate(-1deg);
+  }
+  60% {
+    transform: rotate(3deg);
+  }
+  80% {
+    transform: rotate(0);
+  }
+}
+@keyframes iq-sway {
+  0%,
+  100% {
+    transform: rotate(-2.5deg);
+  }
+  50% {
+    transform: rotate(2.5deg);
+  }
+}
+@keyframes iq-heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.05);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.035);
+  }
+  60% {
+    transform: scale(1);
+  }
+}
+@keyframes iq-wiggle {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  20% {
+    transform: rotate(-6deg);
+  }
+  40% {
+    transform: rotate(5deg);
+  }
+  60% {
+    transform: rotate(-3deg);
+  }
+  80% {
+    transform: rotate(2deg);
+  }
+}
+@keyframes iq-breathe {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.015, 1.03);
+  }
+}
+
+.iq-mascot-body[data-motion='bob'] {
+  animation: iq-bob var(--dur-bob) ease-in-out infinite;
+}
+.iq-mascot-body[data-motion='pop'] {
+  animation: iq-pop var(--dur-pop) var(--ease-pop) both;
+}
+.iq-mascot-body[data-motion='hop'] {
+  animation:
+    iq-pop var(--dur-pop) var(--ease-pop) both,
+    iq-hop 1.3s ease-in-out var(--dur-pop) 2;
+}
+.iq-mascot-body[data-motion='tilt'] {
+  animation: iq-tilt 1.6s ease-in-out 2;
+}
+.iq-mascot-body[data-motion='nod'] {
+  animation: iq-nod 0.9s ease-in-out 2;
+}
+.iq-mascot-body[data-motion='sway'] {
+  animation: iq-sway 4s ease-in-out infinite;
+}
+.iq-mascot-body[data-motion='heartbeat'] {
+  animation: iq-heartbeat 1.6s ease-in-out infinite;
+}
+.iq-mascot-body[data-motion='wiggle'] {
+  animation: iq-wiggle 0.6s ease-in-out 2;
+}
+.iq-mascot-body[data-motion='breathe'] {
+  animation: iq-breathe 4.5s ease-in-out infinite;
+}
+
+/* Hovering a card makes its dino wiggle (fine pointers only). */
+@media (hover: hover) {
+  .group:hover .iq-mascot-hover .iq-mascot-body {
+    animation: iq-wiggle 0.6s ease-in-out 1;
+  }
+}
+
+/* Overlays drawn in code around any pose. */
+.iq-fx {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.iq-fx > span {
+  position: absolute;
+  opacity: 0;
+  line-height: 1;
+  font-size: max(10px, 12cqmin);
+}
+.iq-fx-twinkle > span {
+  color: rgb(var(--sun-rgb));
+}
+.iq-fx-hearts > span {
+  color: rgb(var(--magenta-rgb));
+}
+.iq-fx-bubbles > span {
+  width: 9%;
+  aspect-ratio: 1;
+  border: 2px solid rgb(var(--integrate-rgb));
+  border-radius: 50%;
+}
+@keyframes iq-twinkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.4) rotate(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(20deg);
+  }
+}
+@keyframes iq-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.6);
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-140%) scale(1);
+  }
+}
+.iq-fx-twinkle > span {
+  animation: iq-twinkle 1.8s ease-in-out infinite;
+}
+.iq-fx-hearts > span,
+.iq-fx-bubbles > span {
+  animation: iq-rise 2.4s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iq-mascot-body,
+  .iq-mascot-enter {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+  .iq-fx {
+    display: none;
   }
 }
 

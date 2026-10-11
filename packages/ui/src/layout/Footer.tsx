@@ -1,50 +1,171 @@
 import { brand, hub, siteUrl, type SiteConfig } from '@iqra/config'
-import { Link } from 'react-router'
+import type { ReactNode } from 'react'
+import { Link, useLocation } from 'react-router'
+import { Mascot } from '../mascot/Mascot.tsx'
+import { RevealItem, RevealList } from '../motion/Reveal.tsx'
+import { asPose, colourClass } from '../primitives/colours.ts'
 import { Container } from '../primitives/Container.tsx'
+import { Pattern } from '../primitives/Pattern.tsx'
 import { Picture } from '../primitives/Picture.tsx'
 import { Scallop } from '../primitives/Scallop.tsx'
 import { cn } from '../utils/cn.ts'
 import { brandImage } from './brand.ts'
 import { hubLive, programmeTiles, toolTiles, type TileEntry } from './links.ts'
 
-const heading = 'label mb-4 text-sun'
-const link = 'link-sweep text-white/85 transition-colors hover:text-white'
-// 60% white on plum is 5.9:1, above the AA minimum of 4.5:1.
-const muted = 'text-white/60'
+const heading = 'label mb-5 text-sun'
+const link = 'link-sweep text-on-plum/85 transition-colors hover:text-on-plum'
+// 60% on-plum on plum is 5.9:1, above the AA minimum of 4.5:1.
+const muted = 'text-on-plum/60'
+const soonBadge =
+  'label shrink-0 rounded-pill bg-on-plum/10 px-2 py-0.5 text-[10px] text-on-plum/70'
 
-function TileList({ label, entries }: { label: string; entries: TileEntry[] }) {
+/** One row in a footer list: the name, and a small "Soon" badge on the same line. */
+function Row({ entry }: { entry: TileEntry }) {
+  if (entry.href === undefined) {
+    return (
+      <span className={cn('flex items-center justify-between gap-3', muted)}>
+        {entry.name}
+        <span className={soonBadge}>Soon</span>
+      </span>
+    )
+  }
+  return entry.href.startsWith('/') ? (
+    <Link to={entry.href} className={link} aria-current={entry.current ? 'page' : undefined}>
+      {entry.name}
+    </Link>
+  ) : (
+    <a href={entry.href} className={link}>
+      {entry.name}
+    </a>
+  )
+}
+
+function Column({ id, title, children }: { id?: string; title: string; children: ReactNode }) {
   return (
-    <nav aria-label={label}>
-      <h2 className={heading}>{label}</h2>
-      <ul className="space-y-2">
-        {entries.map((entry) => (
-          <li key={entry.key}>
-            {entry.href === undefined ? (
-              <span className={muted}>
-                {entry.name}
-                <span className="label block text-[10px]">Coming soon</span>
-              </span>
-            ) : entry.href.startsWith('/') ? (
-              <Link
-                to={entry.href}
-                className={link}
-                aria-current={entry.current ? 'page' : undefined}
+    <div id={id}>
+      <h2 className={heading}>{title}</h2>
+      {children}
+    </div>
+  )
+}
+
+/** Every programme as a dino card: the clearest sign that each site is part of one family. */
+function FamilyBand({ site }: { site: SiteConfig }) {
+  const tiles = programmeTiles(site)
+  return (
+    <nav id="iqrasaurus-family" aria-label="IqraSaurus programmes" className="scroll-mt-24 pb-14">
+      <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p className="label mb-3 text-sun">The {brand.name} family</p>
+          <p className="font-heading text-3xl font-bold text-on-plum md:text-4xl">
+            Every {brand.name} programme
+          </p>
+        </div>
+      </div>
+      <RevealList as="ul" className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        {tiles.map((entry) => {
+          const live = entry.href !== undefined
+          const inner = (
+            <>
+              <span
+                className={cn(
+                  'mb-3 flex size-20 items-end justify-center overflow-hidden rounded-full',
+                  live ? colourClass[entry.colour].bg : 'bg-on-plum/10',
+                )}
               >
+                <Mascot
+                  pose={asPose(entry.pose)}
+                  size={68}
+                  className={cn('iq-mascot-hover translate-y-1.5', !live && 'opacity-70')}
+                />
+              </span>
+              <span className="font-heading text-base font-semibold leading-tight text-on-plum">
                 {entry.name}
-              </Link>
-            ) : (
-              <a href={entry.href} className={link}>
-                {entry.name}
-              </a>
-            )}
-          </li>
-        ))}
-      </ul>
+              </span>
+              <span className="mt-1.5">
+                {entry.current ? (
+                  <span className="label rounded-pill bg-sun px-2 py-0.5 text-[10px] text-on-sun">
+                    You are here
+                  </span>
+                ) : live ? (
+                  <span className="label text-[10px] text-sun">Visit</span>
+                ) : (
+                  <span className={soonBadge}>Coming soon</span>
+                )}
+              </span>
+            </>
+          )
+          const card = cn(
+            'group flex h-full flex-col items-center rounded-card p-4 text-center transition duration-300 ease-reveal',
+            entry.current ? 'bg-on-plum/10 ring-2 ring-sun' : 'bg-on-plum/[0.05]',
+            live && !entry.current && 'hover:bg-on-plum/10 motion-safe:hover:-translate-y-1',
+          )
+          return (
+            <RevealItem key={entry.key} as="li">
+              {entry.href === undefined ? (
+                <div className={card}>{inner}</div>
+              ) : entry.href.startsWith('/') ? (
+                <Link
+                  to={entry.href}
+                  className={card}
+                  aria-current={entry.current ? 'page' : undefined}
+                >
+                  {inner}
+                </Link>
+              ) : (
+                <a href={entry.href} className={card}>
+                  {inner}
+                </a>
+              )}
+            </RevealItem>
+          )
+        })}
+      </RevealList>
     </nav>
   )
 }
 
+function YouTubeIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5">
+      <rect
+        x="2"
+        y="5"
+        width="20"
+        height="14"
+        rx="4"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
+      <path d="M10 9l5 3-5 3z" fill="currentColor" />
+    </svg>
+  )
+}
+
+function InstagramIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5">
+      <rect
+        x="3"
+        y="3"
+        width="18"
+        height="18"
+        rx="5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
+      <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="2" />
+      <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" />
+    </svg>
+  )
+}
+
 export function Footer({ site }: { site: SiteConfig }) {
+  const { pathname } = useLocation()
+  // The hub's home page already shows every programme just above the footer.
+  const showFamily = !(site.kind === 'hub' && pathname === '/')
   // The footer sits on plum, so it uses the owner-approved light logo (CLAUDE.md rule 9).
   const logo = brandImage('logo-horizontal-light')
   const year = new Date().getFullYear()
@@ -53,76 +174,115 @@ export function Footer({ site }: { site: SiteConfig }) {
     { label: 'Verify ARS on MUIS', href: brand.verifyLinks.ars },
     { label: 'Verify IECP on MUIS', href: brand.verifyLinks.iecp },
   ].filter((v) => v.href !== '')
+  const social = [
+    { label: 'YouTube', href: brand.social.youtube, icon: <YouTubeIcon /> },
+    { label: 'Instagram', href: brand.social.instagram, icon: <InstagramIcon /> },
+  ]
 
   return (
-    <footer className="mt-20 md:mt-32">
-      <Scallop flip className="text-plum" />
-      <div className="bg-plum text-white">
-        <Container className="grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-[1.2fr_1fr_1fr_1.3fr_1.1fr]">
-          <div>
-            <Picture {...logo} className="h-auto w-full max-w-[240px] object-contain" />
-            <p className="mt-5 font-heading text-lg font-semibold text-sun">{brand.tagline}</p>
-            <p className="mt-1 text-white/85">{brand.motto}</p>
-          </div>
+    <footer>
+      {/* Overlaps the last section, so its background shows between the scallops; invisible
+          when that section is plum too. */}
+      <Scallop flip className="relative -mt-6 bg-plum" />
+      <div className="relative overflow-hidden bg-plum text-on-plum">
+        <Pattern className="bg-on-plum/[0.04]" />
+        <Container className="relative pt-14 md:pt-20">
+          {showFamily ? <FamilyBand site={site} /> : null}
 
-          <TileList label="Programmes" entries={programmeTiles(site)} />
-          <TileList label="Tools" entries={toolTiles()} />
-
-          {/* The header's "About" item lands here until the hub's About page is live. */}
-          <div id="about-iqrasaurus">
-            <h2 className={heading}>About IqraSaurus</h2>
-            <p className="text-white/85">{brand.credential}</p>
-            {verify.length > 0 ? (
-              <ul className="mt-3 space-y-1">
-                {verify.map((v) => (
-                  <li key={v.href}>
-                    <a href={v.href} className={cn(link, 'text-sun hover:text-sun')} rel="noopener">
-                      {v.label}
+          <div
+            className={cn(
+              'grid gap-10 pb-14 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1.2fr_1.1fr] lg:gap-12',
+              showFamily && 'border-t border-on-plum/15 pt-14',
+            )}
+          >
+            <div>
+              <Picture {...logo} className="h-auto w-full max-w-[220px] object-contain" />
+              <p className="mt-5 font-heading text-lg font-semibold text-sun">{brand.tagline}</p>
+              <p className="mt-1 text-on-plum/85">{brand.motto}</p>
+              <ul className="mt-6 flex gap-2">
+                {social.map((s) => (
+                  <li key={s.label}>
+                    <a
+                      href={s.href}
+                      rel="noopener"
+                      aria-label={`${brand.name} on ${s.label}`}
+                      className="flex size-10 items-center justify-center rounded-full bg-on-plum/10 text-on-plum transition duration-300 hover:bg-sun hover:text-on-sun"
+                    >
+                      {s.icon}
                     </a>
                   </li>
                 ))}
               </ul>
-            ) : null}
-            <p className="mt-3">
-              {aboutPage ? (
-                site.kind === 'hub' ? (
-                  <Link to="/about" className={link}>
-                    Our story, people and foundation
-                  </Link>
-                ) : (
-                  <a href={siteUrl(hub(), '/about')} className={link}>
-                    Our story, people and foundation
-                  </a>
-                )
-              ) : (
-                <span className={muted}>
-                  Our story, people and foundation
-                  <span className="label block text-[10px]">Coming soon</span>
-                </span>
-              )}
-            </p>
-          </div>
+            </div>
 
-          {/* The header's "Work with us" item and the Donate placeholder land here. */}
-          <div id="work-with-us">
-            <h2 className={heading}>Work with us</h2>
-            <ul className="space-y-2">
-              <li>
-                <a href={brand.contact.whatsappHref} className={link} rel="noopener">
-                  WhatsApp {brand.contact.whatsapp}
-                </a>
-              </li>
-              <li>
-                <a href={`mailto:${brand.contact.email}`} className={link}>
-                  {brand.contact.email}
-                </a>
-              </li>
-            </ul>
+            <Column title="Tools">
+              <ul className="max-w-[220px] space-y-2.5">
+                {toolTiles().map((entry) => (
+                  <li key={entry.key}>
+                    <Row entry={entry} />
+                  </li>
+                ))}
+              </ul>
+            </Column>
+
+            {/* The header's "About" item lands here until the hub's About page is live. */}
+            <Column id="about-iqrasaurus" title={`About ${brand.name}`}>
+              <p className="text-on-plum/85">{brand.credential}</p>
+              {verify.length > 0 ? (
+                <ul className="mt-3 space-y-1">
+                  {verify.map((v) => (
+                    <li key={v.href}>
+                      <a
+                        href={v.href}
+                        className={cn(link, 'text-sun hover:text-sun')}
+                        rel="noopener"
+                      >
+                        {v.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+              <p className="mt-4">
+                {aboutPage ? (
+                  site.kind === 'hub' ? (
+                    <Link to="/about" className={link}>
+                      Our story, people and foundation
+                    </Link>
+                  ) : (
+                    <a href={siteUrl(hub(), '/about')} className={link}>
+                      Our story, people and foundation
+                    </a>
+                  )
+                ) : (
+                  <span className={cn('flex items-center gap-3', muted)}>
+                    Our story, people and foundation
+                    <span className={soonBadge}>Soon</span>
+                  </span>
+                )}
+              </p>
+            </Column>
+
+            {/* The header's "Work with us" item and the Donate placeholder land here. */}
+            <Column id="work-with-us" title="Work with us">
+              <ul className="space-y-2.5">
+                <li>
+                  <a href={brand.contact.whatsappHref} className={link} rel="noopener">
+                    WhatsApp {brand.contact.whatsapp}
+                  </a>
+                </li>
+                <li>
+                  <a href={`mailto:${brand.contact.email}`} className={link}>
+                    {brand.contact.email}
+                  </a>
+                </li>
+              </ul>
+            </Column>
           </div>
         </Container>
 
-        <Container className="border-t border-white/15 py-8 text-sm text-white/70">
-          {site.kind === 'spoke' ? <p className="mb-4 max-w-4xl">{brand.disclaimer}</p> : null}
+        <Container className="relative border-t border-on-plum/15 py-8 text-sm text-on-plum/70">
+          {site.kind === 'spoke' ? <p className="mb-5 max-w-4xl">{brand.disclaimer}</p> : null}
           <div className="flex flex-wrap items-center justify-between gap-4">
             <p>
               &copy; {year} {brand.name}. {brand.tagline}.

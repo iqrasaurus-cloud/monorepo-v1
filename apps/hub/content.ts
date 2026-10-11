@@ -46,6 +46,10 @@ export const content: HubContent = {
     },
   },
 
+  // OWNER: photos saved from instagram.com/iqrasaurus (put the files in assets-src/photos/,
+  // run `pnpm assets`, then list them here with alt text). Until then the strip shows dinos.
+  instagram: [],
+
   workWithUs: {
     body: 'Want to run one of our programmes in your madrasah, centre or home group, or help us test new material? Get in touch. Our founder’s advice to anyone starting something similar: be creative, always seek Allah’s help, and pray istikharah.',
   },

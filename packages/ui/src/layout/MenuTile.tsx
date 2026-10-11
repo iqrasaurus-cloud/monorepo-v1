@@ -1,14 +1,14 @@
 import { Link } from 'react-router'
-import { Picture } from '../primitives/Picture.tsx'
+import { Mascot } from '../mascot/Mascot.tsx'
+import { asPose, colourClass } from '../primitives/colours.ts'
 import { cn } from '../utils/cn.ts'
-import { mascotImage } from './brand.ts'
 import type { TileEntry } from './links.ts'
 
 export function ComingSoonPill({ className }: { className?: string }) {
   return (
     <span
       className={cn(
-        'label inline-block rounded-pill bg-paper-2 px-2.5 py-0.5 text-[10px] text-ink/85',
+        'label inline-block whitespace-nowrap rounded-pill bg-paper-2 px-2.5 py-0.5 text-[10px] text-ink/85',
         className,
       )}
     >
@@ -19,53 +19,67 @@ export function ComingSoonPill({ className }: { className?: string }) {
 
 function HerePill() {
   return (
-    <span className="label mt-1.5 inline-block rounded-pill bg-sun px-2.5 py-0.5 text-[10px] text-plum">
+    <span className="label mt-1.5 inline-block rounded-pill bg-sun px-2.5 py-0.5 text-[10px] text-on-sun">
       You are here
     </span>
   )
 }
 
+function Arrow() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="size-4">
+      <path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2" />
+    </svg>
+  )
+}
+
 interface MenuTileProps {
   entry: TileEntry
-  /** Smaller mascot and text, for the mobile drawer. */
+  /** Smaller dino and text, for the mobile drawer and the hero. */
   compact?: boolean
   onNavigate?: () => void
 }
 
-/** A tool or programme in a menu: mascot, name, one line, and its status. */
+/** A tool or programme in a menu: its dino on its colour, the name, one line and its status. */
 export function MenuTile({ entry, compact = false, onNavigate }: MenuTileProps) {
-  const mascot = mascotImage(entry.mascot, 160)
   const live = entry.href !== undefined
+  const c = colourClass[entry.colour]
 
   const body = (
     <>
       <span
         className={cn(
-          'flex shrink-0 items-center justify-center rounded-full bg-white ring-4',
-          live ? 'ring-sun' : 'ring-paper-2',
-          compact ? 'size-12' : 'size-16',
+          'flex shrink-0 items-end justify-center overflow-hidden rounded-[22px] transition-transform duration-300 ease-reveal motion-safe:group-hover:-rotate-3',
+          live ? c.soft : 'bg-paper-2',
+          compact ? 'size-14' : 'size-[72px]',
         )}
       >
-        <Picture
-          {...mascot}
-          className={cn(
-            'object-contain transition-transform duration-300 ease-reveal motion-safe:group-hover:-rotate-6 motion-safe:group-hover:scale-110',
-            compact ? 'size-9' : 'size-12',
-            !live && 'opacity-60',
-          )}
+        <Mascot
+          pose={asPose(entry.pose)}
+          size={compact ? 50 : 64}
+          className={cn('iq-mascot-hover translate-y-1', !live && 'opacity-60 grayscale-[35%]')}
         />
       </span>
-      <span className="min-w-0">
+      <span className="min-w-0 flex-1">
         <span
           className={cn(
-            'block font-heading font-semibold leading-tight',
+            'flex items-center gap-1.5 font-heading font-semibold leading-tight',
             live ? 'text-ink' : 'text-ink/85',
             compact ? 'text-base' : 'text-lg',
           )}
         >
           {entry.name}
+          {live && !entry.current ? (
+            <span className="text-primary opacity-0 transition duration-300 group-hover:translate-x-0.5 group-hover:opacity-100">
+              <Arrow />
+            </span>
+          ) : null}
         </span>
-        {entry.line ? <span className="mt-0.5 block text-sm text-ink/80">{entry.line}</span> : null}
+        {entry.line ? (
+          <span className={cn('mt-0.5 block text-ink/80', compact ? 'text-xs' : 'text-sm')}>
+            {entry.line}
+          </span>
+        ) : null}
         {!live ? <ComingSoonPill className="mt-1.5" /> : entry.current ? <HerePill /> : null}
       </span>
     </>
@@ -73,7 +87,7 @@ export function MenuTile({ entry, compact = false, onNavigate }: MenuTileProps) 
 
   const tile = cn(
     'group flex h-full items-center rounded-card border',
-    compact ? 'gap-3 p-2.5' : 'gap-4 p-4',
+    compact ? 'gap-3 p-2' : 'gap-4 p-3',
   )
 
   if (entry.href === undefined) {
@@ -86,7 +100,8 @@ export function MenuTile({ entry, compact = false, onNavigate }: MenuTileProps) 
 
   const liveTile = cn(
     tile,
-    'border-taupe/25 bg-paper transition duration-300 ease-reveal hover:border-sun hover:bg-white hover:shadow-soft motion-safe:hover:-translate-y-1',
+    'border-line bg-surface transition duration-300 ease-reveal hover:shadow-soft motion-safe:hover:-translate-y-1',
+    c.hoverBorder,
   )
 
   if (entry.href.startsWith('/')) {

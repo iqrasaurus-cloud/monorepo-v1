@@ -35,15 +35,18 @@ export function HubWorkWithUs({ site, workWithUs }: HubWorkWithUsProps) {
           </a>
           <a
             href={`mailto:${brand.contact.email}`}
-            className={cn(contactButton, 'border border-taupe/60 bg-white text-primary hover:border-primary')}
+            className={cn(
+              contactButton,
+              'border border-taupe/60 bg-surface text-primary hover:border-primary',
+            )}
           >
             {brand.contact.email}
           </a>
         </Reveal>
       </Container>
 
-      <div className="relative mt-16 bg-white">
-        <Scallop className="text-paper" />
+      <div className="relative mt-16 bg-surface">
+        <Scallop className="bg-paper" />
         <section className="section">
           <Container>
             <Reveal>

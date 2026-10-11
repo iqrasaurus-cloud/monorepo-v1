@@ -1,4 +1,4 @@
-import { useId } from 'react'
+import type { CSSProperties } from 'react'
 import { cn } from '../utils/cn.ts'
 
 interface ScallopProps {
@@ -6,26 +6,21 @@ interface ScallopProps {
   size?: number
   /** Point the scallops upward instead of downward. */
   flip?: boolean
-  /** Colour with a text-* class matching the section the scallops belong to, e.g. text-paper-2. */
+  /** Colour with a bg-* class matching the section the scallops belong to, e.g. bg-paper-2. */
   className?: string
 }
 
-/** Scalloped divider drawn in currentColor. Sits at the boundary between two section colours. */
+/**
+ * Scalloped divider at the boundary between two section colours. It is a mask over a
+ * background colour (see .scallop in base.css), so it follows its section in Night and under
+ * dark-mode browser extensions instead of staying light.
+ */
 export function Scallop({ size = 24, flip = false, className }: ScallopProps) {
-  const id = useId()
   return (
-    <svg
+    <div
       aria-hidden="true"
-      className={cn('block w-full fill-current', flip && 'rotate-180', className)}
-      height={size}
-      width="100%"
-    >
-      <defs>
-        <pattern id={id} patternUnits="userSpaceOnUse" width={size * 2} height={size}>
-          <circle cx={size} cy={0} r={size} />
-        </pattern>
-      </defs>
-      <rect width="100%" height={size} fill={`url(#${id})`} />
-    </svg>
+      style={{ '--s': `${size}px` } as CSSProperties}
+      className={cn('scallop block w-full', flip && 'rotate-180', className)}
+    />
   )
 }

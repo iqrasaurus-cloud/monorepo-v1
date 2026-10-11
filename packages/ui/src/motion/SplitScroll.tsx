@@ -24,18 +24,30 @@ function Column({ photos, y }: { photos: Frame[]; y: MotionValue<string> }) {
   )
 }
 
-function Grid({ photos, title }: { photos: Frame[]; title: ReactNode }) {
+/** Under 1024px: the pages as a swipeable, slightly fanned row, each page shown once. */
+function Strip({ photos, title }: { photos: Frame[]; title: ReactNode }) {
+  const unique = photos.filter((p, i, all) => all.findIndex((q) => q.src === p.src) === i)
   return (
     <div>
       <div className="mb-10 text-center">{title}</div>
-      <RevealList as="ul" className="grid grid-cols-2 gap-4 md:grid-cols-3">
-        {photos.map((photo, i) => (
+      <RevealList
+        as="ul"
+        className="no-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-8 pt-2 md:px-8 md:[justify-content:safe_center]"
+      >
+        {unique.map((photo, i) => (
           <RevealItem
-            key={`${photo.src}-${i}`}
+            key={photo.src}
             as="li"
-            className="aspect-[3/4] overflow-hidden rounded-card [&_picture]:contents"
+            className="w-[64%] max-w-[300px] shrink-0 snap-center sm:w-[40%] md:w-[30%]"
           >
-            <Picture {...photo} className="h-full w-full object-cover" />
+            <div
+              className={cn(
+                'aspect-[3/4] overflow-hidden rounded-card bg-surface p-1.5 shadow-soft transition-transform duration-500 ease-reveal hover:rotate-0 [&_picture]:contents',
+                i % 2 === 0 ? '-rotate-2' : 'rotate-2',
+              )}
+            >
+              <Picture {...photo} className="h-full w-full rounded-xl object-cover" />
+            </div>
           </RevealItem>
         ))}
       </RevealList>
@@ -79,7 +91,7 @@ interface SplitScrollProps {
 
 /**
  * Two photo columns scroll in opposite directions around a pinned title.
- * Falls back to a plain grid with fewer than six photos, on screens under 1024px,
+ * Falls back to a swipeable row with fewer than six photos, on screens under 1024px,
  * and when the visitor prefers reduced motion.
  */
 export function SplitScroll({ photos, title, className }: SplitScrollProps) {
@@ -89,7 +101,7 @@ export function SplitScroll({ photos, title, className }: SplitScrollProps) {
   if (!canSplit) {
     return (
       <div className={className}>
-        <Grid photos={photos} title={title} />
+        <Strip photos={photos} title={title} />
       </div>
     )
   }
@@ -99,7 +111,7 @@ export function SplitScroll({ photos, title, className }: SplitScrollProps) {
         <Split photos={photos} title={title} />
       </div>
       <div className="lg:hidden">
-        <Grid photos={photos} title={title} />
+        <Strip photos={photos} title={title} />
       </div>
     </div>
   )

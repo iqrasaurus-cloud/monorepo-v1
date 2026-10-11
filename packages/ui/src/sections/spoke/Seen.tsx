@@ -26,21 +26,24 @@ export function Seen({ site, seen }: SeenProps) {
   return (
     <Container>
       <Reveal>
-        <SectionHeading title="What we've seen" className="mb-12" />
+        <SectionHeading title="What we've seen" pose="star-hug" className="mb-12" />
       </Reveal>
 
       {quotes.length > 0 ? (
         <RevealList as="ul" className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {quotes.map((quote, i) => (
             <RevealItem key={i} as="li" className="flex">
-              <figure className="flex w-full flex-col overflow-hidden rounded-card bg-white shadow-soft">
+              <figure className="flex w-full flex-col overflow-hidden rounded-card bg-surface shadow-soft">
                 {quote.image ? (
                   <div className="[&_picture]:contents">
                     <Picture {...withFallback(quote.image)} className="h-40 w-full object-cover" />
                   </div>
                 ) : null}
                 <div className="flex flex-1 flex-col p-7">
-                  <span aria-hidden="true" className="mb-3 font-heading text-6xl leading-none text-sun">
+                  <span
+                    aria-hidden="true"
+                    className="mb-3 font-heading text-6xl leading-none text-sun"
+                  >
                     &ldquo;
                   </span>
                   <blockquote className="flex-1 text-lg text-ink">{quote.text}</blockquote>
@@ -55,7 +58,7 @@ export function Seen({ site, seen }: SeenProps) {
       ) : null}
 
       {lessons.length > 0 ? (
-        <Reveal className="mt-10 rounded-card bg-white p-7 shadow-soft">
+        <Reveal className="mt-10 rounded-card bg-surface p-7 shadow-soft">
           <h3 className="mb-4 font-heading text-2xl font-semibold text-primary">What we learned</h3>
           <ul className="space-y-3">
             {lessons.map((lesson, i) => (
@@ -87,7 +90,7 @@ export function Seen({ site, seen }: SeenProps) {
 
       {site.journal.src ? (
         <Reveal className="mt-10">
-          <Button to="/journal" variant="outline" className="bg-white">
+          <Button to="/journal" variant="outline" className="bg-surface">
             Read our journal
           </Button>
         </Reveal>

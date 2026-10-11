@@ -18,18 +18,4 @@ export const withFallback = (photo: Photo): Photo & { fallback: string } => ({
   fallback: photo.src.replace(/\.webp$/i, '.jpg'),
 })
 
-export type Bg = 'paper' | 'white' | 'paper-2' | 'plum'
-
-export const bgClass: Record<Bg, string> = {
-  paper: 'bg-paper',
-  white: 'bg-white',
-  'paper-2': 'bg-paper-2',
-  plum: 'bg-plum',
-}
-
-export const scallopClass: Record<Bg, string> = {
-  paper: 'text-paper',
-  white: 'text-white',
-  'paper-2': 'text-paper-2',
-  plum: 'text-plum',
-}
+export { bgClass, type Bg } from '../../primitives/Section.tsx'

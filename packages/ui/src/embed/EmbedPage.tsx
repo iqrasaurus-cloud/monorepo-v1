@@ -31,6 +31,8 @@ export function EmbedPage({ site, kind }: EmbedPageProps) {
         embed={embed}
         className="h-[calc(100svh-12rem)] min-h-[700px] md:h-[calc(100svh-15rem)]"
       />
+      {/* Room for the footer's scalloped edge, which overlaps whatever is above it. */}
+      <div aria-hidden="true" className="h-6" />
     </>
   )
 }

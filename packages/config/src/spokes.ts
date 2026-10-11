@@ -9,8 +9,12 @@
  * Owner-editable values are marked  // OWNER
  */
 
+import { videosFor, youtube } from './media.ts'
+
 export type SiteStatus = 'live' | 'coming-soon'
 export type MascotTone = 'playful' | 'calm' | 'none'
+/** A site's or tool's colour in menus, cards and its hero: one of the four 4-I colours. */
+export type Colour = 'inspire' | 'investigate' | 'integrate' | 'impart'
 
 export interface EmbedConfig {
   /**
@@ -45,6 +49,10 @@ export interface SiteConfig {
   mascot: string
   /** 'calm' = smaller mascot, no bounce. 'none' = hide mascot entirely. */
   mascotTone: MascotTone
+  /** Pose from the dino library (packages/ui/src/mascot) on its cards, tiles and hero. */
+  pose: string
+  /** Its colour across the IqraSaurus family: cards, tiles and hero. */
+  colour: Colour
   /** Optional per-site accent. Leave undefined to use the shared brand accent. */
   accent?: string
   journal: EmbedConfig
@@ -69,6 +77,8 @@ export const sites: SiteConfig[] = [
     order: 0,
     mascot: 'mascot-quran.png',
     mascotTone: 'playful',
+    pose: 'waving-wink',
+    colour: 'investigate',
     journal: { src: '', title: 'IqraSaurus Journal' }, // OWNER
     chat: { src: '', title: 'Ask IqraSaurus' }, // OWNER
     support: { href: '', label: 'Support our work' }, // OWNER
@@ -83,6 +93,8 @@ export const sites: SiteConfig[] = [
     order: 1,
     mascot: 'mascot-magnifier.png',
     mascotTone: 'playful',
+    pose: 'magnifying-glass',
+    colour: 'investigate',
     journal: { src: 'https://mtfa-microsite-ikc-v1.sheetany.site', title: 'Quran Investigators Journal' }, // OWNER
     chat: {
       src: 'https://www.chatbase.co/chatbot-iframe/zlzFNm9ySuiomi-Mi-gNR',
@@ -102,6 +114,8 @@ export const sites: SiteConfig[] = [
     order: 2,
     mascot: 'mascot-walking.png',
     mascotTone: 'playful',
+    pose: 'superhero-cape',
+    colour: 'impart',
     journal: { src: '', title: 'StoryBuzz Journal' },
     chat: { src: '', title: 'Ask the StoryBuzz guide' },
     support: { href: '', label: 'Support StoryBuzz' },
@@ -116,6 +130,8 @@ export const sites: SiteConfig[] = [
     order: 3,
     mascot: 'mascot-quran.png', // placeholder pose
     mascotTone: 'playful',
+    pose: 'writing',
+    colour: 'inspire',
     journal: { src: '', title: 'Quran & Hadeeth Doodling Journal' },
     chat: { src: '', title: 'Ask the Doodling guide' },
     support: { href: '', label: 'Support Quran & Hadeeth Doodling' },
@@ -130,6 +146,8 @@ export const sites: SiteConfig[] = [
     order: 4,
     mascot: 'mascot-reader.png',
     mascotTone: 'playful',
+    pose: 'backpack-ready',
+    colour: 'integrate',
     journal: { src: '', title: 'Madrasah Preparation Journal' },
     chat: { src: '', title: 'Ask the Madrasah Preparation guide' },
     support: { href: '', label: 'Support Madrasah Preparation' },
@@ -144,6 +162,8 @@ export const sites: SiteConfig[] = [
     order: 5,
     mascot: 'mascot-quran.png', // placeholder pose
     mascotTone: 'playful',
+    pose: 'heart-hug',
+    colour: 'impart',
     journal: { src: '', title: 'Baiti Madrasati Journal' },
     chat: { src: '', title: 'Ask the Baiti Madrasati guide' },
     support: { href: '', label: 'Support Baiti Madrasati' },
@@ -158,6 +178,8 @@ export const sites: SiteConfig[] = [
     order: 6,
     mascot: 'mascot-binoculars.png',
     mascotTone: 'playful',
+    pose: 'binoculars-pointing',
+    colour: 'inspire',
     journal: { src: '', title: 'Umrah for Kids Journal' },
     chat: { src: '', title: 'Ask the Umrah for Kids guide' },
     support: { href: '', label: 'Support Umrah for Kids' },
@@ -179,16 +201,19 @@ export interface ToolConfig {
   status: SiteStatus
   /** File in apps/<slug>/public/brand/. Placeholder poses repeat until new art arrives. */
   mascot: string
+  /** Pose from the dino library on its tiles and cards. */
+  pose: string
+  colour: Colour
 }
 
 export const tools: ToolConfig[] = [
   // OWNER: Tadabbur is linked now so it works the day iqrasaurus.com/tadabbur is routed.
-  { slug: 'tadabbur', name: 'Tadabbur', line: 'One ayah a day', path: '/tadabbur', status: 'live', mascot: 'mascot-quran.png' },
-  { slug: 'hafiz', name: 'Mini Hafiz', line: '[[CONTENT NEEDED: one line]]', path: '/hafiz', status: 'coming-soon', mascot: 'mascot-reader.png' },
-  { slug: 'worksheets', name: 'Worksheets', line: '[[CONTENT NEEDED: one line]]', path: '/worksheets', status: 'coming-soon', mascot: 'mascot-magnifier.png' },
-  { slug: 'calendar', name: 'Calendar', line: '[[CONTENT NEEDED: one line]]', path: '/calendar', status: 'coming-soon', mascot: 'mascot-binoculars.png' },
-  { slug: 'museum', name: 'Museum', line: '[[CONTENT NEEDED: one line]]', path: '/museum', status: 'coming-soon', mascot: 'mascot-magnifier.png' },
-  { slug: 'dino', name: 'Dino', line: '[[CONTENT NEEDED: one line]]', path: '/dino', status: 'coming-soon', mascot: 'mascot-walking.png' },
+  { slug: 'tadabbur', name: 'Tadabbur', line: 'One ayah a day', path: '/tadabbur', status: 'live', mascot: 'mascot-quran.png', pose: 'reading-quran', colour: 'inspire' },
+  { slug: 'hafiz', name: 'Mini Hafiz', line: '[[CONTENT NEEDED: one line]]', path: '/hafiz', status: 'coming-soon', mascot: 'mascot-reader.png', pose: 'hugging-quran', colour: 'integrate' },
+  { slug: 'worksheets', name: 'Worksheets', line: '[[CONTENT NEEDED: one line]]', path: '/worksheets', status: 'coming-soon', mascot: 'mascot-magnifier.png', pose: 'thinking-lightbulb', colour: 'investigate' },
+  { slug: 'calendar', name: 'Calendar', line: '[[CONTENT NEEDED: one line]]', path: '/calendar', status: 'coming-soon', mascot: 'mascot-binoculars.png', pose: 'crescent-moon', colour: 'impart' },
+  { slug: 'museum', name: 'Museum', line: '[[CONTENT NEEDED: one line]]', path: '/museum', status: 'coming-soon', mascot: 'mascot-magnifier.png', pose: 'treasure-chest', colour: 'investigate' },
+  { slug: 'dino', name: 'Dino', line: '[[CONTENT NEEDED: one line]]', path: '/dino', status: 'coming-soon', mascot: 'mascot-walking.png', pose: 'jumping-joy', colour: 'integrate' },
 ]
 
 /* ------------------------------------------------------------------ */
@@ -224,6 +249,11 @@ export const brand = {
   verifyLinks: {
     ars: '', // OWNER
     iecp: '', // OWNER
+  },
+  /** Where the owner posts. Shown as links only; nothing is loaded from these sites. */
+  social: {
+    youtube: 'https://www.youtube.com/@Iqrasaurus-official',
+    instagram: 'https://www.instagram.com/iqrasaurus/',
   },
   /** Confirmed current by the owner on 2026-10-04. */
   contact: {
@@ -271,7 +301,7 @@ export const isPlaceholder = (text: string | undefined): boolean =>
 
 /** Origins allowed in CSP frame-src for one site (external embeds only). */
 export const frameOrigins = (s: SiteConfig): string[] =>
-  [s.journal.src, s.chat.src]
+  [s.journal.src, s.chat.src, videosFor(s.slug).length > 0 ? youtube.embedOrigin : '']
     .filter((u) => u.startsWith('https://'))
     .map((u) => new URL(u).origin)
     .filter((o, i, a) => a.indexOf(o) === i)
@@ -367,6 +397,12 @@ export interface HubContent {
     foundation: string[]
     press?: { image: Photo; caption: string }
   }
+  /**
+   * Photos for the "From our Instagram" strip on the home page, saved from
+   * instagram.com/iqrasaurus into apps/hub/assets-src/photos/ and run through `pnpm assets`.
+   * While it is empty the strip shows dinos from the pose library and a link to Instagram.
+   */
+  instagram: Photo[]
   workWithUs: { body: string }
   seo: { home: PageSeo; about: PageSeo; workWithUs: PageSeo }
 }

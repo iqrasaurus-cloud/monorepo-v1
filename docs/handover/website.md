@@ -31,7 +31,9 @@ Reference docs that live in the **Tadabbur repo**, not this one: `tadabbur-for-k
 - The journal embed (`https://mtfa-microsite-ikc-v1.sheetany.site`) stays in place as a preview; the owner will change the URL. It currently shows unrelated Ihsan Kidney Care articles.
 - Design system: the shared colours match the tools. `accent` stays the brand sites' own headline accent (not shared). Night exists only under `:root[data-theme='night']` and is off. The footer uses the owner-approved light horizontal logo.
 - Declined on rule 4: the image in `owner-files/stories/` (looks like Prophet Nuh's ark with figures). Do not use it.
-- The Mobbin connector needs a paid plan, so no Mobbin research was done.
+- The Mobbin connector is connected (paid plan, 2026-10-11). Phase 10 used it for layout research; see BUILD_SPEC.md section 12A.
+- Night follows the device's dark-mode setting (2026-10-11).
+- YouTube: the videos and Shorts in `packages/config/src/media.ts` show as dino cards and play from youtube-nocookie.com when pressed. The Mus'ab ibn Umair series is listed for StoryBuzz; the owner should check it against rule 4.
 
 ## Founder interview (2026-10-11)
 The founder's spoken interview was used to fill the hub's Our story and Our foundation, the Quran Investigators origin paragraph, and the five new programme pages. Session steps and tips on the new pages are drafts written from how the founder describes the work; each content file says so at the top. Baiti Madrasati is not named in the interview; its page reads it as "learning Islam at home" and needs the owner's confirmation. Names heard unclearly in the recording were left out: "Cave Nor" kindergarten, the Khalifah institute / model school in Malaysia, "Dr Nakati and Fahri", and the hill facing Mount Uhud. The claim "among the first to run MET preparation in the west" was left out until confirmed.

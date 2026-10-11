@@ -8,7 +8,7 @@ import { Picture } from '../../primitives/Picture.tsx'
 import { Scallop } from '../../primitives/Scallop.tsx'
 import { SectionHeading } from '../../primitives/SectionHeading.tsx'
 import { cn } from '../../utils/cn.ts'
-import { real, STEP_MASCOTS, withFallback, type Bg, bgClass, scallopClass } from '../spoke/helpers.ts'
+import { real, STEP_MASCOTS, withFallback, type Bg, bgClass } from '../spoke/helpers.ts'
 import { PageHeader } from './PageHeader.tsx'
 
 function Prose({ paragraphs }: { paragraphs: string[] }) {
@@ -47,7 +47,13 @@ export function HubAbout({ site, about }: HubAboutProps) {
   ].filter((v) => v.href !== '')
 
   const blocks: Block[] = [
-    { id: 'our-story', title: 'Our story', bg: 'white', show: story.length > 0, body: <Prose paragraphs={story} /> },
+    {
+      id: 'our-story',
+      title: 'Our story',
+      bg: 'surface',
+      show: story.length > 0,
+      body: <Prose paragraphs={story} />,
+    },
     {
       id: 'our-people',
       title: 'Our people',
@@ -56,14 +62,20 @@ export function HubAbout({ site, about }: HubAboutProps) {
       body: (
         <RevealList as="ul" className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {people.map((person) => (
-            <RevealItem key={person.name} as="li" className="rounded-card bg-white p-6 text-center shadow-soft">
+            <RevealItem
+              key={person.name}
+              as="li"
+              className="rounded-card bg-surface p-6 text-center shadow-soft"
+            >
               {person.photo ? (
                 <div className="mx-auto mb-4 size-28 overflow-hidden rounded-full ring-4 ring-sun [&_picture]:contents">
                   <Picture {...withFallback(person.photo)} className="h-full w-full object-cover" />
                 </div>
               ) : null}
               <p className="font-heading text-xl font-semibold text-ink">{person.name}</p>
-              {!isPlaceholder(person.role) ? <p className="mt-1 text-ink/80">{person.role}</p> : null}
+              {!isPlaceholder(person.role) ? (
+                <p className="mt-1 text-ink/80">{person.role}</p>
+              ) : null}
             </RevealItem>
           ))}
         </RevealList>
@@ -72,7 +84,7 @@ export function HubAbout({ site, about }: HubAboutProps) {
     {
       id: 'our-foundation',
       title: 'Our foundation',
-      bg: 'white',
+      bg: 'surface',
       show: foundation.length > 0,
       body: <Prose paragraphs={foundation} />,
     },
@@ -88,7 +100,9 @@ export function HubAbout({ site, about }: HubAboutProps) {
               <CircleCard
                 step={i + 1}
                 image={
-                  site.mascotTone !== 'none' ? mascotImage(STEP_MASCOTS[i] ?? site.mascot, 320) : undefined
+                  site.mascotTone !== 'none'
+                    ? mascotImage(STEP_MASCOTS[i] ?? site.mascot, 320)
+                    : undefined
                 }
                 label={step.label}
               >
@@ -102,7 +116,7 @@ export function HubAbout({ site, about }: HubAboutProps) {
     {
       id: 'trust',
       title: 'Who guides us',
-      bg: 'white',
+      bg: 'surface',
       show: true,
       body: (
         <Reveal className="max-w-3xl">
@@ -127,7 +141,7 @@ export function HubAbout({ site, about }: HubAboutProps) {
       bg: 'paper',
       show: about.press !== undefined,
       body: about.press ? (
-        <Reveal className="flex max-w-4xl flex-col gap-6 rounded-card bg-white p-6 shadow-soft md:flex-row md:items-center">
+        <Reveal className="flex max-w-4xl flex-col gap-6 rounded-card bg-surface p-6 shadow-soft md:flex-row md:items-center">
           <div className="w-full shrink-0 overflow-hidden rounded-card ring-1 ring-taupe/30 md:max-w-sm [&_picture]:contents">
             <Picture {...withFallback(about.press.image)} className="h-full w-full object-cover" />
           </div>
@@ -146,7 +160,7 @@ export function HubAbout({ site, about }: HubAboutProps) {
         const previous: Bg = visible[i - 1]?.bg ?? 'paper'
         return (
           <div key={block.id} id={block.id} className={cn(bgClass[block.bg], 'relative')}>
-            {block.bg !== previous ? <Scallop className={scallopClass[previous]} /> : null}
+            {block.bg !== previous ? <Scallop className={bgClass[previous]} /> : null}
             <section className="section">
               <Container>
                 <Reveal>

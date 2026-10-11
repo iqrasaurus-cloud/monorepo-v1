@@ -1,9 +1,9 @@
-import { isPlaceholder, type SiteConfig, type SpokeContent } from '@iqra/config'
+import { isPlaceholder, videosFor, type SiteConfig, type SpokeContent } from '@iqra/config'
 import type { ReactNode } from 'react'
-import { Scallop } from '../../primitives/Scallop.tsx'
-import { cn } from '../../utils/cn.ts'
+import { Section, type Bg } from '../../primitives/Section.tsx'
+import { Videos } from '../shared/Videos.tsx'
 import { BringIt } from './BringIt.tsx'
-import { bgClass, real, scallopClass, type Bg } from './helpers.ts'
+import { real } from './helpers.ts'
 import { Hero, SESSION_ANCHOR } from './Hero.tsx'
 import { hasSeen, Seen } from './Seen.tsx'
 import { Session } from './Session.tsx'
@@ -21,12 +21,15 @@ interface SpokeHomeProps {
   content: SpokeContent
 }
 
-/** The five-section programme page (BUILD_SPEC.md section 6B). Empty sections don't render. */
+/**
+ * The programme page (BUILD_SPEC.md section 6B, plus the videos from phase 10).
+ * Empty sections don't render. The last band is plum, so it runs straight into the footer.
+ */
 export function SpokeHome({ site, content: c }: SpokeHomeProps) {
   const blocks: Block[] = [
     {
       id: 'what-it-is',
-      bg: 'white',
+      bg: 'surface',
       show: real(c.whatItIs.body).length > 0 || c.whatItIs.photos.length > 0,
       node: <WhatItIs site={site} whatItIs={c.whatItIs} />,
     },
@@ -37,8 +40,14 @@ export function SpokeHome({ site, content: c }: SpokeHomeProps) {
       node: <Session site={site} session={c.session} />,
     },
     {
-      id: 'seen',
+      id: 'watch',
       bg: 'paper',
+      show: videosFor(site.slug).length > 0,
+      node: <Videos site={site} />,
+    },
+    {
+      id: 'seen',
+      bg: 'surface',
       show: hasSeen(c.seen),
       node: <Seen site={site} seen={c.seen} />,
     },
@@ -55,16 +64,12 @@ export function SpokeHome({ site, content: c }: SpokeHomeProps) {
   return (
     <>
       <Hero site={site} hero={c.hero} />
-      {visible.map((block, i) => {
+      {visible.map((block, i) => (
         // The hero is on paper; a scalloped edge marks every change of background.
-        const previous: Bg = visible[i - 1]?.bg ?? 'paper'
-        return (
-          <div key={block.id} id={block.id} className={cn(bgClass[block.bg], 'relative')}>
-            {block.bg !== previous ? <Scallop className={scallopClass[previous]} /> : null}
-            <section className="section">{block.node}</section>
-          </div>
-        )
-      })}
+        <Section key={block.id} id={block.id} bg={block.bg} prev={visible[i - 1]?.bg ?? 'paper'}>
+          {block.node}
+        </Section>
+      ))}
     </>
   )
 }

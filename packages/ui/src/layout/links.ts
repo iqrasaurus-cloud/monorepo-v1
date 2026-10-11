@@ -1,5 +1,6 @@
 import {
   brand,
+  type Colour,
   hub,
   isPlaceholder,
   programmes,
@@ -33,6 +34,9 @@ export interface TileEntry {
   /** Absent when the registry still holds a placeholder. */
   line?: string
   mascot: string
+  /** Pose from the dino library. */
+  pose: string
+  colour: Colour
   /** Router path ('/'), in-page hash or absolute URL. Absent = coming soon. */
   href?: string
   current?: boolean
@@ -44,6 +48,8 @@ export const toolTiles = (): TileEntry[] =>
     name: t.name,
     line: isPlaceholder(t.line) ? undefined : t.line,
     mascot: t.mascot,
+    pose: t.pose,
+    colour: t.colour,
     href: t.status === 'live' ? toolUrl(t) : undefined,
   }))
 
@@ -55,6 +61,8 @@ export const programmeTiles = (site: SiteConfig): TileEntry[] =>
       name: p.name,
       line: isPlaceholder(p.description) ? undefined : p.description,
       mascot: p.mascot,
+      pose: p.pose,
+      colour: p.colour,
       href: p.status === 'live' ? (current ? '/' : siteUrl(p)) : undefined,
       current,
     }

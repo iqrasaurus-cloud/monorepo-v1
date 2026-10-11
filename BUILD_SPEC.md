@@ -398,6 +398,23 @@ Finally, once all sites are live and the owner agrees, delete `_reference/kern/`
 
 ---
 
+## 12A. Phase 10 — Redesign pass (owner request 2026-10-11)
+
+Owner feedback on the live site: scallops broken in dark mode, pictures neither desktop nor mobile at tablet width, unaligned footer, programme sites not clearly part of IqraSaurus, a plain mobile menu, too little motion, sections that feel disjointed and wordy. Layout patterns were checked on Mobbin (Duolingo's sub-brand sites, Loom and Coda product cards, Linear and Customer.io footers, ClickUp and Typeform video sections). What changed:
+
+- **Night** follows the device setting (`prefers-color-scheme`, same values as the tools); `data-theme="day"|"night"` on `<html>` forces one. Header logo swaps to the light logo; dinos sit on the soft glow.
+- **Scallops and the background tile** are CSS masks over a background colour, so they recolour with their section in Night and under dark-mode browser extensions. The footer's scallop overlaps the band above it, so a plum band runs straight into the footer with no gap.
+- **Dino library**: 43 poses with the tools' motion presets (`Mascot`). Every registry site and tool has a `pose` and a `colour` (one of the 4-I colours) used on tiles, cards and the programme hero.
+- **Header**: shrinks when scrolled, frosted when stuck, a 4-I scroll-progress line. Desktop panels gain an intro card with a dino and tiles that spring in. **Mobile drawer**: full width on phones (460px on tablets), spring slide, large items, accordions of two-column dino tiles, a waving dino above Donate.
+- **Family**: programme heroes carry an "An IqraSaurus programme" badge (links to the hub once live, until then to the footer's programme band); the footer opens with "Every IqraSaurus programme" as dino cards with "You are here". Footer columns are aligned, with "Soon" badges on the same line.
+- **Programme page**: hero is two columns from 768px; booklet pages under 1024px are a swipeable fanned row with each page once; What it is shows its first paragraph and keeps the rest behind "Read more"; the 4-I steps are a path that fills as you scroll, a different dino at each step; a **Watch** section (see media.ts) sits after the session. Section padding is now `py-16 md:py-24`.
+- **Hub**: dinos in the hero at every width, programme cards with colour and dino, Watch with your child (all videos and Shorts), and "From our Instagram", which shows dinos until the owner adds photos to `HubContent.instagram`.
+- Instagram can't be read without signing in, so no photos were taken from it.
+
+Commit `phase 10: redesign pass`. **STOP D** — owner checks laptop, tablet and phone, in light and dark mode.
+
+---
+
 ## 13. If something does not work
 
 - **React Router framework-mode pre-rendering fails with a library** (usually something touching `window` at import): fix the offending component with a client-only guard first. Only if that fails, fall back for that app to a plain Vite SPA plus a `vercel.json` rewrite of all paths to `/index.html`, tell the owner, and note the SEO trade-off.

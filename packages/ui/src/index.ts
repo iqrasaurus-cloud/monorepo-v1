@@ -1,5 +1,6 @@
 export * from './embed/index.ts'
 export * from './layout/index.ts'
+export * from './mascot/index.ts'
 export * from './motion/index.ts'
 export * from './primitives/index.ts'
 export * from './sections/index.ts'

@@ -6,11 +6,24 @@ import { cn } from '../utils/cn.ts'
 import { brandImage } from './brand.ts'
 import { donateHref, hubLive, logoHref } from './links.ts'
 
+/** The owner's logo; on Night screens the owner-approved light version (CLAUDE.md rule 9). */
 export function Logo({ site, className }: { site: SiteConfig; className?: string }) {
-  const logo = brandImage('logo-horizontal')
   const href = logoHref(site)
   const label = site.kind === 'hub' || hubLive() ? 'IqraSaurus home' : `${site.name} home`
-  const image = <Picture {...logo} priority className={cn('w-auto', className)} />
+  const image = (
+    <>
+      <Picture
+        {...brandImage('logo-horizontal')}
+        priority
+        className={cn('logo-day w-auto', className)}
+      />
+      <Picture
+        {...brandImage('logo-horizontal-light')}
+        alt=""
+        className={cn('logo-night w-auto', className)}
+      />
+    </>
+  )
   if (href.startsWith('/')) {
     return (
       <Link to={href} aria-label={label} className="flex shrink-0 items-center">
@@ -25,7 +38,7 @@ export function Logo({ site, className }: { site: SiteConfig; className?: string
   )
 }
 
-function HeartIcon({ className }: { className?: string }) {
+export function HeartIcon({ className }: { className?: string }) {
   return (
     <svg aria-hidden="true" viewBox="0 0 24 24" className={className}>
       <path
@@ -42,7 +55,7 @@ interface DonateButtonProps {
   onClick?: (e: MouseEvent<HTMLAnchorElement>, href: string) => void
 }
 
-/** The one bright call to action, on every site. */
+/** The one bright call to action, on every site. Presses down like the tools' buttons. */
 export function DonateButton({ size = 'sm', className, onClick }: DonateButtonProps) {
   const href = donateHref()
   return (
@@ -50,12 +63,19 @@ export function DonateButton({ size = 'sm', className, onClick }: DonateButtonPr
       href={href}
       onClick={onClick ? (e) => onClick(e, href) : undefined}
       className={cn(
-        'inline-flex items-center justify-center gap-1.5 rounded-pill bg-sun font-heading font-semibold text-plum shadow-soft transition duration-300 ease-reveal hover:bg-sun/85 motion-safe:hover:-translate-y-0.5',
-        size === 'sm' ? 'px-4 py-2 text-sm lg:px-5 lg:py-2.5 lg:text-base' : 'w-full px-6 py-4 text-lg',
+        'group inline-flex items-center justify-center gap-1.5 rounded-pill bg-sun font-heading font-semibold text-on-sun shadow-[0_4px_0_rgb(var(--plum-rgb)/0.22)] transition duration-150 ease-out hover:brightness-105 active:translate-y-1 active:shadow-none',
+        size === 'sm'
+          ? 'px-4 py-2 text-sm lg:px-5 lg:py-2.5 lg:text-base'
+          : 'w-full px-6 py-4 text-lg',
         className,
       )}
     >
-      <HeartIcon className={size === 'sm' ? 'size-4' : 'size-5'} />
+      <HeartIcon
+        className={cn(
+          'transition-transform duration-300 motion-safe:group-hover:scale-125',
+          size === 'sm' ? 'size-4' : 'size-5',
+        )}
+      />
       {brand.donate.label}
     </a>
   )
