@@ -219,7 +219,7 @@ export const tools: ToolConfig[] = [
   { slug: 'tadabbur', name: 'Tadabbur', line: 'One ayah a day', path: '/tadabbur', host: `tadabbur.${HUB_HOST}`, status: 'live', mascot: 'mascot-quran.png', pose: 'reading-quran', colour: 'inspire' },
   { slug: 'hafiz', name: 'Mini Hafiz', line: '[[CONTENT NEEDED: one line]]', path: '/hafiz', host: `hafiz.${HUB_HOST}`, status: 'live', mascot: 'mascot-reader.png', pose: 'hugging-quran', colour: 'integrate' },
   // Worksheets became Numbers & Counting (owner, 2026-10-11): the Numbersaurus app in the tools repo.
-  { slug: 'numbers', name: 'Numbers & Counting', line: '[[CONTENT NEEDED: one line]]', path: '/numbers', status: 'coming-soon', mascot: 'mascot-magnifier.png', pose: 'pointing', colour: 'investigate' },
+  { slug: 'numbers', name: 'Numbers & Counting', line: '[[CONTENT NEEDED: one line]]', path: '/numbers', host: `numbers.${HUB_HOST}`, status: 'live', mascot: 'mascot-magnifier.png', pose: 'pointing', colour: 'investigate' },
   { slug: 'calendar', name: 'Calendar', line: '[[CONTENT NEEDED: one line]]', path: '/calendar', status: 'coming-soon', mascot: 'mascot-binoculars.png', pose: 'crescent-moon', colour: 'impart' },
   { slug: 'museum', name: 'Museum', line: '[[CONTENT NEEDED: one line]]', path: '/museum', status: 'coming-soon', mascot: 'mascot-magnifier.png', pose: 'treasure-chest', colour: 'investigate' },
   // Dino became Duas (owner, 2026-10-11): the duas we make on a regular basis.

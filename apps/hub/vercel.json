@@ -94,6 +94,16 @@
       "source": "/hafiz/:rest*",
       "destination": "https://hafiz.iqrasaurus.com/hafiz/:rest*",
       "permanent": false
+    },
+    {
+      "source": "/numbers",
+      "destination": "https://numbers.iqrasaurus.com/numbers",
+      "permanent": false
+    },
+    {
+      "source": "/numbers/:rest*",
+      "destination": "https://numbers.iqrasaurus.com/numbers/:rest*",
+      "permanent": false
     }
   ]
 }
