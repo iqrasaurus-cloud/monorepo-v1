@@ -9,7 +9,7 @@ Bismillah. Read `CLAUDE.md` first; its rules override anything here. Work throug
 | Topic | Decision |
 |---|---|
 | Sites | 1 hub + 6 programmes (spokes) = 7 Vercel projects from this one repo. Registry: `packages/config/src/spokes.ts` (originally supplied by the owner; now edited per owner decisions). StoryBus and EduDrama are one programme, **StoryBuzz**; Tiny Tafseer was dropped (2026-10-04) |
-| Tools | Separate apps at `iqrasaurus.com/tadabbur`, `/hafiz`, `/worksheets`, `/calendar`, `/museum`, `/dino`. Not built here; listed in the registry's `tools` array and linked from the header. Only Tadabbur is marked live |
+| Tools | Separate apps at `iqrasaurus.com/tadabbur`, `/hafiz`, `/numbers`, `/calendar`, `/museum`, `/duas` (Worksheets became Numbers & Counting and Dino became Duas on 2026-10-11). Not built here; listed in the registry's `tools` array and linked from the header. Only Tadabbur is marked live |
 | Brand direction | Tools-first hub, one header bar, five-section programme pages. Agreed by the owner 2026-10-04; full write-up in `tadabbur-for-kids-v1/docs/BRAND-SITE-REVIEW.md`. Delivered as Phases 4–6 below |
 | First build | Shared packages + **Quran Investigators** spoke only. Hub and the other 6 spokes come later |
 | App type | Each site is a single-page app like the KERN reference, but **pre-rendered to static HTML** at build time so it is fast and indexable |

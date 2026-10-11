@@ -9,7 +9,7 @@ A pnpm-workspace monorepo that produces **7 small static websites** from one sha
 - **1 hub** — `iqrasaurus.com`, tools-first
 - **6 programmes** (spokes) — one subdomain each, e.g. `quraninvestigators.iqrasaurus.com`
 
-**Tools** are separate apps that live at short hub paths (`iqrasaurus.com/tadabbur`, `/hafiz`, `/worksheets`, `/calendar`, `/museum`, `/dino`). They are not built in this repo; this repo only links to them.
+**Tools** are separate apps that live at short hub paths (`iqrasaurus.com/tadabbur`, `/hafiz`, `/numbers`, `/calendar`, `/museum`, `/duas` (Worksheets became Numbers & Counting and Dino became Duas on 2026-10-11)). They are not built in this repo; this repo only links to them.
 
 Every site is a pre-rendered React single-page app deployed as its own Vercel project (Root Directory = `apps/<slug>`). The single source of truth for which sites and tools exist is `packages/config/src/spokes.ts`.
 

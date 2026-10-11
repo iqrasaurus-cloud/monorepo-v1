@@ -16,7 +16,7 @@ import type { SpokeContent } from '@iqra/config'
 export const content: SpokeContent = {
   hero: {
     line: 'Getting children ready for the Madrasah Entrance Test, with Islamic values in every lesson.',
-    useAtHome: ['worksheets', 'hafiz'],
+    useAtHome: ['numbers', 'hafiz'],
   },
 
   whatItIs: {

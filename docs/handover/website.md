@@ -20,7 +20,7 @@ Also done: the shared design tokens (4-I colours, Night values kept inactive) an
 Reference docs that live in the **Tadabbur repo**, not this one: `tadabbur-for-kids-v1/docs/BRAND-SITE-REVIEW.md` (the approved direction and the draft copy) and `docs/DESIGN-SYSTEM.md` / `packages/design/tokens.css` (the shared look).
 
 ## Owner's decisions so far
-- Direction (2026-10-04): tools-first hub; one header bar (logo, Tools, Programmes, About, Work with us, Donate); five-section programme pages; tools at `iqrasaurus.com/tadabbur`, `/hafiz`, `/worksheets`, `/calendar`, `/museum`, `/dino`. Only Tadabbur is marked live.
+- Direction (2026-10-04): tools-first hub; one header bar (logo, Tools, Programmes, About, Work with us, Donate); five-section programme pages; tools at `iqrasaurus.com/tadabbur`, `/hafiz`, `/numbers`, `/calendar`, `/museum`, `/duas` (Worksheets became Numbers & Counting and Dino became Duas on 2026-10-11). Only Tadabbur is marked live.
 - Programmes (six): Quran Investigators, StoryBuzz (StoryBus and EduDrama merged), Quran & Hadeeth Doodling, Madrasah Preparation, Baiti Madrasati, Umrah for Kids. Tiny Tafseer was removed; the owner did not object, but it has not been explicitly confirmed.
 - Spelling is **IqraSaurus**. Programmes are "programmes", never "Toolkit".
 - WhatsApp +65 8365 8221 and admin@iqrasaurus.com are confirmed current. The donation link is a placeholder for now.
