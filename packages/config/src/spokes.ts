@@ -73,7 +73,7 @@ export const sites: SiteConfig[] = [
     name: 'IqraSaurus',
     description: 'A family-led Dakwah initiative helping children discover, understand and live Islam.',
     host: HUB_HOST,
-    status: 'coming-soon', // flip to 'live' in Phase 6
+    status: 'live', // live at iqrasaurus.com since 2026-10-11
     order: 0,
     mascot: 'mascot-quran.png',
     mascotTone: 'playful',
@@ -89,7 +89,7 @@ export const sites: SiteConfig[] = [
     name: 'Quran Investigators',
     description: 'One surah at a time: activity booklets that turn young readers into investigators.', // OWNER (draft)
     host: `quraninvestigators.${HUB_HOST}`,
-    status: 'live', // first spoke to be built
+    status: 'live', // first spoke to be built; quraninvestigators.iqrasaurus.com since 2026-10-11
     order: 1,
     mascot: 'mascot-magnifier.png',
     mascotTone: 'playful',
@@ -110,7 +110,7 @@ export const sites: SiteConfig[] = [
     name: 'StoryBuzz',
     description: 'True stories of the prophets, told aloud and acted out by children.', // OWNER (draft from founder interview)
     host: `storybuzz.${HUB_HOST}`,
-    status: 'coming-soon',
+    status: 'live', // on its iqrasaurus.com subdomain since 2026-10-11
     order: 2,
     mascot: 'mascot-walking.png',
     mascotTone: 'playful',
@@ -126,7 +126,7 @@ export const sites: SiteConfig[] = [
     name: 'Quran & Hadeeth Doodling',
     description: 'Children draw what a surah or hadeeth means to them, before they can write it down.', // OWNER (draft from founder interview)
     host: `quranhadeethdoodling.${HUB_HOST}`,
-    status: 'coming-soon',
+    status: 'live', // on its iqrasaurus.com subdomain since 2026-10-11
     order: 3,
     mascot: 'mascot-quran.png', // placeholder pose
     mascotTone: 'playful',
@@ -142,7 +142,7 @@ export const sites: SiteConfig[] = [
     name: 'Madrasah Preparation',
     description: 'Madrasah Entrance Test preparation, with Islamic values in every lesson.', // OWNER (draft from founder interview)
     host: `madrasahpreparation.${HUB_HOST}`,
-    status: 'coming-soon',
+    status: 'live', // on its iqrasaurus.com subdomain since 2026-10-11
     order: 4,
     mascot: 'mascot-reader.png',
     mascotTone: 'playful',
@@ -158,7 +158,7 @@ export const sites: SiteConfig[] = [
     name: 'Baiti Madrasati',
     description: 'How our homeschooling family learns Islam at home, shared for other families.', // OWNER (draft from founder interview)
     host: `baitimadrasati.${HUB_HOST}`,
-    status: 'coming-soon',
+    status: 'live', // on its iqrasaurus.com subdomain since 2026-10-11
     order: 5,
     mascot: 'mascot-quran.png', // placeholder pose
     mascotTone: 'playful',
@@ -174,7 +174,7 @@ export const sites: SiteConfig[] = [
     name: 'Umrah for Kids',
     description: 'Stories, drama and rhymes that prepare children for Umrah.', // OWNER (draft from founder interview)
     host: `umrahforkids.${HUB_HOST}`,
-    status: 'coming-soon',
+    status: 'live', // on its iqrasaurus.com subdomain since 2026-10-11
     order: 6,
     mascot: 'mascot-binoculars.png',
     mascotTone: 'playful',
@@ -197,6 +197,11 @@ export interface ToolConfig {
   line: string
   /** Path on the hub domain, e.g. '/tadabbur'. */
   path: string
+  /**
+   * Where the tool runs today. The hub forwards <path> (and everything under it) there, so
+   * iqrasaurus.com/tadabbur works while the tools keep their own deployments.
+   */
+  deployUrl?: string
   /** 'live' tools link out; 'coming-soon' tools show the name with a "Coming soon" pill. */
   status: SiteStatus
   /** File in apps/<slug>/public/brand/. Placeholder poses repeat until new art arrives. */
@@ -208,7 +213,7 @@ export interface ToolConfig {
 
 export const tools: ToolConfig[] = [
   // OWNER: Tadabbur is linked now so it works the day iqrasaurus.com/tadabbur is routed.
-  { slug: 'tadabbur', name: 'Tadabbur', line: 'One ayah a day', path: '/tadabbur', status: 'live', mascot: 'mascot-quran.png', pose: 'reading-quran', colour: 'inspire' },
+  { slug: 'tadabbur', name: 'Tadabbur', line: 'One ayah a day', path: '/tadabbur', deployUrl: 'https://tadabbur.vercel.app/tadabbur', status: 'live', mascot: 'mascot-quran.png', pose: 'reading-quran', colour: 'inspire' },
   { slug: 'hafiz', name: 'Mini Hafiz', line: '[[CONTENT NEEDED: one line]]', path: '/hafiz', status: 'coming-soon', mascot: 'mascot-reader.png', pose: 'hugging-quran', colour: 'integrate' },
   // Worksheets became Numbers & Counting (owner, 2026-10-11): the Numbersaurus app in the tools repo.
   { slug: 'numbers', name: 'Numbers & Counting', line: '[[CONTENT NEEDED: one line]]', path: '/numbers', status: 'coming-soon', mascot: 'mascot-magnifier.png', pose: 'pointing', colour: 'investigate' },

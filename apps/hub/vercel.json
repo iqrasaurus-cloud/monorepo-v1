@@ -73,5 +73,17 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/tadabbur",
+      "destination": "https://tadabbur.vercel.app/tadabbur",
+      "permanent": false
+    },
+    {
+      "source": "/tadabbur/:rest*",
+      "destination": "https://tadabbur.vercel.app/tadabbur/:rest*",
+      "permanent": false
+    }
   ]
 }

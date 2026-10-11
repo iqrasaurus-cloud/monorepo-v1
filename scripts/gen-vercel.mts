@@ -3,7 +3,7 @@
 import { existsSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { securityHeaders, sites, type SiteConfig } from '../packages/config/src/index.ts'
+import { securityHeaders, sites, tools, type SiteConfig } from '../packages/config/src/index.ts'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 
@@ -36,6 +36,21 @@ for (const site of sites) {
     cleanUrls: true,
     trailingSlash: false,
     headers: securityHeaders(site),
+    // The hub forwards each live tool's short path to wherever that tool runs.
+    ...(site.kind === 'hub'
+      ? {
+          redirects: tools
+            .filter((t) => t.status === 'live' && t.deployUrl)
+            .flatMap((t) => [
+              { source: t.path, destination: t.deployUrl, permanent: false },
+              {
+                source: `${t.path}/:rest*`,
+                destination: `${t.deployUrl}/:rest*`,
+                permanent: false,
+              },
+            ]),
+        }
+      : {}),
   }
   writeFileSync(resolve(dir, 'vercel.json'), JSON.stringify(config, null, 2) + '\n')
   console.log(`wrote  apps/${site.slug}/vercel.json`)
