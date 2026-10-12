@@ -98,8 +98,9 @@ export const videos: Video[] = [
     pose: 'heart-gift',
   },
 
-  // Mus'ab ibn Umair series (StoryBuzz). OWNER: please check the thumbnails and videos against
-  // CLAUDE.md rule 4 before this goes live; the site itself shows only a dino on the card.
+  // Mus'ab ibn Umair series (StoryBuzz). Companions may appear in the owner's Shorts (CLAUDE.md
+  // rule 4, owner decision 2026-10-12). OWNER: the three full-length videos just below are not
+  // Shorts; confirm they are fine too. The site itself shows only a dino on every card.
   {
     id: 'CKFPe_onAWY',
     title: 'Daily Companions Musab ibn Umair - Part 1',
