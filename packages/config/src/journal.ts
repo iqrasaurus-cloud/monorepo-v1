@@ -23,7 +23,7 @@
 
 export const journalSheet = {
   /** OWNER: the sheet's id, from its link docs.google.com/spreadsheets/d/<id>/edit */
-  id: '1nvb_tP-zyvWDK3bujGDvWnKF2N33H9H0E5oTlS5qtHY',
+  id: '1wy04iJmT_YYlxV9_tslkZ9MDQSCsQHjI_tdWyOhgHPQ', // owned by iqrasaurus@gmail.com (2026-10-12)
   /** The tab the posts are on (0 = the first tab). */
   gid: '0',
 } as const
