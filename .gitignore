@@ -12,3 +12,7 @@ Thumbs.db
 .env.*
 .vercel/
 .claude/
+
+# Journal posts and pictures, written from the Google Sheet by scripts/journal.mts at build time
+apps/*/app/journal.generated.json
+apps/*/public/journal/

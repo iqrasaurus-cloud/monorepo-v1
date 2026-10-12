@@ -25,7 +25,7 @@ export const contentSecurityPolicy = (site: SiteConfig, frameAncestors: FrameAnc
 
 /** Origins of external embeds that declare a given feature in `allow`. */
 const allowedOrigins = (site: SiteConfig, feature: string): string[] =>
-  [site.journal, site.chat]
+  [site.chat]
     .filter((e) => e.src.startsWith('https://') && (e.allow ?? '').split(/\s+/).includes(feature))
     .map((e) => new URL(e.src).origin)
     .filter((o, i, a) => a.indexOf(o) === i)

@@ -143,7 +143,7 @@ interface PlayerProps {
 }
 
 /** The player: a sheet over the page with the YouTube frame, only created when asked for. */
-function Player({ site, video, onClose }: PlayerProps) {
+export function Player({ site, video, onClose }: PlayerProps) {
   const reduced = useReducedMotionSafe()
   const closeRef = useRef<HTMLButtonElement>(null)
   const { lock } = useSmoothScroll()

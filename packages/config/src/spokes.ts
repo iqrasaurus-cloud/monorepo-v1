@@ -9,7 +9,7 @@
  * Owner-editable values are marked  // OWNER
  */
 
-import { videosFor, youtube } from './media.ts'
+import { youtube } from './media.ts'
 
 export type SiteStatus = 'live' | 'coming-soon'
 export type MascotTone = 'playful' | 'calm' | 'none'
@@ -55,7 +55,6 @@ export interface SiteConfig {
   colour: Colour
   /** Optional per-site accent. Leave undefined to use the shared brand accent. */
   accent?: string
-  journal: EmbedConfig
   chat: EmbedConfig
   support: {
     /** Button target. Empty string hides the button and shows descriptive text only. */
@@ -79,7 +78,6 @@ export const sites: SiteConfig[] = [
     mascotTone: 'playful',
     pose: 'waving-wink',
     colour: 'investigate',
-    journal: { src: '', title: 'IqraSaurus Journal' }, // OWNER
     chat: { src: '', title: 'Ask IqraSaurus' }, // OWNER
     support: { href: '', label: 'Support our work' }, // OWNER
   },
@@ -95,7 +93,6 @@ export const sites: SiteConfig[] = [
     mascotTone: 'playful',
     pose: 'magnifying-glass',
     colour: 'investigate',
-    journal: { src: 'https://mtfa-microsite-ikc-v1.sheetany.site', title: 'Quran Investigators Journal' }, // OWNER
     chat: {
       src: 'https://www.chatbase.co/chatbot-iframe/zlzFNm9ySuiomi-Mi-gNR',
       title: 'Ask the Quran Investigators guide',
@@ -116,7 +113,6 @@ export const sites: SiteConfig[] = [
     mascotTone: 'playful',
     pose: 'superhero-cape',
     colour: 'impart',
-    journal: { src: '', title: 'StoryBuzz Journal' },
     chat: { src: '', title: 'Ask the StoryBuzz guide' },
     support: { href: '', label: 'Support StoryBuzz' },
   },
@@ -132,7 +128,6 @@ export const sites: SiteConfig[] = [
     mascotTone: 'playful',
     pose: 'writing',
     colour: 'inspire',
-    journal: { src: '', title: 'Quran & Hadeeth Doodling Journal' },
     chat: { src: '', title: 'Ask the Doodling guide' },
     support: { href: '', label: 'Support Quran & Hadeeth Doodling' },
   },
@@ -148,7 +143,6 @@ export const sites: SiteConfig[] = [
     mascotTone: 'playful',
     pose: 'backpack-ready',
     colour: 'integrate',
-    journal: { src: '', title: 'Madrasah Preparation Journal' },
     chat: { src: '', title: 'Ask the Madrasah Preparation guide' },
     support: { href: '', label: 'Support Madrasah Preparation' },
   },
@@ -164,7 +158,6 @@ export const sites: SiteConfig[] = [
     mascotTone: 'playful',
     pose: 'heart-hug',
     colour: 'impart',
-    journal: { src: '', title: 'Baiti Madrasati Journal' },
     chat: { src: '', title: 'Ask the Baiti Madrasati guide' },
     support: { href: '', label: 'Support Baiti Madrasati' },
   },
@@ -180,7 +173,6 @@ export const sites: SiteConfig[] = [
     mascotTone: 'playful',
     pose: 'binoculars-pointing',
     colour: 'inspire',
-    journal: { src: '', title: 'Umrah for Kids Journal' },
     chat: { src: '', title: 'Ask the Umrah for Kids guide' },
     support: { href: '', label: 'Support Umrah for Kids' },
   },
@@ -238,6 +230,8 @@ export const tools: ToolConfig[] = [
 export const mainMenu = [
   { label: 'Tools', type: 'tools' },
   { label: 'Programmes', type: 'programmes' },
+  // This site's own journal (owner decision 2026-10-12); the hub's journal shows every programme.
+  { label: 'Journal', type: 'site', path: '/journal' },
   { label: 'About', type: 'hub', path: '/about', fallback: '#about-iqrasaurus' },
   { label: 'Work with us', type: 'hub', path: '/work-with-us', fallback: '#work-with-us' },
 ] as const
@@ -313,7 +307,8 @@ export const isPlaceholder = (text: string | undefined): boolean =>
 
 /** Origins allowed in CSP frame-src for one site (external embeds only). */
 export const frameOrigins = (s: SiteConfig): string[] =>
-  [s.journal.src, s.chat.src, videosFor(s.slug).length > 0 ? youtube.embedOrigin : '']
+  // YouTube is always allowed: video cards and journal posts can play a video on any site.
+  [s.chat.src, youtube.embedOrigin]
     .filter((u) => u.startsWith('https://'))
     .map((u) => new URL(u).origin)
     .filter((o, i, a) => a.indexOf(o) === i)

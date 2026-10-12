@@ -415,6 +415,20 @@ Commit `phase 10: redesign pass`. **STOP D** — owner checks laptop, tablet and
 
 ---
 
+## 12B. Phase 11 — Journal from one Google Sheet (owner decision 2026-10-12)
+
+The Sheetany journal embed is replaced by native pages. One Google Sheet, "IqraSaurus Journal (master list)", holds every post: `site` (programme slug, `hub` or `all`), `category`, `publish_date` (backdating allowed; future dates wait), `title`, `excerpt`, `body` (or a Google Doc link), `image_url`, `image_alt`, `video_url`, `status` (`published` shows), `slug`.
+
+- `scripts/journal.mts` runs before every app's dev and build: it reads the sheet as CSV, keeps the site's posts (a programme gets its own and `all`; the hub lists everything), downloads and shrinks pictures to WebP in `public/journal/`, and writes `app/journal.generated.json` (both git-ignored). If the sheet can't be read, the build carries on with the last posts or none.
+- Pages: `/journal` (cards, category filter) and `/journal/<slug>`, pre-rendered and in the sitemap. On the hub, a programme's post links to that programme's page; hub and `all` posts have hub pages.
+- Header: Journal sits between Programmes and About on every site.
+- Refresh: `.github/workflows/journal-refresh.yml` runs daily at 06:00 Singapore time and on demand, calling each Vercel project's deploy hook (secret `VERCEL_DEPLOY_HOOKS`).
+- The sheet must be shared as "Anyone with the link: Viewer"; pictures from Google Drive too.
+
+Next, in the owner's order: tools work (Tadabbur chat), Malay (EN | BM), YouTube playlists, Instagram. Donations: PayNow QR plus a LaunchGood link, once the owner supplies both.
+
+---
+
 ## 13. If something does not work
 
 - **React Router framework-mode pre-rendering fails with a library** (usually something touching `window` at import): fix the offending component with a client-only guard first. Only if that fails, fall back for that app to a plain Vite SPA plus a `vercel.json` rewrite of all paths to `/index.html`, tell the owner, and note the SEO trade-off.

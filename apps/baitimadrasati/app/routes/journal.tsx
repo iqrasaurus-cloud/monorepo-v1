@@ -1,5 +1,6 @@
 import { getSite } from '@iqra/config'
-import { EmbedPage, pageMeta } from '@iqra/ui'
+import { JournalList, pageMeta } from '@iqra/ui'
+import { posts } from '../journal.ts'
 
 const site = getSite('baitimadrasati')
 
@@ -8,5 +9,5 @@ export function meta() {
 }
 
 export default function Journal() {
-  return <EmbedPage site={site} kind="journal" />
+  return <JournalList site={site} posts={posts} />
 }

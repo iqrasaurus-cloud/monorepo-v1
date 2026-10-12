@@ -192,6 +192,19 @@ export function SiteHeader({ site }: { site: SiteConfig }) {
             <nav aria-label="Main" className="hidden lg:block">
               <ul className="flex items-center gap-1">
                 {mainMenu.map((item) => {
+                  if (item.type === 'site') {
+                    return (
+                      <li key={item.label}>
+                        <NavLink
+                          to={item.path}
+                          onClick={close}
+                          className={({ isActive }) => itemClass(isActive)}
+                        >
+                          {item.label}
+                        </NavLink>
+                      </li>
+                    )
+                  }
                   if (item.type === 'hub') {
                     const href = hubItemHref(site, item.path, item.fallback)
                     return (

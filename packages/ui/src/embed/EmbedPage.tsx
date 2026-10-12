@@ -5,16 +5,16 @@ import { SafeEmbed } from './SafeEmbed.tsx'
 
 interface EmbedPageProps {
   site: SiteConfig
-  kind: 'journal' | 'chat'
+  kind: 'chat'
 }
 
 /**
- * The /journal and /chat pages: a compact heading, then the embed filling the rest
+ * The /chat page: a compact heading, then the embed filling the rest
  * of the screen edge to edge so it reads as part of the site, not a box inside it.
  */
 export function EmbedPage({ site, kind }: EmbedPageProps) {
   const embed = site[kind]
-  const title = kind === 'journal' ? 'Journal' : 'Chat'
+  const title = 'Chat'
   return (
     <>
       <Container className="flex flex-wrap items-end justify-between gap-4 py-6 md:py-8">

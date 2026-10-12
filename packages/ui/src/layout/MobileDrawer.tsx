@@ -209,6 +209,18 @@ export function MobileDrawer({ site, open, onClose }: MobileDrawerProps) {
               <nav aria-label="Main" className="flex-1">
                 <ul className="divide-y divide-line">
                   {mainMenu.map((item, i) => {
+                    if (item.type === 'site') {
+                      return (
+                        <li key={item.label}>
+                          <Rise index={i} reduced={reduced}>
+                            <Link to={item.path} onClick={onClose} className={itemClass}>
+                              {item.label}
+                              <Arrow />
+                            </Link>
+                          </Rise>
+                        </li>
+                      )
+                    }
                     if (item.type === 'hub') {
                       const href = hubItemHref(site, item.path, item.fallback)
                       return (

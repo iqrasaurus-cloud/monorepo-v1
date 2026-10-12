@@ -38,7 +38,11 @@ const COPY = [
   'public/brand',
   'public/embeds',
 ]
-for (const path of COPY) cpSync(join(from, path), join(target, path), { recursive: true })
+// The journal file is build output for the template's own site, so it is left behind.
+const skipGenerated = (src) => !src.endsWith('journal.generated.json')
+for (const path of COPY) {
+  cpSync(join(from, path), join(target, path), { recursive: true, filter: skipGenerated })
+}
 cpSync(join(from, 'assets-src/photos/.gitkeep'), join(target, 'assets-src/photos/.gitkeep'))
 
 // Swap the slug in every route file.
@@ -114,10 +118,16 @@ export const content: SpokeContent = {
 )
 
 const run = (args) => {
-  const result = spawnSync('pnpm', args, { cwd: root, stdio: 'inherit', shell: process.platform === 'win32' })
+  const result = spawnSync('pnpm', args, {
+    cwd: root,
+    stdio: 'inherit',
+    shell: process.platform === 'win32',
+  })
   if (result.status !== 0) fail(`pnpm ${args.join(' ')} failed`)
 }
 run(['assets', slug]) // og.png carries the programme's name
 run(['gen:vercel'])
 
-console.log(`\napps/${slug} created (dev port ${port}). Next: pnpm install, then fill in apps/${slug}/content.ts.`)
+console.log(
+  `\napps/${slug} created (dev port ${port}). Next: pnpm install, then fill in apps/${slug}/content.ts.`,
+)

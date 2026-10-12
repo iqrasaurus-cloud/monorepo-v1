@@ -14,10 +14,7 @@ import {
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 
 const assertValidEmbeds = (site: SiteConfig): void => {
-  for (const [kind, embed] of [
-    ['journal', site.journal],
-    ['chat', site.chat],
-  ] as const) {
+  for (const [kind, embed] of [['chat', site.chat]] as const) {
     const { src } = embed
     if (src === '' || src.startsWith('https://') || src.startsWith('/embeds/')) continue
     throw new Error(

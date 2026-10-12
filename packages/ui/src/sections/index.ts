@@ -3,3 +3,10 @@ export { HubHome } from './hub/HubHome.tsx'
 export { HubAbout } from './hub/HubAbout.tsx'
 export { HubWorkWithUs } from './hub/HubWorkWithUs.tsx'
 export { NotFound } from './NotFound.tsx'
+export {
+  JournalList,
+  JournalPostPage,
+  journalPagesFor,
+  postHref,
+  formatDate,
+} from './journal/Journal.tsx'

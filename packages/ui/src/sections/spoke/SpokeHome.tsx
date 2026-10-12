@@ -49,7 +49,7 @@ export function SpokeHome({ site, content: c }: SpokeHomeProps) {
       id: 'seen',
       bg: 'surface',
       show: hasSeen(c.seen),
-      node: <Seen site={site} seen={c.seen} />,
+      node: <Seen seen={c.seen} />,
     },
     {
       id: 'bring-it-to-your-class',

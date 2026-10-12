@@ -1,0 +1,28 @@
+# Rebuilds all seven sites so they pick up new posts from the journal Google Sheet.
+# Runs every day at 06:00 Singapore time. To publish straight away: GitHub -> Actions ->
+# "Refresh journal" -> Run workflow.
+# VERCEL_DEPLOY_HOOKS is a repository secret: one Vercel deploy-hook URL per line.
+name: Refresh journal
+
+on:
+  schedule:
+    - cron: '0 22 * * *' # 22:00 UTC = 06:00 in Singapore
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ask Vercel to rebuild every site
+        env:
+          HOOKS: ${{ secrets.VERCEL_DEPLOY_HOOKS }}
+        run: |
+          count=0
+          while IFS= read -r url; do
+            [ -z "$url" ] && continue
+            curl -fsS -X POST "$url" > /dev/null
+            count=$((count + 1))
+          done <<< "$HOOKS"
+          echo "Asked Vercel to rebuild $count site(s)."

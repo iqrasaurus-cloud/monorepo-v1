@@ -1,4 +1,4 @@
-import { isPlaceholder, type SiteConfig, type SpokeContent } from '@iqra/config'
+import { isPlaceholder, type SpokeContent } from '@iqra/config'
 import { Reveal, RevealItem, RevealList } from '../../motion/Reveal.tsx'
 import { Button } from '../../primitives/Button.tsx'
 import { Container } from '../../primitives/Container.tsx'
@@ -13,12 +13,11 @@ export const hasSeen = (seen: SpokeContent['seen']): boolean =>
   seen.photos.length > 0
 
 interface SeenProps {
-  site: SiteConfig
   seen: SpokeContent['seen']
 }
 
 /** Section 4: real quotes, lessons and photos. Only rendered when hasSeen() is true. */
-export function Seen({ site, seen }: SeenProps) {
+export function Seen({ seen }: SeenProps) {
   const quotes = seen.quotes.filter((q) => !isPlaceholder(q.text))
   const lessons = real(seen.lessons)
   const photos = seen.photos.map(withFallback)
@@ -88,13 +87,11 @@ export function Seen({ site, seen }: SeenProps) {
         </RevealList>
       ) : null}
 
-      {site.journal.src ? (
-        <Reveal className="mt-10">
-          <Button to="/journal" variant="outline" className="bg-surface">
-            Read our journal
-          </Button>
-        </Reveal>
-      ) : null}
+      <Reveal className="mt-10">
+        <Button to="/journal" variant="outline" className="bg-surface">
+          Read our journal
+        </Button>
+      </Reveal>
     </Container>
   )
 }
