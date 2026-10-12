@@ -1,5 +1,6 @@
 import { embedUrl, videosFor, watchUrl, youtube, type SiteConfig, type Video } from '@iqra/config'
-import { AnimatePresence, motion } from 'framer-motion'
+import { useT } from '../../i18n/lang.ts'
+import { AnimatePresence, m } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { SafeEmbed } from '../../embed/SafeEmbed.tsx'
 import { Mascot } from '../../mascot/Mascot.tsx'
@@ -44,6 +45,7 @@ interface CardProps {
 
 /** The big video: its colour, its dino, the title and a sun play button. */
 function FeaturedCard({ video, index, onPlay }: CardProps) {
+  const t = useT()
   const c = colourAt(index)
   return (
     <button
@@ -61,7 +63,7 @@ function FeaturedCard({ video, index, onPlay }: CardProps) {
       <span className="relative flex items-end gap-4">
         <PlayBadge size="lg" />
         <span className="min-w-0 max-w-[55%]">
-          <span className={cn('label mb-1 block opacity-80', c.on)}>Video</span>
+          <span className={cn('label mb-1 block opacity-80', c.on)}>{t.video}</span>
           <span
             className={cn(
               'line-clamp-3 font-heading text-xl font-bold leading-tight md:text-3xl',
@@ -105,6 +107,7 @@ function RowCard({ video, index, onPlay }: CardProps) {
 
 /** A tall 9:16 card for a YouTube Short. */
 function ShortCard({ video, index, onPlay }: CardProps) {
+  const t = useT()
   const c = colourAt(index + 1)
   return (
     <button
@@ -121,7 +124,7 @@ function ShortCard({ video, index, onPlay }: CardProps) {
           'label relative self-start rounded-pill bg-surface/80 px-2 py-0.5 text-[10px] text-ink',
         )}
       >
-        Short
+        {t.short}
       </span>
       <span className="relative flex flex-1 items-center justify-center">
         <Mascot pose={asPose(video.pose)} size={96} className="iq-mascot-hover" />
@@ -145,6 +148,7 @@ interface PlayerProps {
 /** The player: a sheet over the page with the YouTube frame, only created when asked for. */
 export function Player({ site, video, onClose }: PlayerProps) {
   const reduced = useReducedMotionSafe()
+  const t = useT()
   const closeRef = useRef<HTMLButtonElement>(null)
   const { lock } = useSmoothScroll()
   const short = video.kind === 'short'
@@ -166,7 +170,7 @@ export function Player({ site, video, onClose }: PlayerProps) {
   }, [onClose, lock])
 
   return (
-    <motion.div
+    <m.div
       role="dialog"
       aria-modal="true"
       aria-label={video.title}
@@ -182,7 +186,7 @@ export function Player({ site, video, onClose }: PlayerProps) {
         onClick={onClose}
         className="absolute inset-0 bg-plum/80 backdrop-blur-sm"
       />
-      <motion.div
+      <m.div
         className={cn(
           'relative flex flex-col',
           short ? 'h-[min(86svh,760px)]' : 'w-[min(94vw,980px)]',
@@ -200,7 +204,7 @@ export function Player({ site, video, onClose }: PlayerProps) {
             ref={closeRef}
             type="button"
             onClick={onClose}
-            aria-label="Close video"
+            aria-label={t.closeVideo}
             className="flex size-11 shrink-0 items-center justify-center rounded-full bg-on-plum/15 text-on-plum transition hover:rotate-90 hover:bg-on-plum/25"
           >
             <svg aria-hidden="true" viewBox="0 0 24 24" className="size-6">
@@ -228,10 +232,10 @@ export function Player({ site, video, onClose }: PlayerProps) {
           rel="noopener noreferrer"
           className="link-sweep mt-3 self-start text-sm font-semibold text-on-plum/85"
         >
-          Watch on YouTube
+          {t.watchOnYouTube}
         </a>
-      </motion.div>
-    </motion.div>
+      </m.div>
+    </m.div>
   )
 }
 
@@ -246,7 +250,8 @@ interface VideosProps {
  * a few more beside it and a row of Shorts. Nothing loads from YouTube until a visitor
  * presses play.
  */
-export function Videos({ site, title = 'Watch with your child' }: VideosProps) {
+export function Videos({ site, title }: VideosProps) {
+  const t = useT()
   const all = videosFor(site.slug)
   const long = all.filter((v) => v.kind === 'video')
   const shorts = all.filter((v) => v.kind === 'short')
@@ -274,13 +279,13 @@ export function Videos({ site, title = 'Watch with your child' }: VideosProps) {
   return (
     <Container>
       <Reveal className="mb-10 flex flex-wrap items-end justify-between gap-6">
-        <SectionHeading title={title} pose="amazed-stars" />
+        <SectionHeading title={title ?? t.watchWithYourChild} pose="amazed-stars" />
         <a
           href={youtube.channel}
           rel="noopener"
           className="link-sweep shrink-0 font-semibold text-primary"
         >
-          More on our YouTube channel
+          {t.moreOnYouTube}
         </a>
       </Reveal>
 
@@ -304,7 +309,7 @@ export function Videos({ site, title = 'Watch with your child' }: VideosProps) {
       {shorts.length > 0 ? (
         <div className={cn(featured && 'mt-14')}>
           <div className="mb-5 flex items-center justify-between gap-4">
-            <h3 className="font-heading text-2xl font-bold text-primary">Shorts</h3>
+            <h3 className="font-heading text-2xl font-bold text-primary">{t.shorts}</h3>
             {shorts.length > 3 ? (
               <div className="hidden gap-2 sm:flex">
                 {([-1, 1] as const).map((dir) => (
@@ -312,7 +317,7 @@ export function Videos({ site, title = 'Watch with your child' }: VideosProps) {
                     key={dir}
                     type="button"
                     onClick={() => scrollRow(dir)}
-                    aria-label={dir === 1 ? 'More shorts' : 'Previous shorts'}
+                    aria-label={dir === 1 ? t.moreShorts : t.previousShorts}
                     className="flex size-11 items-center justify-center rounded-full bg-primary-soft text-primary transition hover:bg-primary hover:text-on-primary"
                   >
                     <svg

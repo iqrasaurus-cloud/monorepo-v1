@@ -1,4 +1,11 @@
-import { brand, fourI, isPlaceholder, type HubContent, type SiteConfig } from '@iqra/config'
+import {
+  isPlaceholder,
+  localized,
+  type HubContent,
+  type Overlay,
+  type SiteConfig,
+} from '@iqra/config'
+import { fourIText, useBrand, useLang, useT } from '../../i18n/lang.ts'
 import type { ReactNode } from 'react'
 import { mascotImage } from '../../layout/brand.ts'
 import { Reveal, RevealItem, RevealList } from '../../motion/Reveal.tsx'
@@ -34,29 +41,35 @@ interface Block {
 interface HubAboutProps {
   site: SiteConfig
   about: HubContent['about']
+  /** The Malay version from apps/hub/content.ms.ts. */
+  aboutMs?: Overlay<HubContent['about']>
 }
 
 /** iqrasaurus.com/about: story, people, foundation, how we teach, trust and press. */
-export function HubAbout({ site, about }: HubAboutProps) {
+export function HubAbout({ site, about: english, aboutMs }: HubAboutProps) {
+  const t = useT()
+  const lang = useLang()
+  const brand = useBrand()
+  const about = lang === 'ms' ? localized(english, aboutMs) : english
   const story = real(about.story)
   const foundation = real(about.foundation)
   const people = about.people.filter((p) => !isPlaceholder(p.name))
   const verify = [
-    { label: 'Verify ARS on MUIS', href: brand.verifyLinks.ars },
-    { label: 'Verify IECP on MUIS', href: brand.verifyLinks.iecp },
+    { label: t.verifyArs, href: brand.verifyLinks.ars },
+    { label: t.verifyIecp, href: brand.verifyLinks.iecp },
   ].filter((v) => v.href !== '')
 
   const blocks: Block[] = [
     {
       id: 'our-story',
-      title: 'Our story',
+      title: t.ourStory,
       bg: 'surface',
       show: story.length > 0,
       body: <Prose paragraphs={story} />,
     },
     {
       id: 'our-people',
-      title: 'Our people',
+      title: t.ourPeople,
       bg: 'paper-2',
       show: people.length > 0,
       body: (
@@ -83,19 +96,19 @@ export function HubAbout({ site, about }: HubAboutProps) {
     },
     {
       id: 'our-foundation',
-      title: 'Our foundation',
+      title: t.ourFoundation,
       bg: 'surface',
       show: foundation.length > 0,
       body: <Prose paragraphs={foundation} />,
     },
     {
       id: 'how-we-teach',
-      title: 'How we teach: the 4-I method',
+      title: t.howWeTeach,
       bg: 'paper-2',
       show: true,
       body: (
         <RevealList as="ol" className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
-          {fourI.map((step, i) => (
+          {fourIText(lang).map((step, i) => (
             <RevealItem key={step.key} as="li">
               <CircleCard
                 step={i + 1}
@@ -115,7 +128,7 @@ export function HubAbout({ site, about }: HubAboutProps) {
     },
     {
       id: 'trust',
-      title: 'Who guides us',
+      title: t.whoGuidesUs,
       bg: 'surface',
       show: true,
       body: (
@@ -137,7 +150,7 @@ export function HubAbout({ site, about }: HubAboutProps) {
     },
     {
       id: 'in-the-news',
-      title: 'In the news',
+      title: t.inTheNews,
       bg: 'paper',
       show: about.press !== undefined,
       body: about.press ? (
@@ -155,7 +168,7 @@ export function HubAbout({ site, about }: HubAboutProps) {
 
   return (
     <>
-      <PageHeader title="About IqraSaurus" lede={brand.positioning} />
+      <PageHeader title={t.aboutTitle} lede={brand.positioning} />
       {visible.map((block, i) => {
         const previous: Bg = visible[i - 1]?.bg ?? 'paper'
         return (

@@ -1,4 +1,5 @@
 import { isPlaceholder, type SiteConfig, type SpokeContent } from '@iqra/config'
+import { useT } from '../../i18n/lang.ts'
 import { useState } from 'react'
 import { SafeEmbed } from '../../embed/SafeEmbed.tsx'
 import { mascotImage } from '../../layout/brand.ts'
@@ -18,6 +19,7 @@ function VideoPoster({
   poster: ReturnType<typeof withFallback> | undefined
 }) {
   const [playing, setPlaying] = useState(false)
+  const t = useT()
   const image = poster ?? mascotImage(site.mascot, 640)
 
   if (playing) {
@@ -34,7 +36,7 @@ function VideoPoster({
       type="button"
       onClick={() => setPlaying(true)}
       className="group relative block aspect-video w-full overflow-hidden rounded-card bg-paper-2 shadow-soft [&_picture]:contents"
-      aria-label="Play video"
+      aria-label={t.playVideo}
     >
       <Picture {...image} className="h-full w-full object-cover" />
       <span className="absolute inset-0 flex items-center justify-center">
@@ -56,10 +58,11 @@ interface WhatItIsProps {
 /** Section 2: what the material is, with the scrolling gallery of real pages. */
 export function WhatItIs({ site, whatItIs }: WhatItIsProps) {
   const photos = whatItIs.photos.map(withFallback)
+  const t = useT()
   const [lead, ...more] = real(whatItIs.body)
   const title = (
     <h2 className="px-6 font-heading text-5xl font-bold leading-none text-primary md:text-7xl">
-      What it is
+      {t.whatItIs}
     </h2>
   )
 
@@ -83,8 +86,8 @@ export function WhatItIs({ site, whatItIs }: WhatItIsProps) {
             {/* The rest waits behind "Read more", so the page reads quickly. */}
             <details className="group mt-6 rounded-card border border-line bg-paper/60 open:bg-paper">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 font-heading text-lg font-semibold text-primary [&::-webkit-details-marker]:hidden">
-                <span className="group-open:hidden">Read more</span>
-                <span className="hidden group-open:inline">Show less</span>
+                <span className="group-open:hidden">{t.readMore}</span>
+                <span className="hidden group-open:inline">{t.showLess}</span>
                 <span
                   aria-hidden="true"
                   className="flex size-8 items-center justify-center rounded-full bg-primary-soft transition-transform duration-300 group-open:rotate-45"

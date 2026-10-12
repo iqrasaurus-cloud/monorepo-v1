@@ -287,7 +287,7 @@ Home: hero ("Something meaningful to do with your child today") with the six too
 
 Pages: **About** (our story, our people, our foundation, the credential line, MUIS verify links, the press clipping), **Work with us**, and a Donate target.
 
-**Today's ayah is a link-only card** (decided 2026-10-04): a sun-coloured card with the reading dino, "Today's ayah", one line, and an "Open Tadabbur" button. No ayah text is written into the site (rule 1) and nothing is fetched at runtime (`connect-src 'self'`, rule 12). "This week" is left out until the Calendar tool is live.
+**Today's ayah is a link-only card** (decided 2026-10-04): a sun-coloured card with the reading dino, "Today's ayah", one line, and an "Open Tadabbur" button. No ayah text is written into the site (rule 1) and nothing is fetched at runtime (`connect-src 'self'`, rule 13). "This week" is left out until the Calendar tool is live.
 
 Built as: `apps/hub` (routes `/`, `/about`, `/work-with-us`, 404, with its own `entry.server.tsx` like the programme apps), content in `apps/hub/content.ts` typed by `HubContent`, sections in `packages/ui/src/sections/hub`. The About page renders story, people and foundation only once they hold real text; "How we teach: the 4-I method", "Who guides us" (credential line, MUIS links when present) and "In the news" (the press clipping) always show. The hub stays `coming-soon` in the registry until the owner deploys it, so programme sites keep pointing About and Work with us at their footer blocks until then.
 
@@ -426,6 +426,14 @@ The Sheetany journal embed is replaced by native pages. One Google Sheet, "IqraS
 - The sheet must be shared as "Anyone with the link: Viewer"; pictures from Google Drive too.
 
 Next, in the owner's order: tools work (Tadabbur chat), Malay (EN | BM), YouTube playlists, Instagram. Donations: PayNow QR plus a LaunchGood link, once the owner supplies both.
+
+## 12C. Phase 12 — Malay (EN | BM), owner decision 2026-10-12
+
+- Every page exists twice: English at its usual address, Malay under `/ms` (`routes.ts` uses `prefix('ms', …)`; `react-router.config.ts` pre-renders both). `<html lang>` follows the address.
+- EN | BM switch beside Donate (in the drawer on phones) goes to the same page in the other language.
+- Text: interface strings in `packages/ui/src/i18n/strings.ts`; each app's `content.ms.ts` overlays its `content.ts` (missing = English); registry `ms` fields for descriptions and tool lines; `brandMs` and `fourIMs` in `spokes.ts`; journal columns `title_ms`, `excerpt_ms`, `body_ms`.
+- Not translated: the credential sentence (rule 3) until the owner supplies approved Malay, programme and tool names, the 4-I step names, the logo tagline, the brand belief quote, and any Quran or hadith text (rule 1).
+- All Malay is a draft from the approved English. `malayReviewed` in `packages/config/src/i18n.ts` stays `false` (Malay pages noindex, no hreflang) until the owner and asatizah have checked `owner-files/malay-review/IqraSaurus Malay review.xlsx`.
 
 ---
 

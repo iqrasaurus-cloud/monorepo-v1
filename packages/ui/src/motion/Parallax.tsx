@@ -1,5 +1,5 @@
 import type { Photo } from '@iqra/config'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { m, useScroll, useTransform } from 'framer-motion'
 import { useRef, type ReactNode } from 'react'
 import { Picture } from '../primitives/Picture.tsx'
 import { cn } from '../utils/cn.ts'
@@ -24,12 +24,12 @@ export function Parallax({ image, className, children }: ParallaxProps) {
 
   return (
     <div ref={ref} className={cn('relative h-[60vh] overflow-hidden md:h-[80vh]', className)}>
-      <motion.div
+      <m.div
         style={reduced ? undefined : { y, scale }}
         className="absolute inset-x-0 top-0 h-[136%] w-full -translate-y-[18%] [&_picture]:contents"
       >
         <Picture {...image} className="h-full w-full object-cover" />
-      </motion.div>
+      </m.div>
       {children ? (
         <div className="absolute inset-0 flex items-center justify-center">{children}</div>
       ) : null}

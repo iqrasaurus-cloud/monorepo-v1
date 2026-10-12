@@ -1,10 +1,16 @@
-import { index, route, type RouteConfig } from '@react-router/dev/routes'
+import { index, prefix, route, type RouteConfig } from '@react-router/dev/routes'
+
+// Every page twice: in English, and in Malay under /ms (owner decision 2026-10-12).
+const pages = (id: string) => [
+  index('routes/home.tsx', { id: `${id}home` }),
+  route('about', 'routes/about.tsx', { id: `${id}about` }),
+  route('work-with-us', 'routes/work-with-us.tsx', { id: `${id}work-with-us` }),
+  route('journal', 'routes/journal.tsx', { id: `${id}journal` }),
+  route('journal/:slug', 'routes/journal-post.tsx', { id: `${id}journal-post` }),
+]
 
 export default [
-  index('routes/home.tsx'),
-  route('about', 'routes/about.tsx'),
-  route('work-with-us', 'routes/work-with-us.tsx'),
-  route('journal', 'routes/journal.tsx'),
-  route('journal/:slug', 'routes/journal-post.tsx'),
+  ...pages(''),
+  ...prefix('ms', pages('ms-')),
   route('*', 'routes/not-found.tsx'),
 ] satisfies RouteConfig

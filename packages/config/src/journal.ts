@@ -18,6 +18,7 @@
  *   video_url     optional YouTube link
  *   status        "published" shows it; anything else (draft, example) hides it
  *   slug          optional; the web address of the post. Made from the title when empty
+ *   title_ms, excerpt_ms, body_ms   optional Malay versions; the English shows where they're empty
  *
  * The owner writes every post (CLAUDE.md rules 1 and 2): text is shown exactly as written.
  */
@@ -46,4 +47,6 @@ export interface JournalPost {
   image?: { src: string; alt: string; width: number; height: number }
   /** YouTube video id. */
   videoId?: string
+  /** Malay versions, where the sheet has them. */
+  ms?: { title?: string; excerpt?: string; body?: string[] }
 }

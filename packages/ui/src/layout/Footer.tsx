@@ -1,6 +1,8 @@
-import { brand, hub, siteUrl, type SiteConfig } from '@iqra/config'
+import { hub, localPath, siteUrl, stripLang, type SiteConfig } from '@iqra/config'
 import type { ReactNode } from 'react'
-import { Link, useLocation } from 'react-router'
+import { useLocation } from 'react-router'
+import { useBrand, useLang, useT } from '../i18n/lang.ts'
+import { Link } from '../i18n/Link.tsx'
 import { Mascot } from '../mascot/Mascot.tsx'
 import { RevealItem, RevealList } from '../motion/Reveal.tsx'
 import { asPose, colourClass } from '../primitives/colours.ts'
@@ -21,11 +23,12 @@ const soonBadge =
 
 /** One row in a footer list: the name, and a small "Soon" badge on the same line. */
 function Row({ entry }: { entry: TileEntry }) {
+  const t = useT()
   if (entry.href === undefined) {
     return (
       <span className={cn('flex items-center justify-between gap-3', muted)}>
         {entry.name}
-        <span className={soonBadge}>Soon</span>
+        <span className={soonBadge}>{t.soon}</span>
       </span>
     )
   }
@@ -51,14 +54,15 @@ function Column({ id, title, children }: { id?: string; title: string; children:
 
 /** Every programme as a dino card: the clearest sign that each site is part of one family. */
 function FamilyBand({ site }: { site: SiteConfig }) {
-  const tiles = programmeTiles(site)
+  const t = useT()
+  const tiles = programmeTiles(site, useLang())
   return (
-    <nav id="iqrasaurus-family" aria-label="IqraSaurus programmes" className="scroll-mt-24 pb-14">
+    <nav id="iqrasaurus-family" aria-label={t.programmesNav} className="scroll-mt-24 pb-14">
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="label mb-3 text-sun">The {brand.name} family</p>
+          <p className="label mb-3 text-sun">{t.family}</p>
           <p className="font-heading text-3xl font-bold text-on-plum md:text-4xl">
-            Every {brand.name} programme
+            {t.everyProgramme}
           </p>
         </div>
       </div>
@@ -85,12 +89,12 @@ function FamilyBand({ site }: { site: SiteConfig }) {
               <span className="mt-1.5">
                 {entry.current ? (
                   <span className="label rounded-pill bg-sun px-2 py-0.5 text-[10px] text-on-sun">
-                    You are here
+                    {t.youAreHere}
                   </span>
                 ) : live ? (
-                  <span className="label text-[10px] text-sun">Visit</span>
+                  <span className="label text-[10px] text-sun">{t.visit}</span>
                 ) : (
-                  <span className={soonBadge}>Coming soon</span>
+                  <span className={soonBadge}>{t.comingSoon}</span>
                 )}
               </span>
             </>
@@ -164,15 +168,18 @@ function InstagramIcon() {
 
 export function Footer({ site }: { site: SiteConfig }) {
   const { pathname } = useLocation()
+  const lang = useLang()
+  const t = useT()
+  const brand = useBrand()
   // The hub's home page already shows every programme just above the footer.
-  const showFamily = !(site.kind === 'hub' && pathname === '/')
+  const showFamily = !(site.kind === 'hub' && stripLang(pathname) === '/')
   // The footer sits on plum, so it uses the owner-approved light logo (CLAUDE.md rule 9).
   const logo = brandImage('logo-horizontal-light')
   const year = new Date().getFullYear()
   const aboutPage = site.kind === 'hub' || hubLive()
   const verify = [
-    { label: 'Verify ARS on MUIS', href: brand.verifyLinks.ars },
-    { label: 'Verify IECP on MUIS', href: brand.verifyLinks.iecp },
+    { label: t.verifyArs, href: brand.verifyLinks.ars },
+    { label: t.verifyIecp, href: brand.verifyLinks.iecp },
   ].filter((v) => v.href !== '')
   const social = [
     { label: 'YouTube', href: brand.social.youtube, icon: <YouTubeIcon /> },
@@ -205,7 +212,7 @@ export function Footer({ site }: { site: SiteConfig }) {
                     <a
                       href={s.href}
                       rel="noopener"
-                      aria-label={`${brand.name} on ${s.label}`}
+                      aria-label={`${brand.name} ${t.onSocial} ${s.label}`}
                       className="flex size-10 items-center justify-center rounded-full bg-on-plum/10 text-on-plum transition duration-300 hover:bg-sun hover:text-on-sun"
                     >
                       {s.icon}
@@ -215,9 +222,9 @@ export function Footer({ site }: { site: SiteConfig }) {
               </ul>
             </div>
 
-            <Column title="Tools">
+            <Column title={t.tools}>
               <ul className="max-w-[220px] space-y-2.5">
-                {toolTiles().map((entry) => (
+                {toolTiles(lang).map((entry) => (
                   <li key={entry.key}>
                     <Row entry={entry} />
                   </li>
@@ -226,7 +233,7 @@ export function Footer({ site }: { site: SiteConfig }) {
             </Column>
 
             {/* The header's "About" item lands here until the hub's About page is live. */}
-            <Column id="about-iqrasaurus" title={`About ${brand.name}`}>
+            <Column id="about-iqrasaurus" title={t.aboutBrand}>
               <p className="text-on-plum/85">{brand.credential}</p>
               {verify.length > 0 ? (
                 <ul className="mt-3 space-y-1">
@@ -247,24 +254,24 @@ export function Footer({ site }: { site: SiteConfig }) {
                 {aboutPage ? (
                   site.kind === 'hub' ? (
                     <Link to="/about" className={link}>
-                      Our story, people and foundation
+                      {t.storyPeople}
                     </Link>
                   ) : (
-                    <a href={siteUrl(hub(), '/about')} className={link}>
-                      Our story, people and foundation
+                    <a href={siteUrl(hub(), localPath(lang, '/about'))} className={link}>
+                      {t.storyPeople}
                     </a>
                   )
                 ) : (
                   <span className={cn('flex items-center gap-3', muted)}>
-                    Our story, people and foundation
-                    <span className={soonBadge}>Soon</span>
+                    {t.storyPeople}
+                    <span className={soonBadge}>{t.soon}</span>
                   </span>
                 )}
               </p>
             </Column>
 
             {/* The header's "Work with us" item and the Donate placeholder land here. */}
-            <Column id="work-with-us" title="Work with us">
+            <Column id="work-with-us" title={t.workWithUs}>
               <ul className="space-y-2.5">
                 <li>
                   <a href={brand.contact.whatsappHref} className={link} rel="noopener">
@@ -291,12 +298,12 @@ export function Footer({ site }: { site: SiteConfig }) {
               <ul className="flex gap-5">
                 <li>
                   <Link to="/journal" className={link}>
-                    Journal
+                    {t.journal}
                   </Link>
                 </li>
                 <li>
                   <Link to="/chat" className={link}>
-                    Ask our guide
+                    {t.askOurGuide}
                   </Link>
                 </li>
               </ul>

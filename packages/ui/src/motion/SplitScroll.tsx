@@ -1,5 +1,5 @@
 import type { Photo } from '@iqra/config'
-import { motion, useScroll, useTransform, type MotionValue } from 'framer-motion'
+import { m, useScroll, useTransform, type MotionValue } from 'framer-motion'
 import { useRef, type ReactNode } from 'react'
 import { Picture } from '../primitives/Picture.tsx'
 import { cn } from '../utils/cn.ts'
@@ -11,7 +11,7 @@ type Frame = Photo & { fallback?: string }
 
 function Column({ photos, y }: { photos: Frame[]; y: MotionValue<string> }) {
   return (
-    <motion.div style={{ y }} className="flex w-full flex-col gap-[3vh]">
+    <m.div style={{ y }} className="flex w-full flex-col gap-[3vh]">
       {photos.map((photo, i) => (
         <div
           key={`${photo.src}-${i}`}
@@ -20,7 +20,7 @@ function Column({ photos, y }: { photos: Frame[]; y: MotionValue<string> }) {
           <Picture {...photo} className="h-full w-full object-cover" />
         </div>
       ))}
-    </motion.div>
+    </m.div>
   )
 }
 
@@ -71,12 +71,12 @@ function Split({ photos, title }: { photos: Frame[]; title: ReactNode }) {
           <div />
           <Column photos={photos.slice(half)} y={yRight} />
         </div>
-        <motion.div
+        <m.div
           style={{ scale }}
           className="pointer-events-none absolute inset-0 flex items-center justify-center text-center"
         >
           {title}
-        </motion.div>
+        </m.div>
       </div>
     </div>
   )

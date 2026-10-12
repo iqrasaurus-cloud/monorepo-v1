@@ -1,6 +1,7 @@
-import { brand, type SiteConfig } from '@iqra/config'
+import type { SiteConfig } from '@iqra/config'
 import type { MouseEvent } from 'react'
-import { Link } from 'react-router'
+import { useBrand, useLang } from '../i18n/lang.ts'
+import { Link } from '../i18n/Link.tsx'
 import { Picture } from '../primitives/Picture.tsx'
 import { cn } from '../utils/cn.ts'
 import { brandImage } from './brand.ts'
@@ -8,7 +9,7 @@ import { donateHref, hubLive, logoHref } from './links.ts'
 
 /** The owner's logo; on Night screens the owner-approved light version (CLAUDE.md rule 9). */
 export function Logo({ site, className }: { site: SiteConfig; className?: string }) {
-  const href = logoHref(site)
+  const href = logoHref(site, useLang())
   const label = site.kind === 'hub' || hubLive() ? 'IqraSaurus home' : `${site.name} home`
   const image = (
     <>
@@ -57,6 +58,7 @@ interface DonateButtonProps {
 
 /** The one bright call to action, on every site. Presses down like the tools' buttons. */
 export function DonateButton({ size = 'sm', className, onClick }: DonateButtonProps) {
+  const brand = useBrand()
   const href = donateHref()
   return (
     <a

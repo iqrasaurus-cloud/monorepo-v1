@@ -1,4 +1,16 @@
-import { brand, hub, isPlaceholder, siteUrl, type SiteConfig } from '@iqra/config'
+import {
+  brand,
+  hub,
+  isPlaceholder,
+  LANG_TAG,
+  LANGS,
+  localPath,
+  malayReviewed,
+  siteUrl,
+  type Lang,
+  type SiteConfig,
+} from '@iqra/config'
+import { siteDescription } from './i18n/lang.ts'
 import type { MetaDescriptor } from 'react-router'
 
 interface PageSeo {
@@ -38,12 +50,14 @@ const structuredData = (site: SiteConfig, description: string | undefined) => {
  * Open Graph, Twitter card, and robots. Sites that are still `coming-soon` are noindex,
  * so a preview deployment never competes with the real site in search.
  */
-export function pageMeta(site: SiteConfig, page: PageSeo): MetaDescriptor[] {
-  const raw = page.description ?? site.description
+export function pageMeta(site: SiteConfig, page: PageSeo, lang: Lang = 'en'): MetaDescriptor[] {
+  const raw = page.description ?? siteDescription(site, lang)
   const description = isPlaceholder(raw) ? undefined : raw
-  const url = siteUrl(site, page.path)
+  const url = siteUrl(site, localPath(lang, page.path))
   const image = siteUrl(site, '/brand/og.png')
-  const noindex = page.noindex === true || site.status === 'coming-soon'
+  // Malay pages stay out of search results until the owner has checked the translation.
+  const noindex =
+    page.noindex === true || site.status === 'coming-soon' || (lang === 'ms' && !malayReviewed)
 
   const tags: MetaDescriptor[] = [
     { title: page.title },
@@ -55,13 +69,33 @@ export function pageMeta(site: SiteConfig, page: PageSeo): MetaDescriptor[] {
     { property: 'og:image:width', content: '1200' },
     { property: 'og:image:height', content: '630' },
     { property: 'og:image:alt', content: site.name },
-    { property: 'og:locale', content: 'en_SG' },
+    { property: 'og:locale', content: LANG_TAG[lang].og },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: page.title },
     { name: 'twitter:image', content: image },
   ]
   // A noindex page (the 404) has no address of its own to claim.
-  if (!page.noindex) tags.push({ tagName: 'link', rel: 'canonical', href: url })
+  if (!page.noindex) {
+    tags.push({ tagName: 'link', rel: 'canonical', href: url })
+    // The same page in every language, so search engines can offer the right one.
+    for (const l of LANGS) {
+      if (l === 'ms' && !malayReviewed) continue
+      tags.push({
+        tagName: 'link',
+        rel: 'alternate',
+        hrefLang: LANG_TAG[l].html,
+        href: siteUrl(site, localPath(l, page.path)),
+      })
+    }
+    if (malayReviewed) {
+      tags.push({
+        tagName: 'link',
+        rel: 'alternate',
+        hrefLang: 'x-default',
+        href: siteUrl(site, page.path),
+      })
+    }
+  }
   if (description) {
     tags.push(
       { name: 'description', content: description },

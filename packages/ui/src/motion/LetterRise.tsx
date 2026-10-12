@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { Fragment } from 'react'
 import { cn } from '../utils/cn.ts'
 import { duration, easeReveal, stagger } from './presets.ts'
@@ -58,7 +58,7 @@ export function LetterRise({
             <Fragment key={wi}>
               <span className="inline-block whitespace-nowrap">
                 {units.map((unit, ui) => (
-                  <motion.span
+                  <m.span
                     key={ui}
                     data-reveal=""
                     className="inline-block"
@@ -67,7 +67,7 @@ export function LetterRise({
                     transition={transitionFor((starts[li]?.[wi] ?? 0) + ui)}
                   >
                     {unit}
-                  </motion.span>
+                  </m.span>
                 ))}
               </span>
               {wi < line.length - 1 ? ' ' : null}

@@ -1,14 +1,16 @@
 import {
-  brand,
   brandCopy,
+  localized,
+  type Overlay,
   isPlaceholder,
   toolUrl,
   tools,
   type HubContent,
   type SiteConfig,
 } from '@iqra/config'
-import { motion } from 'framer-motion'
-import { Link } from 'react-router'
+import { m } from 'framer-motion'
+import { useBrand, useLang, useT } from '../../i18n/lang.ts'
+import { Link } from '../../i18n/Link.tsx'
 import { programmeTiles, toolTiles, type TileEntry } from '../../layout/links.ts'
 import { MenuTile } from '../../layout/MenuTile.tsx'
 import { Mascot, type PoseName } from '../../mascot/Mascot.tsx'
@@ -31,10 +33,13 @@ import { withFallback } from '../spoke/helpers.ts'
 interface HubHomeProps {
   site: SiteConfig
   content: HubContent
+  /** The Malay version (apps/hub/content.ms.ts); missing parts show in English. */
+  contentMs?: Overlay<HubContent>
 }
 
 function AyahCard({ line }: { line: string }) {
-  const tadabbur = tools.find((t) => t.slug === 'tadabbur')
+  const t = useT()
+  const tadabbur = tools.find((tool) => tool.slug === 'tadabbur')
   if (!tadabbur || tadabbur.status !== 'live') return null
   return (
     <Reveal className="relative overflow-hidden rounded-[28px] bg-sun p-8 shadow-soft md:p-10">
@@ -42,14 +47,14 @@ function AyahCard({ line }: { line: string }) {
       <div className="relative flex flex-col items-center gap-6 text-center md:flex-row md:text-left">
         <Mascot pose="reading-quran" size={130} overlay="twinkle" motion="bob" />
         <div className="flex-1">
-          <p className="label mb-2 text-on-sun/75">Today&rsquo;s ayah</p>
+          <p className="label mb-2 text-on-sun/75">{t.todaysAyah}</p>
           <h2 className="font-heading text-3xl font-bold text-on-sun md:text-4xl">
             {tadabbur.name}
           </h2>
           {!isPlaceholder(line) ? <p className="mt-2 text-lg text-on-sun/85">{line}</p> : null}
         </div>
         <Button href={toolUrl(tadabbur)} variant="primary" size="lg" className="font-heading">
-          Open {tadabbur.name}
+          {t.open} {tadabbur.name}
         </Button>
       </div>
     </Reveal>
@@ -58,6 +63,7 @@ function AyahCard({ line }: { line: string }) {
 
 /** A programme as a big card: its colour, its dino, the name, one line and its status. */
 function ProgrammeCard({ entry }: { entry: TileEntry }) {
+  const t = useT()
   const live = entry.href !== undefined
   const c = colourClass[entry.colour]
   const inner = (
@@ -79,7 +85,7 @@ function ProgrammeCard({ entry }: { entry: TileEntry }) {
         </span>
         {!live ? (
           <span className="label absolute left-3 top-3 rounded-pill bg-surface px-2.5 py-1 text-[10px] text-ink/85">
-            Coming soon
+            {t.comingSoon}
           </span>
         ) : null}
       </span>
@@ -125,6 +131,8 @@ function ProgrammeCard({ entry }: { entry: TileEntry }) {
 
 /** Photos from instagram.com/iqrasaurus; dinos stand in until the owner adds them. */
 function Instagram({ photos }: { photos: HubContent['instagram'] }) {
+  const t = useT()
+  const brand = useBrand()
   const stand: PoseName[] = [
     'celebrating',
     'writing',
@@ -144,14 +152,14 @@ function Instagram({ photos }: { photos: HubContent['instagram'] }) {
   return (
     <Container>
       <Reveal className="mb-10 flex flex-wrap items-end justify-between gap-6">
-        <SectionHeading title="From our Instagram" pose="thumbs-up" />
+        <SectionHeading title={t.fromOurInstagram} pose="thumbs-up" />
         <Button
           href={brand.social.instagram}
           rel="noopener"
           variant="outline"
           className="bg-surface font-heading"
         >
-          Follow @iqrasaurus
+          {t.followUs}
         </Button>
       </Reveal>
       <RevealList as="ul" className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
@@ -182,7 +190,7 @@ function Instagram({ photos }: { photos: HubContent['instagram'] }) {
                 <a
                   href={brand.social.instagram}
                   rel="noopener"
-                  aria-label={i === 0 ? 'See our photos on Instagram' : undefined}
+                  aria-label={i === 0 ? t.seeOurPhotos : undefined}
                   tabIndex={i === 0 ? undefined : -1}
                   className="group block w-[70%] translate-y-2"
                 >
@@ -196,8 +204,12 @@ function Instagram({ photos }: { photos: HubContent['instagram'] }) {
 }
 
 /** iqrasaurus.com: tools first, then today's ayah, the programmes, videos and who we are. */
-export function HubHome({ site, content }: HubHomeProps) {
+export function HubHome({ site, content: english, contentMs }: HubHomeProps) {
   const reduced = useReducedMotionSafe()
+  const t = useT()
+  const lang = useLang()
+  const brand = useBrand()
+  const content = lang === 'ms' ? localized(english, contentMs) : english
   const fade = (delay: number) =>
     reduced
       ? { duration: duration.fade }
@@ -210,14 +222,14 @@ export function HubHome({ site, content }: HubHomeProps) {
         <Container className="relative">
           <div className="grid items-center gap-8 md:grid-cols-[1.35fr_1fr]">
             <div className="min-w-0">
-              <motion.div
+              <m.div
                 data-reveal=""
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={fade(0.1)}
               >
                 <Eyebrow className="mb-5">{brand.tagline}</Eyebrow>
-              </motion.div>
+              </m.div>
               <LetterRise
                 text={content.home.headline}
                 className="font-heading text-[clamp(2.25rem,7vw,4.25rem)] font-bold leading-[1.02] tracking-tight md:text-[clamp(2.25rem,4.6vw,4.25rem)]"
@@ -225,7 +237,7 @@ export function HubHome({ site, content }: HubHomeProps) {
               />
             </div>
             {site.mascotTone !== 'none' ? (
-              <motion.div
+              <m.div
                 data-reveal=""
                 initial={{ opacity: 0, scale: 0.94 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -251,26 +263,26 @@ export function HubHome({ site, content }: HubHomeProps) {
                 <div className="absolute -right-1 top-2 w-[26%]">
                   <Mascot pose="magnifying-glass" size={100} fluid enter />
                 </div>
-              </motion.div>
+              </m.div>
             ) : null}
           </div>
 
-          <motion.div
+          <m.div
             data-reveal=""
             initial={{ opacity: 0, y: heroText.y }}
             animate={{ opacity: 1, y: 0 }}
             transition={fade(heroText.delayFrom)}
             className="mt-10"
           >
-            <p className="label mb-4 text-ink/80">Start with a tool</p>
-            <ul aria-label="Tools" className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {toolTiles().map((entry) => (
+            <p className="label mb-4 text-ink/80">{t.startWithTool}</p>
+            <ul aria-label={t.tools} className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {toolTiles(lang).map((entry) => (
                 <li key={entry.key}>
                   <MenuTile entry={entry} />
                 </li>
               ))}
             </ul>
-          </motion.div>
+          </m.div>
         </Container>
       </section>
 
@@ -279,10 +291,10 @@ export function HubHome({ site, content }: HubHomeProps) {
           <AyahCard line={content.home.ayah.line} />
           <div id="programmes" className="scroll-mt-24">
             <Reveal>
-              <SectionHeading title="Our programmes" pose="signpost" className="mb-10" />
+              <SectionHeading title={t.ourProgrammes} pose="signpost" className="mb-10" />
             </Reveal>
             <RevealList as="ul" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {programmeTiles(site).map((entry) => (
+              {programmeTiles(site, lang).map((entry) => (
                 <RevealItem key={entry.key} as="li">
                   <ProgrammeCard entry={entry} />
                 </RevealItem>
@@ -307,7 +319,9 @@ export function HubHome({ site, content }: HubHomeProps) {
             <div className="mb-4 flex justify-center">
               <Mascot pose="grateful" size={120} enter />
             </div>
-            <h2 className="font-heading text-4xl font-bold text-on-plum md:text-5xl">Who we are</h2>
+            <h2 className="font-heading text-4xl font-bold text-on-plum md:text-5xl">
+              {t.whoWeAre}
+            </h2>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-on-plum/85 md:text-xl">
               {brand.positioning}
             </p>
@@ -323,7 +337,7 @@ export function HubHome({ site, content }: HubHomeProps) {
           </Reveal>
           <Reveal delay={0.15} className="mt-12">
             <Button to="/about" size="lg" className="font-heading">
-              About us
+              {t.aboutUs}
             </Button>
           </Reveal>
         </Container>

@@ -1,5 +1,6 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'react'
-import { Link, type LinkProps } from 'react-router'
+import type { LinkProps } from 'react-router'
+import { Link } from '../i18n/Link.tsx'
 import { cn } from '../utils/cn.ts'
 
 type Variant = 'sun' | 'primary' | 'outline' | 'ghost'

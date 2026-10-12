@@ -1,5 +1,5 @@
-import { brand, hub, mainMenu, siteUrl, type SiteConfig } from '@iqra/config'
-import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion'
+import { brand, hub, localPath, mainMenu, siteUrl, stripLang, type SiteConfig } from '@iqra/config'
+import { AnimatePresence, m, useScroll, useSpring } from 'framer-motion'
 import {
   useCallback,
   useEffect,
@@ -9,7 +9,10 @@ import {
   type KeyboardEvent,
   type MouseEvent,
 } from 'react'
-import { Link, NavLink, useLocation } from 'react-router'
+import { useLocation } from 'react-router'
+import { menuLabel, useLang, useT } from '../i18n/lang.ts'
+import { Link, NavLink } from '../i18n/Link.tsx'
+import { LangSwitch } from '../i18n/LangSwitch.tsx'
 import { Mascot, type PoseName } from '../mascot/Mascot.tsx'
 import { duration, easeReveal, headerEntrance, springPop, tileStagger } from '../motion/presets.ts'
 import { useReducedMotionSafe } from '../motion/useReducedMotionSafe.ts'
@@ -24,19 +27,8 @@ import { useHashJump } from './useHashJump.ts'
 type PanelKey = 'tools' | 'programmes'
 const panelId = (key: PanelKey) => `menu-panel-${key}`
 
-/** The left-hand card in each panel: what the group is, in one line. */
-const PANEL_INTRO: Record<PanelKey, { title: string; line: string; pose: PoseName }> = {
-  tools: {
-    title: 'Tools',
-    line: 'Apps to open with your child at home, a few minutes at a time.',
-    pose: 'laptop',
-  },
-  programmes: {
-    title: 'Programmes',
-    line: 'What we run with children, written up so you can run it too.',
-    pose: 'signpost',
-  },
-}
+/** The dino on the left-hand card in each panel. */
+const PANEL_POSE: Record<PanelKey, PoseName> = { tools: 'laptop', programmes: 'signpost' }
 
 const itemClass = (active: boolean) =>
   cn(
@@ -75,7 +67,7 @@ function ScrollProgress() {
   const { scrollYProgress } = useScroll()
   const scaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 40, restDelta: 0.001 })
   return (
-    <motion.div
+    <m.div
       aria-hidden="true"
       style={{ scaleX }}
       className="absolute inset-x-0 bottom-0 h-[3px] origin-left bg-gradient-to-r from-inspire via-investigate to-impart"
@@ -89,6 +81,8 @@ function ScrollProgress() {
  */
 export function SiteHeader({ site }: { site: SiteConfig }) {
   const reduced = useReducedMotionSafe()
+  const lang = useLang()
+  const t = useT()
   const { pathname } = useLocation()
   const jump = useHashJump()
   const headerRef = useRef<HTMLElement>(null)
@@ -149,10 +143,17 @@ export function SiteHeader({ site }: { site: SiteConfig }) {
     hamburgerRef.current?.focus()
   }, [])
 
-  const tiles = openKey === 'tools' ? toolTiles() : openKey ? programmeTiles(site) : []
-  const intro = openKey ? PANEL_INTRO[openKey] : null
+  const tiles = openKey === 'tools' ? toolTiles(lang) : openKey ? programmeTiles(site, lang) : []
+  const intro = openKey
+    ? {
+        title: openKey === 'tools' ? t.tools : t.programmes,
+        line: openKey === 'tools' ? t.toolsLine : t.programmesLine,
+        pose: PANEL_POSE[openKey],
+      }
+    : null
   // Once the hub is live, each panel offers the full list on iqrasaurus.com.
-  const seeAll = site.kind === 'hub' ? null : hubLive() ? siteUrl(hub(), '/') : null
+  const seeAll =
+    site.kind === 'hub' ? null : hubLive() ? siteUrl(hub(), localPath(lang, '/')) : null
 
   return (
     <>
@@ -169,7 +170,7 @@ export function SiteHeader({ site }: { site: SiteConfig }) {
             : 'border-transparent bg-surface',
         )}
       >
-        <motion.div
+        <m.div
           data-reveal=""
           initial={reduced ? { opacity: 0 } : headerEntrance.initial}
           animate={reduced ? { opacity: 1 } : headerEntrance.animate}
@@ -189,33 +190,33 @@ export function SiteHeader({ site }: { site: SiteConfig }) {
               )}
             />
 
-            <nav aria-label="Main" className="hidden lg:block">
+            <nav aria-label={t.mainNav} className="hidden lg:block">
               <ul className="flex items-center gap-1">
                 {mainMenu.map((item) => {
                   if (item.type === 'site') {
                     return (
-                      <li key={item.label}>
+                      <li key={menuLabel(t, item.label)}>
                         <NavLink
                           to={item.path}
                           onClick={close}
                           className={({ isActive }) => itemClass(isActive)}
                         >
-                          {item.label}
+                          {menuLabel(t, item.label)}
                         </NavLink>
                       </li>
                     )
                   }
                   if (item.type === 'hub') {
-                    const href = hubItemHref(site, item.path, item.fallback)
+                    const href = hubItemHref(site, item.path, item.fallback, lang)
                     return (
-                      <li key={item.label}>
+                      <li key={menuLabel(t, item.label)}>
                         {href.startsWith('/') ? (
                           <NavLink
                             to={href}
                             onClick={close}
                             className={({ isActive }) => itemClass(isActive)}
                           >
-                            {item.label}
+                            {menuLabel(t, item.label)}
                           </NavLink>
                         ) : (
                           <a
@@ -223,7 +224,7 @@ export function SiteHeader({ site }: { site: SiteConfig }) {
                             onClick={(e) => followLink(e, href)}
                             className={itemClass(false)}
                           >
-                            {item.label}
+                            {menuLabel(t, item.label)}
                           </a>
                         )}
                       </li>
@@ -231,7 +232,7 @@ export function SiteHeader({ site }: { site: SiteConfig }) {
                   }
                   const isOpen = openKey === item.type
                   return (
-                    <li key={item.label}>
+                    <li key={menuLabel(t, item.label)}>
                       <button
                         ref={(el) => {
                           triggerRefs.current[item.type] = el
@@ -242,7 +243,7 @@ export function SiteHeader({ site }: { site: SiteConfig }) {
                         onClick={() => toggle(item.type)}
                         className={itemClass(isOpen)}
                       >
-                        {item.label}
+                        {menuLabel(t, item.label)}
                         <Chevron open={isOpen} />
                       </button>
                     </li>
@@ -252,11 +253,12 @@ export function SiteHeader({ site }: { site: SiteConfig }) {
             </nav>
 
             <div className="flex items-center gap-2">
+              <LangSwitch className="hidden sm:flex" />
               <DonateButton onClick={followLink} />
               <button
                 ref={hamburgerRef}
                 type="button"
-                aria-label="Open menu"
+                aria-label={t.openMenu}
                 aria-expanded={drawerOpen}
                 aria-controls="mobile-menu"
                 onClick={() => setDrawerOpen(true)}
@@ -266,13 +268,13 @@ export function SiteHeader({ site }: { site: SiteConfig }) {
               </button>
             </div>
           </Container>
-        </motion.div>
+        </m.div>
 
         {reduced ? null : <ScrollProgress />}
 
         <AnimatePresence>
           {openKey && intro ? (
-            <motion.div
+            <m.div
               key={openKey}
               id={panelId(openKey)}
               data-lenis-prevent=""
@@ -294,22 +296,22 @@ export function SiteHeader({ site }: { site: SiteConfig }) {
                       href={seeAll}
                       className="link-sweep mt-4 self-start text-sm font-semibold text-primary"
                     >
-                      See them all on {brand.name}
+                      {t.seeAllOn} {brand.name}
                     </a>
-                  ) : site.kind === 'hub' && pathname !== '/' ? (
+                  ) : site.kind === 'hub' && stripLang(pathname) !== '/' ? (
                     <Link
                       to="/"
                       onClick={close}
                       className="link-sweep mt-4 self-start text-sm font-semibold text-primary"
                     >
-                      See them all
+                      {t.seeAll}
                     </Link>
                   ) : null}
                   <div className="mt-auto flex justify-end pt-4">
                     <Mascot pose={intro.pose} size={110} motion="nod" />
                   </div>
                 </div>
-                <motion.ul
+                <m.ul
                   className="grid content-start grid-cols-3 gap-3"
                   initial="hidden"
                   animate="shown"
@@ -318,7 +320,7 @@ export function SiteHeader({ site }: { site: SiteConfig }) {
                   }}
                 >
                   {tiles.map((entry) => (
-                    <motion.li
+                    <m.li
                       key={entry.key}
                       variants={
                         reduced
@@ -330,11 +332,11 @@ export function SiteHeader({ site }: { site: SiteConfig }) {
                       }
                     >
                       <MenuTile entry={entry} onNavigate={close} />
-                    </motion.li>
+                    </m.li>
                   ))}
-                </motion.ul>
+                </m.ul>
               </Container>
-            </motion.div>
+            </m.div>
           ) : null}
         </AnimatePresence>
       </header>

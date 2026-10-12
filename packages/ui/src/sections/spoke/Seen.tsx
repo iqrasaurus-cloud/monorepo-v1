@@ -1,4 +1,5 @@
 import { isPlaceholder, type SpokeContent } from '@iqra/config'
+import { useT } from '../../i18n/lang.ts'
 import { Reveal, RevealItem, RevealList } from '../../motion/Reveal.tsx'
 import { Button } from '../../primitives/Button.tsx'
 import { Container } from '../../primitives/Container.tsx'
@@ -18,6 +19,7 @@ interface SeenProps {
 
 /** Section 4: real quotes, lessons and photos. Only rendered when hasSeen() is true. */
 export function Seen({ seen }: SeenProps) {
+  const t = useT()
   const quotes = seen.quotes.filter((q) => !isPlaceholder(q.text))
   const lessons = real(seen.lessons)
   const photos = seen.photos.map(withFallback)
@@ -25,7 +27,7 @@ export function Seen({ seen }: SeenProps) {
   return (
     <Container>
       <Reveal>
-        <SectionHeading title="What we've seen" pose="star-hug" className="mb-12" />
+        <SectionHeading title={t.whatWeveSeen} pose="star-hug" className="mb-12" />
       </Reveal>
 
       {quotes.length > 0 ? (
@@ -58,7 +60,9 @@ export function Seen({ seen }: SeenProps) {
 
       {lessons.length > 0 ? (
         <Reveal className="mt-10 rounded-card bg-surface p-7 shadow-soft">
-          <h3 className="mb-4 font-heading text-2xl font-semibold text-primary">What we learned</h3>
+          <h3 className="mb-4 font-heading text-2xl font-semibold text-primary">
+            {t.whatWeLearned}
+          </h3>
           <ul className="space-y-3">
             {lessons.map((lesson, i) => (
               <li key={i} className="flex gap-3 text-ink/80">
@@ -89,7 +93,7 @@ export function Seen({ seen }: SeenProps) {
 
       <Reveal className="mt-10">
         <Button to="/journal" variant="outline" className="bg-surface">
-          Read our journal
+          {t.readOurJournal}
         </Button>
       </Reveal>
     </Container>

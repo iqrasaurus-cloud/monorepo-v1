@@ -2,11 +2,13 @@ import {
   brand,
   hub,
   isPlaceholder,
+  localPath,
   siteUrl,
   type SiteConfig,
   type SpokeContent,
 } from '@iqra/config'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { useLang, useT } from '../../i18n/lang.ts'
+import { m, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import { brandImage } from '../../layout/brand.ts'
 import { hubLive, toolTiles } from '../../layout/links.ts'
@@ -51,9 +53,11 @@ function ChatIcon() {
 
 /** "An IqraSaurus programme": ties this site to the family, linking to the hub once it's live. */
 function FamilyBadge() {
+  const t = useT()
+  const lang = useLang()
   const onAnchor = useAnchorNavigate()
   const icon = brandImage('icon')
-  const href = hubLive() ? siteUrl(hub()) : FAMILY_ANCHOR
+  const href = hubLive() ? siteUrl(hub(), localPath(lang, '/')) : FAMILY_ANCHOR
   return (
     <a
       href={href}
@@ -64,7 +68,9 @@ function FamilyBadge() {
         <Picture {...icon} alt="" priority className="size-7 object-contain" />
       </span>
       <span className="text-sm text-ink/85">
-        An <span className="font-heading font-semibold text-primary">{brand.name}</span> programme
+        {t.anProgrammeBefore}{' '}
+        <span className="font-heading font-semibold text-primary">{brand.name}</span>
+        {t.anProgrammeAfter ? ` ${t.anProgrammeAfter}` : null}
       </span>
       <svg
         aria-hidden="true"
@@ -92,6 +98,8 @@ interface HeroProps {
 export function Hero({ site, hero }: HeroProps) {
   const ref = useRef<HTMLElement>(null)
   const reduced = useReducedMotionSafe()
+  const t = useT()
+  const lang = useLang()
   const onAnchor = useAnchorNavigate()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
   const y = useTransform(scrollYProgress, [0, 1], heroScrollOut.y)
@@ -104,7 +112,7 @@ export function Hero({ site, hero }: HeroProps) {
   const c = colourClass[site.colour]
   const showMascot = site.mascotTone !== 'none'
   const photo = hero.image ? withFallback(hero.image) : undefined
-  const tiles = toolTiles().filter((t) => hero.useAtHome.includes(t.key))
+  const tiles = toolTiles(lang).filter((tile) => hero.useAtHome.includes(tile.key))
   const fade = (delay: number) =>
     reduced
       ? { duration: duration.fade }
@@ -118,19 +126,19 @@ export function Hero({ site, hero }: HeroProps) {
     >
       <Pattern className="bg-plum/[0.05]" />
       <Container className="relative">
-        <motion.div
+        <m.div
           style={reduced ? undefined : { y, opacity }}
           className="grid items-center gap-x-10 gap-y-10 md:grid-cols-[1.05fr_1fr] lg:gap-x-16"
         >
           <div className="min-w-0 md:col-start-1 md:row-start-1">
-            <motion.div
+            <m.div
               data-reveal=""
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={fade(0.1)}
             >
               <FamilyBadge />
-            </motion.div>
+            </m.div>
 
             <LetterRise
               text={twoLines(site.name)}
@@ -141,7 +149,7 @@ export function Hero({ site, hero }: HeroProps) {
             />
 
             {!isPlaceholder(hero.line) ? (
-              <motion.p
+              <m.p
                 data-reveal=""
                 initial={{ opacity: 0, y: heroText.y }}
                 animate={{ opacity: 1, y: 0 }}
@@ -149,10 +157,10 @@ export function Hero({ site, hero }: HeroProps) {
                 className="mt-5 max-w-xl text-lg text-ink/80 md:text-xl"
               >
                 {hero.line}
-              </motion.p>
+              </m.p>
             ) : null}
 
-            <motion.div
+            <m.div
               data-reveal=""
               initial={{ opacity: 0, y: heroText.y }}
               animate={{ opacity: 1, y: 0 }}
@@ -165,16 +173,16 @@ export function Hero({ site, hero }: HeroProps) {
                 onClick={(e) => onAnchor(e, SESSION_ANCHOR)}
                 className="font-heading"
               >
-                How a session runs
+                {t.howSessionRuns}
               </Button>
               <Button to="/chat" variant="outline" size="lg" className="bg-surface font-heading">
                 <ChatIcon />
-                Ask our guide
+                {t.askOurGuide}
               </Button>
-            </motion.div>
+            </m.div>
           </div>
 
-          <motion.div
+          <m.div
             data-reveal=""
             initial={{ opacity: 0, scale: 0.94 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -202,17 +210,17 @@ export function Hero({ site, hero }: HeroProps) {
                 <Picture {...photo} priority className="h-auto w-full rounded-xl object-cover" />
               </div>
             ) : null}
-          </motion.div>
+          </m.div>
 
           {tiles.length > 0 ? (
-            <motion.div
+            <m.div
               data-reveal=""
               initial={{ opacity: 0, y: heroText.y }}
               animate={{ opacity: 1, y: 0 }}
               transition={fade(heroText.delayTo)}
               className="md:col-start-1 md:row-start-2 md:self-start"
             >
-              <p className="label mb-3 text-ink/80">Use this at home</p>
+              <p className="label mb-3 text-ink/80">{t.useAtHome}</p>
               <ul className="grid gap-3 min-[480px]:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
                 {tiles.map((entry) => (
                   <li key={entry.key}>
@@ -220,9 +228,9 @@ export function Hero({ site, hero }: HeroProps) {
                   </li>
                 ))}
               </ul>
-            </motion.div>
+            </m.div>
           ) : null}
-        </motion.div>
+        </m.div>
       </Container>
     </section>
   )

@@ -9,7 +9,14 @@ const journalPages = (): string[] => {
   return posts.filter((p) => p.site === 'hub' || p.site === 'all').map((p) => `/journal/${p.slug}`)
 }
 
+/** The same pages in Malay, under /ms. */
+const withMalay = (paths: string[]): string[] => [
+  ...paths,
+  ...paths.filter((p) => p !== '/404').map((p) => (p === '/' ? '/ms' : `/ms${p}`)),
+]
+
 export default {
   ssr: false,
-  prerender: () => ['/', '/about', '/work-with-us', '/journal', '/404', ...journalPages()],
+  prerender: () =>
+    withMalay(['/', '/about', '/work-with-us', '/journal', '/404', ...journalPages()]),
 } satisfies Config

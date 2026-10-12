@@ -1,4 +1,5 @@
-import { brand, type SiteConfig } from '@iqra/config'
+import type { SiteConfig } from '@iqra/config'
+import { useBrand, useT } from '../i18n/lang.ts'
 import { Container } from '../primitives/Container.tsx'
 import { Eyebrow } from '../primitives/Eyebrow.tsx'
 import { SafeEmbed } from './SafeEmbed.tsx'
@@ -13,8 +14,10 @@ interface EmbedPageProps {
  * of the screen edge to edge so it reads as part of the site, not a box inside it.
  */
 export function EmbedPage({ site, kind }: EmbedPageProps) {
+  const t = useT()
+  const brand = useBrand()
   const embed = site[kind]
-  const title = 'Chat'
+  const title = t.chat
   return (
     <>
       <Container className="flex flex-wrap items-end justify-between gap-4 py-6 md:py-8">

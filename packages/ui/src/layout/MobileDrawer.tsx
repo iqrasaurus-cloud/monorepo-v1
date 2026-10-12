@@ -1,7 +1,9 @@
-import { brand, mainMenu, type SiteConfig } from '@iqra/config'
-import { AnimatePresence, motion } from 'framer-motion'
+import { mainMenu, type SiteConfig } from '@iqra/config'
+import { AnimatePresence, m } from 'framer-motion'
 import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from 'react'
-import { Link } from 'react-router'
+import { menuLabel, useBrand, useLang, useT } from '../i18n/lang.ts'
+import { Link } from '../i18n/Link.tsx'
+import { LangSwitch } from '../i18n/LangSwitch.tsx'
 import { Mascot } from '../mascot/Mascot.tsx'
 import {
   duration,
@@ -34,7 +36,7 @@ interface RiseProps {
 function Rise({ index, reduced, children }: RiseProps) {
   return (
     <div className="overflow-hidden">
-      <motion.div
+      <m.div
         initial={reduced ? { opacity: 0 } : { y: '110%' }}
         animate={reduced ? { opacity: 1 } : { y: '0%' }}
         transition={
@@ -48,7 +50,7 @@ function Rise({ index, reduced, children }: RiseProps) {
         }
       >
         {children}
-      </motion.div>
+      </m.div>
     </div>
   )
 }
@@ -106,6 +108,9 @@ interface MobileDrawerProps {
 /** Drawer for screens under 1024px: the same four items as the header bar, then Donate. */
 export function MobileDrawer({ site, open, onClose }: MobileDrawerProps) {
   const reduced = useReducedMotionSafe()
+  const lang = useLang()
+  const t = useT()
+  const brand = useBrand()
   const panelRef = useRef<HTMLDivElement>(null)
   const closeRef = useRef<HTMLButtonElement>(null)
   const [section, setSection] = useState<'tools' | 'programmes' | null>(null)
@@ -159,7 +164,7 @@ export function MobileDrawer({ site, open, onClose }: MobileDrawerProps) {
     <AnimatePresence>
       {open ? (
         <>
-          <motion.div
+          <m.div
             aria-hidden="true"
             onClick={onClose}
             className="fixed inset-0 z-40 bg-plum/50 backdrop-blur-sm"
@@ -168,12 +173,12 @@ export function MobileDrawer({ site, open, onClose }: MobileDrawerProps) {
             exit={{ opacity: 0 }}
             transition={{ duration: reduced ? duration.fade : 0.3 }}
           />
-          <motion.div
+          <m.div
             ref={panelRef}
             id="mobile-menu"
             role="dialog"
             aria-modal="true"
-            aria-label="Menu"
+            aria-label={t.menu}
             // Lenis takes over wheel and touch scrolling even while stopped; this lets
             // the drawer scroll on its own.
             data-lenis-prevent=""
@@ -187,10 +192,11 @@ export function MobileDrawer({ site, open, onClose }: MobileDrawerProps) {
             <div className="relative flex min-h-full flex-col px-5 pb-8 pt-4">
               <div className="mb-2 flex h-14 items-center justify-between">
                 <Logo site={site} className="h-9" />
+                <LangSwitch className="ml-auto mr-3" />
                 <button
                   ref={closeRef}
                   type="button"
-                  aria-label="Close menu"
+                  aria-label={t.closeMenu}
                   onClick={onClose}
                   className="-mr-1 flex size-11 items-center justify-center rounded-full bg-primary-soft text-primary transition-transform duration-300 hover:rotate-90 active:scale-90"
                 >
@@ -206,15 +212,15 @@ export function MobileDrawer({ site, open, onClose }: MobileDrawerProps) {
                 </button>
               </div>
 
-              <nav aria-label="Main" className="flex-1">
+              <nav aria-label={t.mainNav} className="flex-1">
                 <ul className="divide-y divide-line">
                   {mainMenu.map((item, i) => {
                     if (item.type === 'site') {
                       return (
-                        <li key={item.label}>
+                        <li key={menuLabel(t, item.label)}>
                           <Rise index={i} reduced={reduced}>
                             <Link to={item.path} onClick={onClose} className={itemClass}>
-                              {item.label}
+                              {menuLabel(t, item.label)}
                               <Arrow />
                             </Link>
                           </Rise>
@@ -222,18 +228,18 @@ export function MobileDrawer({ site, open, onClose }: MobileDrawerProps) {
                       )
                     }
                     if (item.type === 'hub') {
-                      const href = hubItemHref(site, item.path, item.fallback)
+                      const href = hubItemHref(site, item.path, item.fallback, lang)
                       return (
-                        <li key={item.label}>
+                        <li key={menuLabel(t, item.label)}>
                           <Rise index={i} reduced={reduced}>
                             {href.startsWith('/') ? (
                               <Link to={href} onClick={onClose} className={itemClass}>
-                                {item.label}
+                                {menuLabel(t, item.label)}
                                 <Arrow />
                               </Link>
                             ) : (
                               <a href={href} onClick={(e) => follow(e, href)} className={itemClass}>
-                                {item.label}
+                                {menuLabel(t, item.label)}
                                 <Arrow />
                               </a>
                             )}
@@ -243,9 +249,10 @@ export function MobileDrawer({ site, open, onClose }: MobileDrawerProps) {
                     }
                     const isOpen = section === item.type
                     const listId = `mobile-${item.type}`
-                    const tiles = item.type === 'tools' ? toolTiles() : programmeTiles(site)
+                    const tiles =
+                      item.type === 'tools' ? toolTiles(lang) : programmeTiles(site, lang)
                     return (
-                      <li key={item.label}>
+                      <li key={menuLabel(t, item.label)}>
                         <Rise index={i} reduced={reduced}>
                           <button
                             type="button"
@@ -255,7 +262,7 @@ export function MobileDrawer({ site, open, onClose }: MobileDrawerProps) {
                             className={itemClass}
                           >
                             <span>
-                              {item.label}
+                              {menuLabel(t, item.label)}
                               <span className="ml-2 align-middle font-body text-sm font-semibold text-ink/60">
                                 {tiles.length}
                               </span>
@@ -265,7 +272,7 @@ export function MobileDrawer({ site, open, onClose }: MobileDrawerProps) {
                         </Rise>
                         <AnimatePresence initial={false}>
                           {isOpen ? (
-                            <motion.div
+                            <m.div
                               key="list"
                               className="overflow-hidden"
                               initial={{ height: 0, opacity: 0 }}
@@ -276,7 +283,7 @@ export function MobileDrawer({ site, open, onClose }: MobileDrawerProps) {
                                 ease: easeReveal,
                               }}
                             >
-                              <motion.ul
+                              <m.ul
                                 id={listId}
                                 className="grid gap-2 pb-5 min-[420px]:grid-cols-2"
                                 initial="hidden"
@@ -288,7 +295,7 @@ export function MobileDrawer({ site, open, onClose }: MobileDrawerProps) {
                                 }}
                               >
                                 {tiles.map((entry) => (
-                                  <motion.li
+                                  <m.li
                                     key={entry.key}
                                     variants={
                                       reduced
@@ -305,10 +312,10 @@ export function MobileDrawer({ site, open, onClose }: MobileDrawerProps) {
                                     }
                                   >
                                     <MenuTile entry={entry} compact onNavigate={onClose} />
-                                  </motion.li>
+                                  </m.li>
                                 ))}
-                              </motion.ul>
-                            </motion.div>
+                              </m.ul>
+                            </m.div>
                           ) : null}
                         </AnimatePresence>
                       </li>
@@ -337,7 +344,7 @@ export function MobileDrawer({ site, open, onClose }: MobileDrawerProps) {
                 </Rise>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </>
       ) : null}
     </AnimatePresence>

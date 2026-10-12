@@ -1,6 +1,8 @@
 import {
   getSite,
+  localPath,
   programmes,
+  type Lang,
   siteUrl,
   type JournalPost,
   type SiteConfig,
@@ -8,7 +10,8 @@ import {
 } from '@iqra/config'
 import { AnimatePresence } from 'framer-motion'
 import { Fragment, useRef, useState, type ReactNode } from 'react'
-import { Link } from 'react-router'
+import { localPost, useLang, useT } from '../../i18n/lang.ts'
+import { Link } from '../../i18n/Link.tsx'
 import { Mascot } from '../../mascot/Mascot.tsx'
 import { Reveal, RevealItem, RevealList } from '../../motion/Reveal.tsx'
 import { Button } from '../../primitives/Button.tsx'
@@ -24,8 +27,8 @@ import { Player } from '../shared/Videos.tsx'
 const PROGRAMME_SLUGS = new Set(programmes().map((p) => p.slug))
 
 /** "2019-03-14" -> "14 March 2019". Read as UTC so the day never shifts. */
-export const formatDate = (iso: string): string =>
-  new Intl.DateTimeFormat('en-SG', {
+export const formatDate = (iso: string, lang: Lang = 'en'): string =>
+  new Intl.DateTimeFormat(lang === 'ms' ? 'ms-SG' : 'en-SG', {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
@@ -40,9 +43,9 @@ const programmeOf = (post: JournalPost): SiteConfig | undefined =>
  * Where a post's page is. On the hub, a programme's post opens on that programme's own
  * site; everything else has a page on the site being viewed.
  */
-export const postHref = (site: SiteConfig, post: JournalPost): string => {
+export const postHref = (site: SiteConfig, post: JournalPost, lang: Lang = 'en'): string => {
   const home = programmeOf(post)
-  if (site.kind === 'hub' && home) return siteUrl(home, `/journal/${post.slug}`)
+  if (site.kind === 'hub' && home) return siteUrl(home, localPath(lang, `/journal/${post.slug}`))
   return `/journal/${post.slug}`
 }
 
@@ -155,10 +158,11 @@ function PostCard({
   post: JournalPost
   showSite: boolean
 }) {
+  const lang = useLang()
   const home = programmeOf(post) ?? site
   return (
     <CardLink
-      href={postHref(site, post)}
+      href={postHref(site, post, lang)}
       className="group flex h-full flex-col overflow-hidden rounded-[24px] bg-surface p-2 shadow-soft transition duration-300 ease-reveal motion-safe:hover:-translate-y-1"
     >
       <span className="relative block aspect-[16/10] overflow-hidden rounded-[18px] [&_picture]:contents">
@@ -195,7 +199,7 @@ function PostCard({
           <span className="mt-2 line-clamp-3 text-ink/80">{post.excerpt}</span>
         ) : null}
         <span className="mt-auto pt-4 text-sm text-ink/70">
-          <time dateTime={post.date}>{formatDate(post.date)}</time>
+          <time dateTime={post.date}>{formatDate(post.date, lang)}</time>
         </span>
       </span>
     </CardLink>
@@ -208,7 +212,10 @@ interface JournalListProps {
 }
 
 /** /journal: every post for this site, newest first, with a filter per category. */
-export function JournalList({ site, posts }: JournalListProps) {
+export function JournalList({ site, posts: allPosts }: JournalListProps) {
+  const t = useT()
+  const lang = useLang()
+  const posts = allPosts.map((p) => localPost(p, lang))
   const [category, setCategory] = useState<string | null>(null)
   const categories = [...new Set(posts.map((p) => p.category).filter(Boolean))].sort()
   const shown = category ? posts.filter((p) => p.category === category) : posts
@@ -216,22 +223,15 @@ export function JournalList({ site, posts }: JournalListProps) {
 
   return (
     <>
-      <PageHeader
-        title="Journal"
-        lede={isHub ? 'What we have tried with children, across every programme.' : site.name}
-        pose="writing"
-      />
+      <PageHeader title={t.journal} lede={isHub ? t.journalHubLede : site.name} pose="writing" />
       <Section bg="surface" prev="paper" tight>
         <Container>
           {posts.length === 0 ? (
             <Reveal className="flex flex-col items-center gap-5 py-10 text-center">
               <Mascot pose="writing" size={140} enter />
-              <p className="max-w-md text-lg text-ink/80">
-                We are writing up our first posts. In the meantime, our videos show some of the
-                work.
-              </p>
+              <p className="max-w-md text-lg text-ink/80">{t.journalEmpty}</p>
               <Button to="/" variant="outline" className="font-heading">
-                Back to {site.name}
+                {t.backTo} {site.name}
               </Button>
             </Reveal>
           ) : (
@@ -239,7 +239,7 @@ export function JournalList({ site, posts }: JournalListProps) {
               {categories.length > 1 ? (
                 <div
                   role="group"
-                  aria-label="Filter by category"
+                  aria-label={t.filterByCategory}
                   className="mb-8 flex flex-wrap gap-2"
                 >
                   {[null, ...categories].map((c) => {
@@ -257,7 +257,7 @@ export function JournalList({ site, posts }: JournalListProps) {
                             : 'bg-primary-soft text-primary hover:bg-primary hover:text-on-primary',
                         )}
                       >
-                        {c ?? 'All'}
+                        {c ?? t.all}
                       </button>
                     )
                   })}
@@ -290,7 +290,11 @@ interface JournalPostPageProps {
 }
 
 /** /journal/<slug>: one post, as the owner wrote it. */
-export function JournalPostPage({ site, post, posts }: JournalPostPageProps) {
+export function JournalPostPage({ site, post: original, posts: allPosts }: JournalPostPageProps) {
+  const t = useT()
+  const lang = useLang()
+  const post = localPost(original, lang)
+  const posts = allPosts.map((p) => localPost(p, lang))
   const [playing, setPlaying] = useState(false)
   const playRef = useRef<HTMLButtonElement>(null)
   const more = posts.filter((p) => p.slug !== post.slug).slice(0, 3)
@@ -307,12 +311,12 @@ export function JournalPostPage({ site, post, posts }: JournalPostPageProps) {
           <Container className="relative max-w-3xl">
             <Reveal>
               <Link to="/journal" className="link-sweep text-sm font-semibold text-primary">
-                ← Journal
+                ← {t.journal}
               </Link>
               <p className="mt-6 flex flex-wrap items-center gap-3 text-sm text-ink/75">
                 {site.kind === 'hub' ? <SiteBadge post={post} /> : null}
                 {post.category ? <span className="label text-[10px]">{post.category}</span> : null}
-                <time dateTime={post.date}>{formatDate(post.date)}</time>
+                <time dateTime={post.date}>{formatDate(post.date, lang)}</time>
               </p>
               <h1 className="mt-3 text-balance font-heading text-4xl font-bold leading-tight text-ink md:text-5xl">
                 {post.title}
@@ -357,7 +361,7 @@ export function JournalPostPage({ site, post, posts }: JournalPostPageProps) {
                       colourClass[home.colour].on,
                     )}
                   >
-                    Watch the video
+                    {t.watchTheVideo}
                   </span>
                 </button>
               </Reveal>
@@ -370,7 +374,7 @@ export function JournalPostPage({ site, post, posts }: JournalPostPageProps) {
         <Section bg="paper-2" prev="surface" tight>
           <Container>
             <h2 className="mb-8 font-heading text-3xl font-bold text-primary">
-              More from the journal
+              {t.moreFromJournal}
             </h2>
             <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {more.map((p) => (

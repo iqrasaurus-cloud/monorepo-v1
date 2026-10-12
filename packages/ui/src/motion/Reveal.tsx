@@ -1,4 +1,4 @@
-import { motion, type Transition, type Variants } from 'framer-motion'
+import { m, type Transition, type Variants } from 'framer-motion'
 import type { ReactNode } from 'react'
 import { duration, easeReveal, stagger, viewportOnce } from './presets.ts'
 import { useReducedMotionSafe } from './useReducedMotionSafe.ts'
@@ -23,7 +23,7 @@ interface RevealProps {
 export function Reveal({ id, className, delay = 0, slow = false, children }: RevealProps) {
   const reduced = useReducedMotionSafe()
   return (
-    <motion.div
+    <m.div
       id={id}
       data-reveal=""
       className={className}
@@ -34,7 +34,7 @@ export function Reveal({ id, className, delay = 0, slow = false, children }: Rev
       transition={transitionFor(reduced, slow, delay)}
     >
       {children}
-    </motion.div>
+    </m.div>
   )
 }
 
@@ -47,7 +47,7 @@ interface RevealListProps {
 /** Parent for RevealItem children; staggers them 0.06s apart. */
 export function RevealList({ as = 'div', className, children }: RevealListProps) {
   const reduced = useReducedMotionSafe()
-  const Tag = as === 'ul' ? motion.ul : as === 'ol' ? motion.ol : motion.div
+  const Tag = as === 'ul' ? m.ul : as === 'ol' ? m.ol : m.div
   return (
     <Tag
       className={className}
@@ -70,7 +70,7 @@ interface RevealItemProps {
 
 export function RevealItem({ as = 'div', className, slow = false, children }: RevealItemProps) {
   const reduced = useReducedMotionSafe()
-  const Tag = as === 'li' ? motion.li : motion.div
+  const Tag = as === 'li' ? m.li : m.div
   return (
     <Tag
       data-reveal=""

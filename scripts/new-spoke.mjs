@@ -117,6 +117,21 @@ export const content: SpokeContent = {
 `,
 )
 
+// Malay starts empty: every Malay page shows the English until this file is filled in.
+writeFileSync(
+  join(target, 'content.ms.ts'),
+  `/**
+ * apps/${slug}/content.ms.ts — the Malay (BM) version of content.ts.
+ * Only what is here is shown in Malay; anything missing falls back to the English.
+ * No Quranic Arabic, hadith text or translation is written here (CLAUDE.md rule 1).
+ */
+
+import type { Overlay, SpokeContent } from '@iqra/config'
+
+export const contentMs: Overlay<SpokeContent> = {}
+`,
+)
+
 const run = (args) => {
   const result = spawnSync('pnpm', args, {
     cwd: root,

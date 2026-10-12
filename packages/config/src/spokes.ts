@@ -53,6 +53,8 @@ export interface SiteConfig {
   pose: string
   /** Its colour across the IqraSaurus family: cards, tiles and hero. */
   colour: Colour
+  /** Malay (BM) text. DRAFT 2026-10-12, to be checked. Missing = the English is shown. */
+  ms?: { description?: string }
   /** Optional per-site accent. Leave undefined to use the shared brand accent. */
   accent?: string
   chat: EmbedConfig
@@ -78,6 +80,7 @@ export const sites: SiteConfig[] = [
     mascotTone: 'playful',
     pose: 'waving-wink',
     colour: 'investigate',
+    ms: { description: 'Inisiatif dakwah keluarga yang membantu kanak-kanak mengenali, memahami dan menghayati Islam.' },
     chat: { src: '', title: 'Ask IqraSaurus' }, // OWNER
     support: { href: '', label: 'Support our work' }, // OWNER
   },
@@ -93,6 +96,7 @@ export const sites: SiteConfig[] = [
     mascotTone: 'playful',
     pose: 'magnifying-glass',
     colour: 'investigate',
+    ms: { description: 'Satu surah pada satu masa: buku aktiviti yang menjadikan pembaca muda penyiasat.' },
     chat: {
       src: 'https://www.chatbase.co/chatbot-iframe/zlzFNm9ySuiomi-Mi-gNR',
       title: 'Ask the Quran Investigators guide',
@@ -113,6 +117,7 @@ export const sites: SiteConfig[] = [
     mascotTone: 'playful',
     pose: 'superhero-cape',
     colour: 'impart',
+    ms: { description: 'Kisah benar para nabi, diceritakan dengan suara dan dilakonkan oleh kanak-kanak.' },
     chat: { src: '', title: 'Ask the StoryBuzz guide' },
     support: { href: '', label: 'Support StoryBuzz' },
   },
@@ -128,6 +133,7 @@ export const sites: SiteConfig[] = [
     mascotTone: 'playful',
     pose: 'writing',
     colour: 'inspire',
+    ms: { description: 'Kanak-kanak melukis makna sesuatu surah atau hadis bagi mereka, sebelum mampu menulisnya.' },
     chat: { src: '', title: 'Ask the Doodling guide' },
     support: { href: '', label: 'Support Quran & Hadeeth Doodling' },
   },
@@ -143,6 +149,7 @@ export const sites: SiteConfig[] = [
     mascotTone: 'playful',
     pose: 'backpack-ready',
     colour: 'integrate',
+    ms: { description: 'Persediaan Ujian Kemasukan Madrasah, dengan nilai Islam dalam setiap pelajaran.' },
     chat: { src: '', title: 'Ask the Madrasah Preparation guide' },
     support: { href: '', label: 'Support Madrasah Preparation' },
   },
@@ -158,6 +165,7 @@ export const sites: SiteConfig[] = [
     mascotTone: 'playful',
     pose: 'heart-hug',
     colour: 'impart',
+    ms: { description: 'Cara keluarga kami yang bersekolah di rumah mempelajari Islam, dikongsi untuk keluarga lain.' },
     chat: { src: '', title: 'Ask the Baiti Madrasati guide' },
     support: { href: '', label: 'Support Baiti Madrasati' },
   },
@@ -173,6 +181,7 @@ export const sites: SiteConfig[] = [
     mascotTone: 'playful',
     pose: 'binoculars-pointing',
     colour: 'inspire',
+    ms: { description: 'Kisah, drama dan rima yang menyediakan kanak-kanak untuk umrah.' },
     chat: { src: '', title: 'Ask the Umrah for Kids guide' },
     support: { href: '', label: 'Support Umrah for Kids' },
   },
@@ -204,11 +213,13 @@ export interface ToolConfig {
   /** Pose from the dino library on its tiles and cards. */
   pose: string
   colour: Colour
+  /** Malay (BM) text. Missing = the English is shown. */
+  ms?: { line?: string }
 }
 
 export const tools: ToolConfig[] = [
   // OWNER: Tadabbur is linked now so it works the day iqrasaurus.com/tadabbur is routed.
-  { slug: 'tadabbur', name: 'Tadabbur', line: 'One ayah a day', path: '/tadabbur', host: `tadabbur.${HUB_HOST}`, status: 'live', mascot: 'mascot-quran.png', pose: 'reading-quran', colour: 'inspire' },
+  { slug: 'tadabbur', name: 'Tadabbur', line: 'One ayah a day', ms: { line: 'Satu ayat sehari' }, path: '/tadabbur', host: `tadabbur.${HUB_HOST}`, status: 'live', mascot: 'mascot-quran.png', pose: 'reading-quran', colour: 'inspire' },
   { slug: 'hafiz', name: 'Mini Hafiz', line: '[[CONTENT NEEDED: one line]]', path: '/hafiz', host: `hafiz.${HUB_HOST}`, status: 'live', mascot: 'mascot-reader.png', pose: 'hugging-quran', colour: 'integrate' },
   // Worksheets became Numbers & Counting (owner, 2026-10-11): the Numbersaurus app in the tools repo.
   { slug: 'numbers', name: 'Numbers & Counting', line: '[[CONTENT NEEDED: one line]]', path: '/numbers', host: `numbers.${HUB_HOST}`, status: 'live', mascot: 'mascot-magnifier.png', pose: 'pointing', colour: 'investigate' },
@@ -275,6 +286,32 @@ export const brand = {
   chatNotice:
     'This guide draws only from material IqraSaurus has prepared. It is a helper, not a religious authority. For rulings and personal guidance, please ask a recognised asatizah.',
 } as const
+
+/**
+ * Malay (BM) versions of the brand sentences. DRAFT 2026-10-12, to be checked.
+ * The credential sentence is NOT translated (CLAUDE.md rule 3): it stays in English until the
+ * owner supplies the approved Malay wording. The tagline is part of the logo and stays as is.
+ */
+export const brandMs = {
+  motto: 'Insan didahulukan. Belajar sepanjang masa.',
+  positioning:
+    'Inisiatif dakwah keluarga yang membantu kanak-kanak mengenali, memahami dan menghayati Islam melalui pengalaman pembelajaran yang menarik.',
+  supporting:
+    'Berakar di Singapura. Dibimbing oleh asatizah yang diiktiraf. Dibina melalui pengalaman bertahun-tahun belajar bersama kanak-kanak. Dikongsi supaya orang lain dapat menyesuaikan dan meneruskannya.',
+  donateLabel: 'Derma',
+  disclaimer:
+    'Program kami mendokumentasikan amalan kami, bukan ketetapan untuk setiap persekitaran pembelajaran. Ini pendekatan yang telah kami cuba bersama kanak-kanak dan keluarga selama bertahun-tahun. Para pendidik digalakkan menyesuaikannya mengikut pelajar, konteks dan pertimbangan profesional mereka sambil mengekalkan asas Islam yang kukuh.',
+  chatNotice:
+    'Panduan ini hanya merujuk bahan yang telah disediakan oleh IqraSaurus. Ia sekadar pembantu, bukan autoriti agama. Untuk hukum dan bimbingan peribadi, sila rujuk asatizah yang diiktiraf.',
+} as const
+
+/** The 4-I steps in Malay. The step names stay in English: they are the framework's names. */
+export const fourIMs: Record<'inspire' | 'investigate' | 'integrate' | 'impart', string> = {
+  inspire: 'Mencetuskan rasa kagum dan sebab untuk peduli.',
+  investigate: 'Bertanya, memerhati, membanding dan meneroka.',
+  integrate: 'Mengaitkan penemuan dengan Islam, makna dan kehidupan.',
+  impart: 'Mengamalkannya, berkongsi dan menyampaikannya.',
+}
 
 export const fourI = [
   { key: 'inspire', label: 'Inspire', line: 'Create wonder and a reason to care.' },

@@ -1,5 +1,6 @@
 import { fourI, isPlaceholder, type SiteConfig, type SpokeContent } from '@iqra/config'
-import { motion, useScroll, useSpring } from 'framer-motion'
+import { fourIText, useLang, useT } from '../../i18n/lang.ts'
+import { m, useScroll, useSpring } from 'framer-motion'
 import { useRef } from 'react'
 import { Mascot, type PoseName } from '../../mascot/Mascot.tsx'
 import { Reveal, RevealItem, RevealList } from '../../motion/Reveal.tsx'
@@ -25,19 +26,21 @@ interface SessionProps {
 /** Section 3: the four 4-I steps of one session, then a tip for younger and older children. */
 export function Session({ site, session }: SessionProps) {
   const reduced = useReducedMotionSafe()
+  const t = useT()
+  const lang = useLang()
   const pathRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: pathRef, offset: ['start 0.8', 'end 0.55'] })
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30, restDelta: 0.001 })
   const showMascots = site.mascotTone !== 'none'
   const tips = [
-    { label: 'Younger children', text: session.tips.younger, pose: 'jumping-joy' as PoseName },
-    { label: 'Older children', text: session.tips.older, pose: 'books-stack' as PoseName },
+    { label: t.youngerChildren, text: session.tips.younger, pose: 'jumping-joy' as PoseName },
+    { label: t.olderChildren, text: session.tips.older, pose: 'books-stack' as PoseName },
   ].filter((t) => !isPlaceholder(t.text))
 
   return (
     <Container>
       <Reveal className="mb-14 flex flex-col items-center gap-4 text-center">
-        <SectionHeading title="How a session runs" align="center" />
+        <SectionHeading title={t.howSessionRuns} align="center" />
         {!isPlaceholder(session.duration) ? (
           <span className="label inline-flex items-center gap-2 rounded-pill bg-surface px-4 py-2 text-ink shadow-soft">
             <svg aria-hidden="true" viewBox="0 0 24 24" className="size-4 text-primary">
@@ -61,7 +64,7 @@ export function Session({ site, session }: SessionProps) {
           aria-hidden="true"
           className="absolute bottom-10 left-[30px] top-10 w-1 rounded-full bg-line lg:hidden"
         >
-          <motion.div
+          <m.div
             style={reduced ? undefined : { scaleY: progress }}
             className="h-full w-full origin-top rounded-full bg-gradient-to-b from-inspire via-investigate to-impart"
           />
@@ -70,14 +73,14 @@ export function Session({ site, session }: SessionProps) {
           aria-hidden="true"
           className="absolute left-[12.5%] right-[12.5%] top-[42px] hidden h-1 rounded-full bg-line lg:block"
         >
-          <motion.div
+          <m.div
             style={reduced ? undefined : { scaleX: progress }}
             className="h-full w-full origin-left rounded-full bg-gradient-to-r from-inspire via-investigate via-60% to-impart"
           />
         </div>
 
         <RevealList as="ol" className="relative grid gap-8 lg:grid-cols-4 lg:gap-6">
-          {fourI.map((step, i) => {
+          {fourIText(lang).map((step, i) => {
             const c = colourClass[step.key]
             return (
               <RevealItem

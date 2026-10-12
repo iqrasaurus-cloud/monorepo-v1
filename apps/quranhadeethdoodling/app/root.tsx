@@ -1,14 +1,22 @@
-import { getSite } from '@iqra/config'
+import { getSite, langOf } from '@iqra/config'
 import { NotFound, SiteShell } from '@iqra/ui'
 import type { ReactNode } from 'react'
-import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, useRouteError } from 'react-router'
+import {
+  isRouteErrorResponse,
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+  useLocation,
+  useRouteError,
+} from 'react-router'
 import '@iqra/ui/styles/base.css'
 
 const site = getSite('quranhadeethdoodling')
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang={langOf(useLocation().pathname)}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />

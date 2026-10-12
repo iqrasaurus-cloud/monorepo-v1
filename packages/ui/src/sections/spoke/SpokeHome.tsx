@@ -1,4 +1,12 @@
-import { isPlaceholder, videosFor, type SiteConfig, type SpokeContent } from '@iqra/config'
+import {
+  isPlaceholder,
+  localized,
+  videosFor,
+  type Overlay,
+  type SiteConfig,
+  type SpokeContent,
+} from '@iqra/config'
+import { useLang } from '../../i18n/lang.ts'
 import type { ReactNode } from 'react'
 import { Section, type Bg } from '../../primitives/Section.tsx'
 import { Videos } from '../shared/Videos.tsx'
@@ -19,13 +27,17 @@ interface Block {
 interface SpokeHomeProps {
   site: SiteConfig
   content: SpokeContent
+  /** The Malay version (apps/<slug>/content.ms.ts); missing parts show in English. */
+  contentMs?: Overlay<SpokeContent>
 }
 
 /**
  * The programme page (BUILD_SPEC.md section 6B, plus the videos from phase 10).
  * Empty sections don't render. The last band is plum, so it runs straight into the footer.
  */
-export function SpokeHome({ site, content: c }: SpokeHomeProps) {
+export function SpokeHome({ site, content, contentMs }: SpokeHomeProps) {
+  const lang = useLang()
+  const c = lang === 'ms' ? localized(content, contentMs) : content
   const blocks: Block[] = [
     {
       id: 'what-it-is',

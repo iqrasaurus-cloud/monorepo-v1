@@ -9,7 +9,13 @@ const journalPages = (): string[] => {
   return posts.map((p) => `/journal/${p.slug}`)
 }
 
+/** The same pages in Malay, under /ms. */
+const withMalay = (paths: string[]): string[] => [
+  ...paths,
+  ...paths.filter((p) => p !== '/404').map((p) => (p === '/' ? '/ms' : `/ms${p}`)),
+]
+
 export default {
   ssr: false,
-  prerender: () => ['/', '/journal', '/chat', '/404', ...journalPages()],
+  prerender: () => withMalay(['/', '/journal', '/chat', '/404', ...journalPages()]),
 } satisfies Config

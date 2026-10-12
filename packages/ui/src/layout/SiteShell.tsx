@@ -1,4 +1,5 @@
 import { accentVars, type SiteConfig } from '@iqra/config'
+import { domAnimation, LazyMotion } from 'framer-motion'
 import { useEffect, type CSSProperties, type ReactNode } from 'react'
 import { useLocation } from 'react-router'
 import { SmoothScroll, useSmoothScroll } from '../motion/SmoothScroll.tsx'
@@ -28,20 +29,23 @@ interface SiteShellProps {
 
 /** The shared frame of every site: skip link, the header bar, main, footer. */
 export function SiteShell({ site, children }: SiteShellProps) {
+  // Only the animation features the sites use (no drag or layout animation), to keep the JS small.
   return (
-    <SmoothScroll>
-      <div
-        style={accentVars(site) as CSSProperties | undefined}
-        className="flex min-h-screen flex-col"
-      >
-        <SkipLink />
-        <SiteHeader site={site} />
-        <main id={MAIN_ID} tabIndex={-1} className="flex-1 outline-none">
-          {children}
-        </main>
-        <Footer site={site} />
-      </div>
-      <HashScroll />
-    </SmoothScroll>
+    <LazyMotion features={domAnimation} strict>
+      <SmoothScroll>
+        <div
+          style={accentVars(site) as CSSProperties | undefined}
+          className="flex min-h-screen flex-col"
+        >
+          <SkipLink />
+          <SiteHeader site={site} />
+          <main id={MAIN_ID} tabIndex={-1} className="flex-1 outline-none">
+            {children}
+          </main>
+          <Footer site={site} />
+        </div>
+        <HashScroll />
+      </SmoothScroll>
+    </LazyMotion>
   )
 }

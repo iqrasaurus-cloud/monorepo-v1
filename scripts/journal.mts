@@ -174,6 +174,17 @@ async function imageOf(url: string, slug: string, alt: string): Promise<JournalP
   }
 }
 
+/** The optional Malay columns (title_ms, excerpt_ms, body_ms), or nothing when all are empty. */
+async function malayOf(
+  title: string,
+  excerpt: string,
+  rawBody: string,
+): Promise<JournalPost['ms']> {
+  if (!title && !excerpt && !rawBody) return undefined
+  const body = rawBody ? await bodyOf(rawBody, title || '(Malay)') : undefined
+  return { title: title || undefined, excerpt: excerpt || undefined, body }
+}
+
 async function main() {
   let csv: string
   try {
@@ -240,6 +251,7 @@ async function main() {
         ? await imageOf(imageUrl, slug, get(row, 'image_alt'))
         : undefined,
       videoId: videoUrl ? youtubeId(videoUrl) : undefined,
+      ms: await malayOf(get(row, 'title_ms'), get(row, 'excerpt_ms'), get(row, 'body_ms')),
     })
   }
 

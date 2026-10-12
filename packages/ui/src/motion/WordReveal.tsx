@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform, type MotionValue } from 'framer-motion'
+import { m, useScroll, useTransform, type MotionValue } from 'framer-motion'
 import { Fragment, useRef } from 'react'
 import { cn } from '../utils/cn.ts'
 import { wordReveal } from './presets.ts'
@@ -14,9 +14,9 @@ interface WordProps {
 function Word({ progress, range, reduced, children }: WordProps) {
   const opacity = useTransform(progress, range, [wordReveal.from, 1])
   return (
-    <motion.span data-reveal="" style={{ opacity: reduced ? 1 : opacity }}>
+    <m.span data-reveal="" style={{ opacity: reduced ? 1 : opacity }}>
       {children}
-    </motion.span>
+    </m.span>
   )
 }
 

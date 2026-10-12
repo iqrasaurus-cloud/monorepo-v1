@@ -1,4 +1,5 @@
-import { brand, isPlaceholder, type SiteConfig, type SpokeContent } from '@iqra/config'
+import { isPlaceholder, type SiteConfig, type SpokeContent } from '@iqra/config'
+import { useBrand, useT } from '../../i18n/lang.ts'
 import { DonateButton } from '../../layout/HeaderParts.tsx'
 import { Reveal } from '../../motion/Reveal.tsx'
 import { Container } from '../../primitives/Container.tsx'
@@ -16,6 +17,8 @@ interface BringItProps {
 
 /** Section 5: how to bring the programme to a class, donations and the credential line. */
 export function BringIt({ site, bringIt }: BringItProps) {
+  const t = useT()
+  const brand = useBrand()
   return (
     <div className="relative">
       <Pattern className="bg-on-plum/[0.05]" />
@@ -32,7 +35,7 @@ export function BringIt({ site, bringIt }: BringItProps) {
             </div>
           ) : null}
           <h2 className="font-heading text-4xl font-bold text-on-plum md:text-5xl">
-            Bring it to your class
+            {t.bringItToYourClass}
           </h2>
           {!isPlaceholder(bringIt.body) ? (
             <p className="mx-auto mt-5 max-w-2xl text-lg text-on-plum/85 md:text-xl">

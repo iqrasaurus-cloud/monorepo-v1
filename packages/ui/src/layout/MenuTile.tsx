@@ -1,10 +1,12 @@
-import { Link } from 'react-router'
+import { useT } from '../i18n/lang.ts'
+import { Link } from '../i18n/Link.tsx'
 import { Mascot } from '../mascot/Mascot.tsx'
 import { asPose, colourClass } from '../primitives/colours.ts'
 import { cn } from '../utils/cn.ts'
 import type { TileEntry } from './links.ts'
 
 export function ComingSoonPill({ className }: { className?: string }) {
+  const t = useT()
   return (
     <span
       className={cn(
@@ -12,15 +14,16 @@ export function ComingSoonPill({ className }: { className?: string }) {
         className,
       )}
     >
-      Coming soon
+      {t.comingSoon}
     </span>
   )
 }
 
 function HerePill() {
+  const t = useT()
   return (
     <span className="label mt-1.5 inline-block rounded-pill bg-sun px-2.5 py-0.5 text-[10px] text-on-sun">
-      You are here
+      {t.youAreHere}
     </span>
   )
 }

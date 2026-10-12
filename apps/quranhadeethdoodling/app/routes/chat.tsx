@@ -1,10 +1,11 @@
-import { getSite } from '@iqra/config'
-import { EmbedPage, pageMeta } from '@iqra/ui'
+import { getSite, langOf } from '@iqra/config'
+import { EmbedPage, pageMeta, strings } from '@iqra/ui'
 
 const site = getSite('quranhadeethdoodling')
 
-export function meta() {
-  return pageMeta(site, { title: `Chat — ${site.name}`, path: '/chat' })
+export function meta({ location }: { location: { pathname: string } }) {
+  const lang = langOf(location.pathname)
+  return pageMeta(site, { title: `${strings[lang].chat} — ${site.name}`, path: '/chat' }, lang)
 }
 
 export default function Chat() {
