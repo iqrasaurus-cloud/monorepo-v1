@@ -75,6 +75,40 @@ function Linked({ text }: { text: string }) {
   )
 }
 
+const BULLET = /^\s*(?:[-*•●○▪◦]|\d+[.)])\s+/
+
+/** One block of a post: a "## " subheading, a list (every line a bullet) or a paragraph. */
+function Block({ text }: { text: string }) {
+  if (text.startsWith('## ')) {
+    return (
+      <h2 className="pt-4 font-heading text-2xl font-bold text-primary">{text.slice(3).trim()}</h2>
+    )
+  }
+  const lines = text.split('\n')
+  if (lines.every((l) => BULLET.test(l))) {
+    return (
+      <ul className="space-y-2">
+        {lines.map((l, i) => (
+          <li key={i} className="flex gap-3">
+            <span
+              aria-hidden="true"
+              className="mt-3 size-2 shrink-0 rounded-full bg-sun ring-2 ring-plum/20"
+            />
+            <span>
+              <Linked text={l.replace(BULLET, '')} />
+            </span>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+  return (
+    <p>
+      <Linked text={text} />
+    </p>
+  )
+}
+
 function SiteBadge({ post }: { post: JournalPost }) {
   const home = programmeOf(post)
   if (!home) return null
@@ -297,9 +331,7 @@ export function JournalPostPage({ site, post, posts }: JournalPostPageProps) {
             ) : null}
             <div className="space-y-5 text-lg leading-relaxed text-ink/85">
               {post.body.map((p, i) => (
-                <p key={i}>
-                  <Linked text={p} />
-                </p>
+                <Block key={i} text={p} />
               ))}
             </div>
             {video ? (

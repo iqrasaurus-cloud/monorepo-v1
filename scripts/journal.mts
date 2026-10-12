@@ -67,7 +67,13 @@ function parseDate(raw: string): string | undefined {
   let m = /^(\d{4})-(\d{1,2})-(\d{1,2})/.exec(s)
   if (m) return `${m[1]}-${pad(+m[2]!)}-${pad(+m[3]!)}`
   m = /^(\d{1,2})[/.-](\d{1,2})[/.-](\d{4})$/.exec(s)
-  if (m) return `${m[3]}-${pad(+m[2]!)}-${pad(+m[1]!)}`
+  if (m) {
+    // Day first, as in Singapore, unless that can't be a date (e.g. 3/14/2019 from a US sheet).
+    const [a, b] = [+m[1]!, +m[2]!]
+    const [day, month] = b > 12 ? [b, a] : [a, b]
+    if (month >= 1 && month <= 12 && day >= 1 && day <= 31)
+      return `${m[3]}-${pad(month)}-${pad(day)}`
+  }
   m = /^(\d{1,2})\s+([a-z]{3})[a-z]*\s+(\d{4})$/i.exec(s)
   if (m) {
     const month = MONTHS.indexOf(m[2]!.toLowerCase())
@@ -115,11 +121,32 @@ const paragraphs = (text: string): string[] =>
     .map((p) => p.trim())
     .filter((p) => p !== '')
 
+const BULLET = /^\s*(?:[-*•●○▪◦]|\d+[.)])\s+/
+
+/**
+ * A Google Doc exported as text: every line is a paragraph, and runs of bullet lines stay
+ * together so the page can show them as one list. "## " lines are kept for subheadings.
+ */
+const docParagraphs = (text: string): string[] => {
+  const out: string[] = []
+  for (const raw of text.replace(/\r\n?/g, '\n').split('\n')) {
+    const line = raw.trim()
+    if (line === '') continue
+    const last = out[out.length - 1]
+    if (BULLET.test(line) && last !== undefined && last.split('\n').every((l) => BULLET.test(l))) {
+      out[out.length - 1] = `${last}\n${line}`
+    } else out.push(line)
+  }
+  return out
+}
+
 async function bodyOf(raw: string, title: string): Promise<string[]> {
   const id = docId(raw)
   if (!id) return paragraphs(raw)
   try {
-    return paragraphs(await fetchText(`https://docs.google.com/document/d/${id}/export?format=txt`))
+    return docParagraphs(
+      await fetchText(`https://docs.google.com/document/d/${id}/export?format=txt`),
+    )
   } catch (e) {
     warn(`"${title}": could not read its Google Doc (${(e as Error).message})`)
     return []

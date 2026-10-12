@@ -11,7 +11,8 @@
  *   category      free text, e.g. Session, Workshop, Behind the scenes
  *   publish_date  YYYY-MM-DD (or DD/MM/YYYY). Past dates are fine; future dates wait until that day
  *   title, excerpt
- *   body          the post; a blank line between paragraphs. Or a Google Doc link to use its text
+ *   body          the post; a blank line between paragraphs. Or a Google Doc link to use its text.
+ *                 In either, a line starting "## " is a subheading and "- " lines make a list
  *   image_url     optional; a Google Drive "anyone with the link" picture or any https picture
  *   image_alt     what the picture shows
  *   video_url     optional YouTube link
