@@ -224,6 +224,9 @@ export const tools: ToolConfig[] = [
   // Worksheets became Numbers & Counting (owner, 2026-10-11): the Numbersaurus app in the tools repo.
   { slug: 'numbers', name: 'Numbers & Counting', line: 'One number a day', ms: { line: 'Satu nombor sehari' }, path: '/numbers', host: `numbers.${HUB_HOST}`, status: 'live', mascot: 'mascot-magnifier.png', pose: 'pointing', colour: 'investigate' },
   { slug: 'calendar', name: 'Calendar', line: 'Key days this Islamic month', ms: { line: 'Hari penting bulan Islam ini' }, path: '/calendar', host: `calendar.${HUB_HOST}`, status: 'live', mascot: 'mascot-binoculars.png', pose: 'crescent-moon', colour: 'impart' },
+  // Signs Lab (owner, 2026-10-13): Quran Investigators' printable family investigations, in the tools repo
+  // (apps/signslab, docs/specs/signslab.md). Add host and set 'live' once signslab.iqrasaurus.com is set up in Vercel.
+  { slug: 'signslab', name: 'Signs Lab', line: 'Investigate a sign in creation', ms: { line: 'Siasat satu tanda dalam ciptaan' }, path: '/signslab', status: 'coming-soon', mascot: 'mascot-magnifier.png', pose: 'magnifier-sprout', colour: 'investigate' },
   { slug: 'museum', name: 'Museum', line: '[[CONTENT NEEDED: one line]]', path: '/museum', status: 'coming-soon', mascot: 'mascot-magnifier.png', pose: 'treasure-chest', colour: 'investigate' },
   // Dino became Duas (owner, 2026-10-11): the duas we make on a regular basis.
   { slug: 'duas', name: 'Duas', line: '[[CONTENT NEEDED: one line]]', path: '/duas', status: 'coming-soon', mascot: 'mascot-walking.png', pose: 'making-dua', colour: 'integrate' },
