@@ -220,10 +220,10 @@ export interface ToolConfig {
 export const tools: ToolConfig[] = [
   // OWNER: Tadabbur is linked now so it works the day iqrasaurus.com/tadabbur is routed.
   { slug: 'tadabbur', name: 'Tadabbur', line: 'One ayah a day', ms: { line: 'Satu ayat sehari' }, path: '/tadabbur', host: `tadabbur.${HUB_HOST}`, status: 'live', mascot: 'mascot-quran.png', pose: 'reading-quran', colour: 'inspire' },
-  { slug: 'hafiz', name: 'Mini Hafiz', line: '[[CONTENT NEEDED: one line]]', path: '/hafiz', host: `hafiz.${HUB_HOST}`, status: 'live', mascot: 'mascot-reader.png', pose: 'hugging-quran', colour: 'integrate' },
+  { slug: 'hafiz', name: 'Mini Hafiz', line: 'A few ayat at a time', ms: { line: 'Hafal ayat sedikit demi sedikit' }, path: '/hafiz', host: `hafiz.${HUB_HOST}`, status: 'live', mascot: 'mascot-reader.png', pose: 'hugging-quran', colour: 'integrate' },
   // Worksheets became Numbers & Counting (owner, 2026-10-11): the Numbersaurus app in the tools repo.
-  { slug: 'numbers', name: 'Numbers & Counting', line: '[[CONTENT NEEDED: one line]]', path: '/numbers', host: `numbers.${HUB_HOST}`, status: 'live', mascot: 'mascot-magnifier.png', pose: 'pointing', colour: 'investigate' },
-  { slug: 'calendar', name: 'Calendar', line: '[[CONTENT NEEDED: one line]]', path: '/calendar', host: `calendar.${HUB_HOST}`, status: 'live', mascot: 'mascot-binoculars.png', pose: 'crescent-moon', colour: 'impart' },
+  { slug: 'numbers', name: 'Numbers & Counting', line: 'One number a day', ms: { line: 'Satu nombor sehari' }, path: '/numbers', host: `numbers.${HUB_HOST}`, status: 'live', mascot: 'mascot-magnifier.png', pose: 'pointing', colour: 'investigate' },
+  { slug: 'calendar', name: 'Calendar', line: 'Key days this Islamic month', ms: { line: 'Hari penting bulan Islam ini' }, path: '/calendar', host: `calendar.${HUB_HOST}`, status: 'live', mascot: 'mascot-binoculars.png', pose: 'crescent-moon', colour: 'impart' },
   { slug: 'museum', name: 'Museum', line: '[[CONTENT NEEDED: one line]]', path: '/museum', status: 'coming-soon', mascot: 'mascot-magnifier.png', pose: 'treasure-chest', colour: 'investigate' },
   // Dino became Duas (owner, 2026-10-11): the duas we make on a regular basis.
   { slug: 'duas', name: 'Duas', line: '[[CONTENT NEEDED: one line]]', path: '/duas', status: 'coming-soon', mascot: 'mascot-walking.png', pose: 'making-dua', colour: 'integrate' },
