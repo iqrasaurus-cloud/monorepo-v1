@@ -223,7 +223,7 @@ export const tools: ToolConfig[] = [
   { slug: 'hafiz', name: 'Mini Hafiz', line: '[[CONTENT NEEDED: one line]]', path: '/hafiz', host: `hafiz.${HUB_HOST}`, status: 'live', mascot: 'mascot-reader.png', pose: 'hugging-quran', colour: 'integrate' },
   // Worksheets became Numbers & Counting (owner, 2026-10-11): the Numbersaurus app in the tools repo.
   { slug: 'numbers', name: 'Numbers & Counting', line: '[[CONTENT NEEDED: one line]]', path: '/numbers', host: `numbers.${HUB_HOST}`, status: 'live', mascot: 'mascot-magnifier.png', pose: 'pointing', colour: 'investigate' },
-  { slug: 'calendar', name: 'Calendar', line: '[[CONTENT NEEDED: one line]]', path: '/calendar', status: 'coming-soon', mascot: 'mascot-binoculars.png', pose: 'crescent-moon', colour: 'impart' },
+  { slug: 'calendar', name: 'Calendar', line: '[[CONTENT NEEDED: one line]]', path: '/calendar', host: `calendar.${HUB_HOST}`, status: 'live', mascot: 'mascot-binoculars.png', pose: 'crescent-moon', colour: 'impart' },
   { slug: 'museum', name: 'Museum', line: '[[CONTENT NEEDED: one line]]', path: '/museum', status: 'coming-soon', mascot: 'mascot-magnifier.png', pose: 'treasure-chest', colour: 'investigate' },
   // Dino became Duas (owner, 2026-10-11): the duas we make on a regular basis.
   { slug: 'duas', name: 'Duas', line: '[[CONTENT NEEDED: one line]]', path: '/duas', status: 'coming-soon', mascot: 'mascot-walking.png', pose: 'making-dua', colour: 'integrate' },

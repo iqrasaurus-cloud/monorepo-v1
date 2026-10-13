@@ -104,6 +104,16 @@
       "source": "/numbers/:rest*",
       "destination": "https://numbers.iqrasaurus.com/numbers/:rest*",
       "permanent": false
+    },
+    {
+      "source": "/calendar",
+      "destination": "https://calendar.iqrasaurus.com/calendar",
+      "permanent": false
+    },
+    {
+      "source": "/calendar/:rest*",
+      "destination": "https://calendar.iqrasaurus.com/calendar/:rest*",
+      "permanent": false
     }
   ]
 }
