@@ -47,7 +47,7 @@ const SPOTS = {
                feel: "Say أَلْ. Keep your tongue up and feel the air go round the sides.", tongue: "tip", lips: "open", x: 114, y: 186, view: "top", top: "edgesFront", depth: 8 },
   nun:       { region: "tongue", name: "Tip of the tongue on the gum", short: "Tongue: tip (hum)",
                where: "The tip of your tongue touches the gum just behind your top front teeth, and the sound hums in your nose.",
-               feel: "Say أَنْ and hum. Now pinch your nose: the hum stops!", tongue: "tip", lips: "open", x: 108, y: 184, view: "side", nose: true, depth: 9 },
+               feel: "Say أَنْ and hum. Now gently hold your nose: the hum stops!", tongue: "tip", lips: "open", x: 108, y: 184, view: "side", nose: true, depth: 9 },
   ra:        { region: "tongue", name: "Tip of the tongue, a little further back", short: "Tongue: tip (Ra)",
                where: "The tip of your tongue, a tiny bit further back than Nun, taps the gum once.",
                feel: "Say أَرْ. One gentle tap, not a long roll.", tongue: "ra", lips: "open", x: 116, y: 182, view: "side", depth: 10 },
@@ -68,7 +68,7 @@ const SPOTS = {
                feel: "Watch your lips in a mirror as you say it.", tongue: "rest", lips: "closed", x: 66, y: 206, view: "front", depth: 15 },
   nose:      { region: "nose",   name: "The nose", short: "Nose",
                where: "The hum (ghunnah) lives here. Nun and Mim hum in your nose.",
-               feel: "Hum mmm, then pinch your nose. The hum stops!", tongue: "rest", lips: "closed", glow: "nose", x: 54, y: 160, view: "side", depth: 16 },
+               feel: "Hum mmm, then gently hold your nose. The hum stops!", tongue: "rest", lips: "closed", glow: "nose", x: 54, y: 160, view: "side", depth: 16 },
 };
 
 // ---------- The 29 letters ----------

@@ -86,8 +86,7 @@ function letterSVG(text, pad = 120) {
 }
 
 // =====================================================================================
-// Trace guides (SVG). Used on screen and on paper.
-// level: arrows | outline | faint | own
+// Trace levels. The trace card itself, and its paper version, live in art.js.
 // =====================================================================================
 const LEVELS = [
   { id: "arrows", name: "Follow the arrows" },
@@ -95,192 +94,17 @@ const LEVELS = [
   { id: "faint", name: "Faint letter" },
   { id: "own", name: "All by myself" },
 ];
-function guideSVG(letter, form, level, { square = true, num = true, pad = 230, fat = 90 } = {}) {
-  const text = formText(letter, form);
-  if (form !== "alone") fat = Math.min(fat, 75); // joined shapes are compact: keep their loops and dots open
-  const b = inkBox(text);
-  let w = b.w + 2 * pad, h = b.h + 2 * pad;
-  if (square) { const s = Math.max(w, h, 1250); w = h = s; }
-  const vx = b.x + b.w / 2 - w / 2, vy = b.y + b.h / 2 - h / 2;
-  const strokes = form === "alone" ? strokesFor(letter.ar) : null;
-  const t = `x="0" y="0" font-family=${FONT.replace(/"/g, "'")} font-size="1000" text-anchor="middle"`;
-  let s = `<svg class="guide" viewBox="${vx.toFixed(0)} ${vy.toFixed(0)} ${w.toFixed(0)} ${h.toFixed(0)}" data-vb="${vx},${vy},${w},${h}" aria-hidden="true">`;
-  s += `<line class="base" x1="${vx + 40}" x2="${vx + w - 40}" y1="0" y2="0"/>`;
-  if (level === "arrows" || level === "outline") {
-    s += `<text ${t} class="bub-out" stroke-width="${fat + 40}">${text}</text><text ${t} class="bub-in" stroke-width="${fat}">${text}</text>`;
-  } else if (level === "faint") {
-    s += `<text ${t} class="faint" stroke-width="${fat}">${text}</text>`;
-  } else {
-    s += `<text class="model" x="${vx + 230}" y="${vy + 330}" font-size="300" text-anchor="middle">${text}</text>`;
-  }
-  const start = strokes ? strokes[0][0] : b.start;
-  if (level === "arrows" && strokes) {
-    s += `<defs><marker id="ah" viewBox="0 0 10 10" refX="4" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--t-arrow)"/></marker></defs>`;
-    strokes.forEach((p, i) => {
-      s += `<path class="arrow" d="${MOUTH.smooth(p)}" marker-end="url(#ah)"/>`;
-      s += `<circle class="start" cx="${p[0][0]}" cy="${p[0][1]}" r="${i ? 22 : 30}"/>`;
-      if (num && strokes.length > 1) {
-        const dx = p[1][0] - p[0][0], dy = p[1][1] - p[0][1], d = Math.hypot(dx, dy) || 1;
-        s += `<text class="num" text-anchor="middle" x="${(p[0][0] - (dx / d) * 95).toFixed(0)}" y="${(p[0][1] - (dy / d) * 95 + 32).toFixed(0)}">${i + 1}</text>`;
-      }
-    });
-  } else if (level !== "own") {
-    s += `<circle class="start" cx="${start[0]}" cy="${start[1]}" r="30"/>`;
-  }
-  return s + "</svg>";
-}
 
 // =====================================================================================
-// A trace card: the guide plus a canvas the child writes on, with Check, Undo, Clear, Show me
+// Pencil choices (the trace card is in art.js)
 // =====================================================================================
 const PENS = [
   { id: "crayon", name: "Crayon" }, { id: "marker", name: "Marker" }, { id: "rainbow", name: "Rainbow" }, { id: "sparkle", name: "Sparkle" },
 ];
 const COLOURS = ["#5c3d8f", "#2f6f73", "#b0359f", "#e2231a", "#1f8fc9", "#f2b705", "#333a3c"];
 const PAPERS = [{ id: "sky", name: "Sky" }, { id: "sand", name: "Sand" }, { id: "grass", name: "Grass" }, { id: "night", name: "Night" }, { id: "plain", name: "Plain" }];
-const WIDTHS = { thin: 45, medium: 75, thick: 110 };
+const WIDTHS = { thin: 1, medium: 2, thick: 3 }; // names only; sizes are PEN_UNITS in art.js
 const penPrefs = () => store.get("pen", { pen: "crayon", colour: "#5c3d8f", width: "medium", paper: "sky" });
-
-function traceCard(letter, form, level, { tools = true, label = true, onStars } = {}) {
-  const wrap = document.createElement("div");
-  wrap.className = "tcell";
-  const prefs = penPrefs();
-  wrap.innerHTML = `<div class="tc paper-${prefs.paper}">${guideSVG(letter, form, level)}<canvas></canvas><div class="stars" aria-live="polite"></div>${label ? `<div class="flabel">${FORMS.find((f) => f.id === form).name}</div>` : ""}</div>
-    ${tools ? `<div class="ttools"><button class="btn sun" data-a="check">✓ Check</button><button class="btn" data-a="show"${form === "alone" && strokesFor(letter.ar) ? "" : " disabled"}>▶ Show me</button><button class="btn ghost" data-a="undo">↶ Undo</button><button class="btn ghost" data-a="clear">Clear</button></div><div class="tmsg" aria-live="polite"></div>` : ""}`;
-  const tc = $(".tc", wrap), svg = $("svg", tc), cv = $("canvas", tc), ctx = cv.getContext("2d");
-  const [vx, vy, vw, vh] = svg.dataset.vb.split(",").map(Number);
-  const strokes = [];
-  let cur = null;
-
-  const fit = () => {
-    const r = tc.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1);
-    if (!r.width) return;
-    cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
-    redraw();
-  };
-  const toUnits = (e) => { const r = cv.getBoundingClientRect(); return [vx + ((e.clientX - r.left) / r.width) * vw, vy + ((e.clientY - r.top) / r.height) * vh]; };
-  const setT = (c, W, H) => { const k = W / vw; c.setTransform(k, 0, 0, H / vh, -vx * k, (-vy * H) / vh); };
-  // deterministic wobble so a crayon looks the same after a redraw
-  const rnd = (i, j) => { const x = Math.sin(i * 12.9898 + j * 78.233) * 43758.5453; return x - Math.floor(x); };
-  function paint(c, st) {
-    const pts = st.pts; if (!pts.length) return;
-    c.lineCap = "round"; c.lineJoin = "round"; c.lineWidth = st.width;
-    if (pts.length === 1) { c.fillStyle = st.colour; c.beginPath(); c.arc(pts[0][0], pts[0][1], st.width / 2, 0, 7); c.fill(); return; }
-    if (st.pen === "rainbow") {
-      for (let i = 1; i < pts.length; i++) { c.strokeStyle = `hsl(${(i * 7) % 360} 85% 55%)`; c.beginPath(); c.moveTo(...pts[i - 1]); c.lineTo(...pts[i]); c.stroke(); }
-      return;
-    }
-    c.strokeStyle = st.colour; c.globalAlpha = st.pen === "crayon" ? 0.85 : 1;
-    c.beginPath(); c.moveTo(...pts[0]); for (const p of pts.slice(1)) c.lineTo(...p); c.stroke(); c.globalAlpha = 1;
-    if (st.pen === "crayon") {
-      c.save(); c.globalCompositeOperation = "destination-out";
-      pts.forEach((p, i) => { for (let j = 0; j < 3; j++) { const a = rnd(i, j) * 6.28, d = rnd(j, i) * st.width * 0.45; c.fillStyle = "rgba(0,0,0,.35)"; c.fillRect(p[0] + Math.cos(a) * d, p[1] + Math.sin(a) * d, 6, 6); } });
-      c.restore();
-    }
-    if (st.pen === "sparkle") {
-      pts.forEach((p, i) => { if (i % 9) return; const r = 14 + rnd(i, 1) * 14; c.fillStyle = i % 18 ? "#ffe45d" : "#fff"; c.beginPath();
-        for (let k = 0; k < 8; k++) { const a = (k * Math.PI) / 4, rr = k % 2 ? r / 3 : r; c.lineTo(p[0] + Math.cos(a) * rr + st.width * 0.6, p[1] + Math.sin(a) * rr - st.width * 0.6); } c.fill(); });
-    }
-  }
-  function redraw() {
-    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, cv.width, cv.height);
-    setT(ctx, cv.width, cv.height);
-    for (const st of strokes) paint(ctx, st);
-  }
-  cv.addEventListener("pointerdown", (e) => {
-    e.preventDefault(); cv.setPointerCapture(e.pointerId);
-    const p = penPrefs();
-    cur = { pts: [toUnits(e)], pen: p.pen, colour: p.colour, width: WIDTHS[p.width] };
-    strokes.push(cur); redraw();
-  });
-  cv.addEventListener("pointermove", (e) => {
-    if (!cur) return;
-    const evs = e.getCoalescedEvents?.() || [];
-    for (const ev of evs.length ? evs : [e]) {
-      const q = toUnits(ev), last = cur.pts[cur.pts.length - 1];
-      if (Math.hypot(q[0] - last[0], q[1] - last[1]) > 6) cur.pts.push(q);
-    }
-    redraw();
-  });
-  const end = () => { cur = null; };
-  cv.addEventListener("pointerup", end); cv.addEventListener("pointercancel", end);
-  const ro = new ResizeObserver(fit); ro.observe(tc); onLeave(() => ro.disconnect());
-
-  // ---------- Check: how much of the letter did the pencil cover, and how much went outside? ----------
-  function check() {
-    const msg = $(".tmsg", wrap), starsEl = $(".stars", tc);
-    if (!strokes.length) { if (msg) msg.textContent = "Write the letter first, then press Check."; return 0; }
-    const R = 180, mk = () => { const c = document.createElement("canvas"); c.width = c.height = R; const x = c.getContext("2d", { willReadFrequently: true }); setT(x, R, R); return [c, x]; };
-    const text = formText(letter, form);
-    const glyph = (x, sw) => { x.font = `1000px ${FONT}`; x.textAlign = "center"; x.fillStyle = x.strokeStyle = "#000"; x.lineWidth = sw; x.lineJoin = "round"; x.fillText(text, 0, 0); if (sw) x.strokeText(text, 0, 0); };
-    const [, core] = mk(); glyph(core, 30);
-    const [, loose] = mk(); glyph(loose, 260);
-    // The child follows the middle of the letter, so for "covered" the pencil line counts a little wider
-    const [, ink] = mk(); for (const st of strokes) paint(ink, { ...st, pen: "marker", colour: "#000", width: Math.max(st.width, 70) });
-    const [, reach] = mk(); for (const st of strokes) paint(reach, { ...st, pen: "marker", colour: "#000", width: Math.max(st.width, 70) + 110 });
-    const A = (x) => x.getImageData(0, 0, R, R).data;
-    const c = A(core), l = A(loose), k = A(ink), kr = A(reach);
-    let nc = 0, hit = 0, nk = 0, out = 0;
-    for (let i = 3; i < c.length; i += 4) {
-      if (c[i] > 100) { nc++; if (kr[i] > 100) hit++; }
-      if (k[i] > 100) { nk++; if (l[i] < 100) out++; }
-    }
-    const cover = nc ? hit / nc : 0, outside = nk ? out / nk : 0;
-    let stars = cover >= 0.8 && outside <= 0.12 ? 3 : cover >= 0.6 && outside <= 0.25 ? 2 : cover >= 0.35 ? 1 : 0;
-    // A dotted letter needs at least one extra touch for its dots
-    const dotted = "بتثجخذزشضظغفقني".includes(letter.ar) && form === "alone";
-    const missedDots = dotted && strokes.length <= (strokesFor(letter.ar)?.length || 1);
-    if (missedDots) stars = Math.min(stars, 2);
-    starsEl.textContent = "★".repeat(stars) + "☆".repeat(3 - stars);
-    const st = form === "alone" ? strokesFor(letter.ar) : null;
-    const s0 = st ? st[0][0] : inkBox(text).start;
-    const goodStart = Math.hypot(strokes[0].pts[0][0] - s0[0], strokes[0].pts[0][1] - s0[1]) < 200;
-    const lines = [
-      stars === 3 ? "Excellent! ⭐⭐⭐" : stars === 2 ? "Well done! Try once more for 3 stars." : stars === 1 ? "Good try. Cover more of the letter." : "Keep going: follow the letter's shape.",
-      outside > 0.25 ? "Try to stay inside the lines." : "",
-      missedDots ? `Don't forget the dot${"ثشتق".includes(letter.ar) ? "s" : ""}!` : "",
-      level !== "own" ? (goodStart ? "You started at the red dot. 👍" : "Tip: start at the red dot.") : "",
-    ].filter(Boolean);
-    if (msg) msg.textContent = lines.join(" ");
-    onStars?.(stars, form);
-    return stars;
-  }
-
-  // ---------- Show me: a pen runs along each arrow in order ----------
-  function showMe() {
-    const st = strokesFor(letter.ar); if (!st) return;
-    const ns = "http://www.w3.org/2000/svg";
-    $$(".trail, .pendot", svg).forEach((n) => n.remove());
-    let i = 0;
-    const next = () => {
-      if (i >= st.length) { setTimeout(() => $$(".trail, .pendot", svg).forEach((n) => n.remove()), 900); return; }
-      const p = document.createElementNS(ns, "path"); p.setAttribute("d", MOUTH.smooth(st[i])); p.setAttribute("class", "trail"); svg.appendChild(p);
-      const len = p.getTotalLength();
-      if (REDUCED) { i++; setTimeout(next, 500); return; }
-      const dot = document.createElementNS(ns, "circle"); dot.setAttribute("r", "34"); dot.setAttribute("class", "pendot"); dot.setAttribute("fill", "var(--t-arrow)"); svg.appendChild(dot);
-      p.style.strokeDasharray = `${len} ${len}`;
-      const t0 = performance.now(), dur = 500 + len * 0.9;
-      const step = (now) => {
-        const kk = Math.min(1, (now - t0) / dur), pt = p.getPointAtLength(len * kk);
-        p.style.strokeDashoffset = String(len * (1 - kk)); dot.setAttribute("cx", pt.x); dot.setAttribute("cy", pt.y);
-        if (kk < 1) requestAnimationFrame(step); else { dot.remove(); i++; setTimeout(next, 250); }
-      };
-      requestAnimationFrame(step);
-    };
-    next();
-  }
-
-  wrap.addEventListener("click", (e) => {
-    const a = e.target.closest("[data-a]")?.dataset.a; if (!a) return;
-    if (a === "clear") { strokes.length = 0; redraw(); $(".stars", tc).textContent = ""; $(".tmsg", wrap).textContent = ""; }
-    if (a === "undo") { strokes.pop(); redraw(); }
-    if (a === "check") check();
-    if (a === "show") showMe();
-  });
-  requestAnimationFrame(fit);
-  wrap.api = { check, showMe, clear: () => { strokes.length = 0; redraw(); } };
-  return wrap;
-}
 
 // =====================================================================================
 // Spot it in a surah: tap the words that have the letter, then count it
@@ -343,7 +167,7 @@ function celebrate(l) {
 // Home: search, three ways in, the sticker map
 // =====================================================================================
 const STATIONS = [
-  { id: "space", name: "The empty space", sub: "Al-Jawf · rongga mulut", spots: ["space"] },
+  { id: "space", name: "The empty space", sub: "Al-Jawf · rongga mulut: Alif, and long Waw and Ya (madd)", spots: ["space"] },
   { id: "throat", name: "Throat", sub: "Al-Ḥalq · kerongkong: deep, middle and top", spots: ["throatDeep", "throatMid", "throatNear"] },
   { id: "back", name: "Back of the tongue", sub: "Lidah: belakang", spots: ["qaf", "kaf"] },
   { id: "middle", name: "Middle of the tongue", sub: "Lidah: tengah", spots: ["mid"] },
@@ -353,7 +177,7 @@ const STATIONS = [
   { id: "nose", name: "Nose (bonus)", sub: "Al-Khayshūm · hidung: the hum of Nun and Mim", spots: ["nose"] },
 ];
 const lettersAt = (st) => LETTERS.filter((l) => st.spots.includes(l.spot)).sort((a, b) => SPOTS[a.spot].depth - SPOTS[b.spot].depth);
-const sideFor = (spotId, extra = {}) => { const s = SPOTS[spotId]; return MOUTH.side({ pose: s.tongue, spot: { x: s.x, y: s.y }, glow: s.glow, ...extra }); };
+const sideFor = (spotId, { bw = false } = {}) => mouthImg(`${spotId}-side`, { kind: "mini", bw, alt: SPOTS[spotId].name });
 function stickerHTML(l, names = false) {
   const p = progress[l.id] || {};
   const vars = I4.map((s, i) => `--p${i + 1}:${p[s.id] ? s.c : "var(--line)"}`).join(";");
@@ -451,7 +275,7 @@ function viewLetter(id, stepId, q) {
   const step = I4.find((s) => s.id === stepId) || I4[0];
   const i = LETTERS.indexOf(l), prev = LETTERS[(i + 28) % 29], next = LETTERS[(i + 1) % 29];
   const sp = SPOTS[l.spot], region = regionOf(l);
-  app.innerHTML = `<div class="lhead"><button class="bigl" data-listen="${l.id}" aria-label="Hear ${esc(l.name)}">${letterSVG(l.ar)}</button><div class="meta"><h1>${esc(l.name)}</h1>
+  app.innerHTML = `<div class="lhead"><button class="bigl" data-listen="${l.id}" aria-label="Hear ${esc(l.name)}"><img src="${artLetter(l, "alone", "solid")}" alt="" width="512" height="512"></button><div class="meta"><h1>${esc(l.name)}</h1>
       <div class="row"><span class="pill" style="background:${region.colour}33;color:var(--plum)">${esc(region.name)} · ${esc(region.ms)}</span>${l.heavy ? `<span class="pill" style="background:#f3e6ff;color:var(--primary)">Heavy letter</span>` : ""}<span class="pill draft">Draft</span></div></div>
       <div class="nav"><a class="btn ghost" href="#/letter/${next.id}/${step.id}" aria-label="Next letter: ${esc(next.name)}"><span aria-hidden="true">←</span><span class="navl">${letterSVG(next.ar, 160)}</span></a><a class="btn ghost" href="#/letter/${prev.id}/${step.id}" aria-label="Previous letter: ${esc(prev.name)}"><span class="navl">${letterSVG(prev.ar, 160)}</span><span aria-hidden="true">→</span></a><a class="btn" href="#/print/letter/${l.id}">Print</a></div></div>
     <nav class="steps" aria-label="4-I steps">${I4.map((s, k) => `<a class="step${progress[id]?.[s.id] ? " done" : ""}" data-step="${s.id}" href="#/letter/${id}/${s.id}" style="--c:${s.c};--oc:${s.oc}"${s.id === step.id ? ' aria-current="step"' : ""}><i><span>${k + 1}</span></i><div><b>${s.name}</b><span>${s.sub}</span></div></a>`).join("")}</nav>
@@ -477,7 +301,7 @@ function stepInspire(el, l, q) {
   const guess = P(l.id).guess;
   el.innerHTML = `<div class="grid2">
     <div class="card"><h2 style="margin-top:0">Meet ${esc(l.name)}</h2>
-      <div class="forms">${formsOf(l).map((f) => `<div class="form"><span class="fg">${letterSVG(formText(l, f.id), 120)}</span><small>${f.name}</small></div>`).join("")}</div>
+      <div class="forms">${formsOf(l).map((f) => `<div class="form">${alignedLetter(l, f.id)}<small>${f.name}</small></div>`).join("")}</div>
       <p class="small muted">${l.joins ? `${esc(l.name)} changes shape when it holds hands with other letters.` : l.noForms ? "Hamzah sits alone, or rides on another letter." : `${esc(l.name)} only holds hands with the letter before it, so it has two shapes.`}</p>
       <div class="say">${sayLine(l)}</div>
       <div class="row">${audioButton(l)}</div>
@@ -502,38 +326,41 @@ function stepInspire(el, l, q) {
 
 function stepInvestigate(el, l) {
   const sp = SPOTS[l.spot];
-  // Five dots on the side view: the right one and four others, spread out
+  const pt = (id) => SPOT_POINTS[id] || [0, 0];
+  // Five dots on the side view: the right one, then one from each other part of the mouth, spread out
   const seed = [...l.id].reduce((a, c) => a + c.charCodeAt(0), 0);
-  // one from each part of the mouth first, so the dots spread from throat to lips
-  const others = Object.entries(SPOTS).filter(([k]) => k !== l.spot && k !== "nose").sort((a, b) => ((a[1].x * 7 + a[1].y + seed * 13) % 97) - ((b[1].x * 7 + b[1].y + seed * 13) % 97));
-  const cands = [{ id: l.spot, x: sp.x, y: sp.y, r: sp.region }];
-  const fits = (s) => cands.every((c) => Math.hypot(c.x - s.x, c.y - s.y) > 26);
-  for (const [k, s] of others) if (cands.length < 5 && !cands.some((c) => c.r === s.region) && fits(s)) cands.push({ id: k, x: s.x, y: s.y, r: s.region });
-  for (const [k, s] of others) if (cands.length < 5 && fits(s)) cands.push({ id: k, x: s.x, y: s.y, r: s.region });
+  const others = Object.keys(SPOTS).filter((k) => k !== l.spot && k !== "nose" && SPOT_POINTS[k]).sort((a, b) => ((pt(a)[0] * 7 + pt(a)[1] + seed * 13) % 97) - ((pt(b)[0] * 7 + pt(b)[1] + seed * 13) % 97));
+  const cands = [{ id: l.spot, x: pt(l.spot)[0], y: pt(l.spot)[1], r: sp.region }];
+  const fits = (k) => cands.every((c) => Math.hypot(c.x - pt(k)[0], c.y - pt(k)[1]) > 62);
+  for (const k of others) if (cands.length < 5 && !cands.some((c) => c.r === SPOTS[k].region) && fits(k)) cands.push({ id: k, x: pt(k)[0], y: pt(k)[1], r: SPOTS[k].region });
+  for (const k of others) if (cands.length < 5 && fits(k)) cands.push({ id: k, x: pt(k)[0], y: pt(k)[1], r: SPOTS[k].region });
   cands.sort((a, b) => a.x - b.x).forEach((c, i) => (c.label = `Spot ${i + 1}`));
   const found = !!P(l.id).investigate;
   el.innerHTML = `<div class="grid2">
     <div class="card"><h2 style="margin-top:0">Find the sound spot</h2><p>Say <span class="ar" style="font-size:26px">${sayLine(l)}</span> slowly. Which dot shows where <b>${esc(l.name)}</b> comes from?</p>
-      <div class="diagram" id="find">${MOUTH.side({ dots: found ? null : cands, spot: found ? { x: sp.x, y: sp.y } : null, pose: found ? sp.tongue : "rest", glow: found ? sp.glow : null, labels: true })}</div>
-      <p class="feedback" id="ffb" aria-live="polite"></p></div>
+      <div class="mouthwrap" id="find"><div class="mbox"></div>${found ? "" : dotsOverlay(cands)}</div>
+      <p class="feedback" id="ffb" aria-live="polite"></p><p class="note" style="margin:0">Pictures are a DRAFT for asatizah review.</p></div>
     <div class="card" id="reveal">${found ? "" : `<p class="muted">Tap a dot on the picture. Then you'll see the tongue move, and you can try it in your own mouth.</p><img src="img/thinking-questions-md.webp" alt="" width="120" height="120" style="width:120px;height:120px;object-fit:contain">`}</div></div>`;
+  const box = $("#find .mbox", el);
+  mountMouth(box, found ? `${l.spot}-side` : "neutral-side");
   const reveal = () => {
-    const views = [["side", "Side"], ["top", "From above"], ["front", "Front"]];
-    const best = sp.view;
-    const draw = (v) => v === "side" ? sideFor(l.spot) : v === "top" ? MOUTH.top({ zone: sp.top || ({ mid: "middle", qaf: "back", kaf: "back" })[l.spot] || (sp.region === "tongue" ? "tip" : null) }) : MOUTH.front({ lips: l.lips || sp.lips, tongue: sp.tongue });
+    const views = mouthViews(l);
+    const best = (views.find((v) => v.id === sp.view) || views[0]).id;
+    const draw = (v) => { const view = views.find((x) => x.id === v); return mouthImg(view.art, { alt: `${sp.name}, ${view.name.toLowerCase()} view` }); };
     const stop = stopTest(l);
     $("#reveal", el).innerHTML = `<h2 style="margin-top:0">${esc(sp.name)}</h2>
-      <div class="views" role="tablist">${views.map(([v, n]) => `<button class="chip" data-v="${v}" aria-pressed="${v === best}">${n}</button>`).join("")}</div>
-      <div class="diagram" id="view">${draw(best)}</div>
-      ${l.spot === "sides" ? `<div class="row small" id="sides"><b>Which side?</b> ${["left", "right", "both"].map((s) => `<button class="chip" data-s="${s}" aria-pressed="${s === "both"}">${s[0].toUpperCase() + s.slice(1)}</button>`).join("")}</div>` : ""}
+      <div class="views" role="tablist">${views.map((v) => `<button class="chip" data-v="${v.id}" aria-pressed="${v.id === best}">${v.name}</button>`).join("")}</div>
+      <div class="diagram viewbox" id="view">${draw(best)}</div>
+      ${l.spot === "sides" ? `<div class="row small" id="sides"><b>Which side?</b> ${[["left", "sides-left-top"], ["right", "sides-right-top"], ["both", "sides-top"]].map(([s2, art]) => `<button class="chip" data-s="${art}" aria-pressed="${s2 === "both"}">${s2[0].toUpperCase() + s2.slice(1)}</button>`).join("")}</div>` : ""}
       <p><b>${esc(l.how || sp.where)}</b></p>
+      ${l.heavy ? `<p class="small">${esc(l.name)} is a heavy letter: the back of the tongue lifts too, so the mouth feels full. See the “Heavy letter” view.</p>` : ""}
       ${stop ? `<p class="small">Stop test: say <span class="ar" style="font-size:28px">${stop}</span> and hold the end. Where does your tongue stop?</p>` : ""}
-      <label class="check"><input type="checkbox" id="felt"${P(l.id).felt ? " checked" : ""}><span><b>Feel it:</b> ${arab(sp.feel)}${l.nose && l.spot !== "nun" ? " Then pinch your nose: the hum stops!" : ""}</span></label>
+      <label class="check feel">${feelImg(feelFor(l.spot, l))}<input type="checkbox" id="felt"${P(l.id).felt ? " checked" : ""}><span><b>Feel it:</b> ${arab(sp.feel)}${l.nose && l.spot !== "nun" ? " Then gently hold your nose: the hum stops!" : ""}</span></label>
       <div class="row"><button class="btn" id="mirror">🪞 Use a mirror</button>${audioButton(l)}</div><div id="mirrorbox"></div>
       ${l.also ? `<p class="small muted">${esc(l.name)} has two homes. As a long vowel it flows from the empty space, like Alif.</p>` : ""}`;
     wireListen(el);
     $$("[data-v]", el).forEach((b) => b.onclick = () => { $$("[data-v]", el).forEach((x) => x.setAttribute("aria-pressed", x === b)); $("#view", el).innerHTML = draw(b.dataset.v); });
-    $$("[data-s]", el).forEach((b) => b.onclick = () => { $$("[data-s]", el).forEach((x) => x.setAttribute("aria-pressed", x === b)); $("#view", el).innerHTML = MOUTH.top({ zone: "sidesBack", side: b.dataset.s }); });
+    $$("[data-s]", el).forEach((b) => b.onclick = () => { $$("[data-s]", el).forEach((x) => x.setAttribute("aria-pressed", x === b)); $("#view", el).innerHTML = mouthImg(b.dataset.s, { alt: "Looking down at the tongue" }); });
     $("#felt", el).onchange = (e) => { P(l.id).felt = e.target.checked; store.set("progress", progress); if (e.target.checked) markStep(l.id, "investigate"); };
     $("#mirror", el).onclick = () => openMirror($("#mirrorbox", el));
   };
@@ -542,11 +369,8 @@ function stepInvestigate(el, l) {
     const pick = () => {
       if (g.dataset.spot === l.spot) {
         $("#ffb", el).className = "feedback good"; $("#ffb", el).textContent = `Yes! ${l.name} comes from here: ${SPOTS[l.spot].short.toLowerCase()}.`;
-        const svg = $("#find svg", el);
-        $$(".cand", svg).forEach((c) => c.remove());
-        svg.insertAdjacentHTML("beforeend", `<g class="spotdot"><circle cx="${sp.x}" cy="${sp.y}" r="11" class="ring"/><circle cx="${sp.x}" cy="${sp.y}" r="6.5" class="core"/></g>`);
-        if (sp.glow) $(sp.glow === "nose" ? ".nasal" : ".cavity", svg).classList.add("glow");
-        MOUTH.moveTongue(svg, sp.tongue);
+        $(".mouthdots", el)?.remove();
+        mountMouth(box, `${l.spot}-side`, { play: true });
         const g0 = P(l.id).guess;
         if (g0) $("#ffb", el).textContent += g0 === sp.region ? " Your guess was right!" : ` You guessed ${REGIONS.find((r) => r.id === g0).name.toLowerCase()}: now you know!`;
         reveal();
@@ -589,7 +413,7 @@ function stepIntegrate(el, l) {
   const done = () => { if (P(l.id).wrote && l.near.every((n) => answers[n])) markStep(l.id, "integrate"); };
   $("#nb", el).innerHTML = l.near.map((nid) => {
     const n = BY_ID[nid];
-    return `<div class="card" style="margin-bottom:10px;background:var(--paper)" data-n="${nid}"><div class="row" style="font-size:20px;direction:ltr"><bdi class="ar" style="font-size:40px;font-weight:700">${l.ar}</bdi> <span>and</span> <bdi class="ar" style="font-size:40px;font-weight:700">${n.ar}</bdi></div>
+    return `<div class="card" style="margin-bottom:10px;background:var(--paper)" data-n="${nid}"><div class="nbpair"><span class="nbl">${letterSVG(l.ar, 160)}</span><span>and</span><span class="nbl">${letterSVG(n.ar, 160)}</span></div>
       <div class="choices"><button class="chip" data-ans="same">Same spot</button><button class="chip" data-ans="diff">Different spots</button></div><div class="nbr"></div></div>`;
   }).join("");
   const explain = (a, b) => {
@@ -602,7 +426,7 @@ function stepIntegrate(el, l) {
   const show = (box, nid, ans) => {
     const n = BY_ID[nid], same = l.spot === n.spot, right = (ans === "same") === same;
     $(".nbr", box).innerHTML = `<p class="feedback ${right ? "good" : "bad"}">${right ? "Yes! " : "Look again. "}${esc(explain(l, n))}</p>
-      <div class="grid2" style="gap:8px"><div class="diagram">${sideFor(l.spot, { levels: false })}<div class="ar" style="text-align:center;font-size:30px">${l.ar}</div></div><div class="diagram">${sideFor(n.spot, { levels: false })}<div class="ar" style="text-align:center;font-size:30px">${n.ar}</div></div></div>`;
+      <div class="nbviews"><figure>${sideFor(l.spot)}<figcaption><span class="nbl">${letterSVG(l.ar, 160)}</span></figcaption></figure><figure>${sideFor(n.spot)}<figcaption><span class="nbl">${letterSVG(n.ar, 160)}</span></figcaption></figure></div>`;
     $$("[data-ans]", box).forEach((x) => x.setAttribute("aria-pressed", x.dataset.ans === ans));
   };
   $$("#nb [data-n]", el).forEach((box) => {
@@ -738,34 +562,34 @@ function viewWrite(q) {
 function viewSpots(q) {
   const regionPick = q.get("r");
   const first = regionPick ? Object.keys(SPOTS).find((k) => SPOTS[k].region === regionPick) : "lips";
-  const dots = Object.entries(SPOTS).map(([id, s]) => ({ id, x: s.x, y: s.y, label: s.name }));
+  const dots = Object.keys(SPOTS).filter((id) => SPOT_POINTS[id]).map((id) => ({ id, x: SPOT_POINTS[id][0], y: SPOT_POINTS[id][1], label: SPOTS[id].name }));
   const lettersOf = (id) => LETTERS.filter((l) => l.spot === id || (id === "space" && l.also === "space") || (id === "nose" && (l.id === "nun" || l.id === "mim")));
   // one button per spot, grouped by part of the mouth, in the order the makhraj is taught
   const groups = REGIONS.map((r) => ({ r, ids: Object.keys(SPOTS).filter((k) => SPOTS[k].region === r.id).sort((a, b2) => SPOTS[a].depth - SPOTS[b2].depth) }));
   app.innerHTML = `<div class="hero" style="margin-bottom:12px"><img class="mascot" src="img/thinking-questions-md.webp" alt="" width="96" height="96"><div><h1>Sound Spots</h1>
     <p>Every letter has a home in your mouth or throat where its sound comes out (its makhraj). Pick a spot and watch the tongue move there.</p></div></div>
     <div class="spotsgrid">
-      <div class="card"><div class="diagram explore" id="ex">${MOUTH.side({ dots, labels: true })}</div>
+      <div class="card"><div class="mouthwrap" id="ex"><div class="mbox"></div>${dotsOverlay(dots, first)}</div>
         <div class="spotpick">${groups.map((g) => `<div class="sgroup"><b style="color:${g.r.colour}">${g.r.name}</b><div class="row">${g.ids.map((id) => `<button class="chip spotchip" data-spot="${id}" aria-pressed="false" aria-label="${esc(SPOTS[id].name)}">${inkStrip(lettersOf(id).map((l) => l.ar).join(" "))}<span>${esc(SPOTS[id].short.replace(/^Tongue: /, "").replace(/^./, (c) => c.toUpperCase()))}</span></button>`).join("")}</div></div>`).join("")}</div></div>
       <div class="card" id="exinfo" aria-live="polite"></div></div>
     <h2>All the letters, from deep inside to the lips</h2>
     <div class="map">${STATIONS.filter((st) => st.id !== "nose").map((st) => `<section class="station"><div class="mini">${sideFor(st.spots[0], { levels: false })}</div><div><h3>${st.name}</h3><div class="sub">${st.sub}</div><div class="stickers withnames">${lettersAt(st).map((l) => stickerHTML(l, true)).join("")}</div></div></section>`).join("")}</div>
     <p class="flag" style="margin-top:16px">DRAFT: the wording for children, and the dot positions, need an ustaz or ustazah to check them. Each spot is simplified so children can feel it. The full detail of the 17 makharij is for teachers.</p>`;
-  const svg = $("#ex svg");
+  const box = $("#ex .mbox");
   const show = (id) => {
     const s = SPOTS[id], ls = lettersOf(id);
-    $$("#ex .cand").forEach((g) => { const on = g.dataset.spot === id; g.classList.toggle("sel", on); g.classList.toggle("dim", !on); $(".cdot", g).setAttribute("r", on ? 8 : 4); });
+    $$("#ex .cand").forEach((g) => { const on = g.dataset.spot === id; g.classList.toggle("sel", on); g.classList.toggle("dim", !on); $(".cdot", g).setAttribute("r", on ? 15 : 8); });
     $$(".spotchip").forEach((b) => b.setAttribute("aria-pressed", b.dataset.spot === id));
-    $(".cavity", svg).classList.toggle("glow", s.glow === "space");
-    $(".nasal", svg).classList.toggle("glow", s.glow === "nose");
-    MOUTH.moveTongue(svg, s.tongue);
-    const view = s.view === "top" ? MOUTH.top({ zone: s.top }) : s.view === "front" ? MOUTH.front({ lips: s.lips, tongue: s.tongue }) : "";
+    mountMouth(box, `${id}-side`, { play: true });
+    // the other drawn views of this spot (lips also show Waw's round lips)
+    const extra = [...(id === "sides" ? ["sides-top", "sides-left-top", "sides-right-top"] : [`${id}-top`]), `${id}-front`, ...(id === "lips" ? ["waw-front"] : [])].filter(hasMouth);
     $("#exinfo").innerHTML = `<h2 style="margin-top:0">${esc(s.name)}</h2>
-      ${view ? `<div class="diagram" style="max-width:280px;margin:0 auto">${view}</div><p class="small muted" style="text-align:center;margin:2px 0 8px">${s.view === "top" ? "Looking down at the tongue" : "Seen from the front"}</p>` : ""}
+      ${extra.length ? `<div class="viewgrid">${extra.map((n) => `<figure>${mouthImg(n, { alt: n })}<figcaption>${n.includes("-top") ? (n.includes("left") ? "From above: left side" : n.includes("right") ? "From above: right side" : "Looking down at the tongue") : n === "waw-front" ? "Waw: round lips" : "Seen from the front"}</figcaption></figure>`).join("")}</div>` : ""}
       <p>${esc(s.where)}</p>
       <div class="stickers withnames" style="justify-content:flex-start;margin-bottom:26px">${ls.map((l) => stickerHTML(l, true)).join("")}</div>
-      <p class="small"><b>Feel it:</b> ${arab(s.feel)}</p>
-      <div class="row">${ls.map((l) => `<button class="btn" data-listen="${l.id}">🔊 ${esc(l.name)}</button>`).join("")}<span class="small muted" data-listen-note></span></div>`;
+      <label class="check feel" style="cursor:default">${feelImg(feelFor(id))}<span><b>Feel it:</b> ${arab(s.feel)}</span></label>
+      <div class="row">${ls.map((l) => `<button class="btn" data-listen="${l.id}">🔊 ${esc(l.name)}</button>`).join("")}<span class="small muted" data-listen-note></span></div>
+      <p class="note">Pictures are a DRAFT for asatizah review.</p>`;
     wireListen($("#exinfo"));
   };
   $$("#ex .cand").forEach((g) => { g.onclick = () => show(g.dataset.spot); g.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); show(g.dataset.spot); } }; });
@@ -804,45 +628,52 @@ const LINEART = { writing: [1254, 1254], "treasure-map": [1197, 1314], trophy: [
 const lineArt = (name, style = "") => `<img src="img/lineart/${name}-print.webp" alt="" width="${LINEART[name][0]}" height="${LINEART[name][1]}"${style ? ` style="${style}"` : ""}>`;
 const sheetTop = (title, pose = "writing") => `<div class="top">${lineArt(pose)}<h2>${title}</h2><div class="name">Name <span></span> Date <span style="width:12cqw"></span></div></div>`;
 
-function printLetter(l, opt) {
-  const sp = SPOTS[l.spot];
-  const u = LAB_QURAN.find((x) => surahHas(x, l) >= 2) || LAB_QURAN[0];
-  // as many ayat as fit in a short box (about 18 words), always whole ayat
+// A short passage that really contains the letter: start at the first ayah that has it, add whole ayat up to about 18 words
+function passageFor(l) {
+  const u = LAB_QURAN.find((x) => surahHas(x, l) >= 2) || LAB_QURAN.find((x) => surahHas(x, l) > 0) || LAB_QURAN[0];
+  const i0 = Math.max(0, u.ayat.findIndex((a) => countIn(a.text, l) > 0));
   const ay = []; let words = 0;
-  for (const a of u.ayat) { if (ay.length && words + a.words.length > 18) break; ay.push(a); words += a.words.length; }
+  for (const a of u.ayat.slice(i0)) { if (ay.length && words + a.words.length > 18) break; ay.push(a); words += a.words.length; }
+  const n = ay.reduce((k, a) => k + countIn(a.text, l), 0);
   const whole = ay.length === u.ayat.length;
-  const cells = ["arrows", "outline", "faint", "faint", "own"].map((lv) => guideSVG(l, "alone", lv, { num: false })).join("");
-  const formsRow = formsOf(l).map((f) => `<div style="text-align:center"><div style="border:.25cqw solid #9a9a9a;border-radius:1.6cqw">${guideSVG(l, f.id, "outline", { pad: 150, square: false })}</div><small>${f.name}</small></div>`).join("");
+  const where = whole ? "" : ay.length === 1 ? `, ayah ${ay[0].n}` : `, ayat ${ay[0].n} to ${ay[ay.length - 1].n}`;
+  return { u, ay, words, n, where };
+}
+
+function printLetter(l, opt) {
+  const sp = SPOTS[l.spot], bw = !opt.colour;
+  const { u, ay, words, where } = passageFor(l);
+  const cells = ["arrows", "outline", "faint", "faint", "own"].map((lv) => printTraceCell(l, "alone", lv, bw)).join("");
   return sheetWrap(`${sheetTop(`My letter: <span class="ar" style="font-size:6cqw">${l.ar}</span> ${esc(l.name)}`)}
-    <div class="box"><span class="tag4 inspire">Inspire · Spot it</span><p style="margin:1cqw 0 0">Circle every <b class="ar" style="font-size:3.4cqw">${l.ar}</b> in Surah ${esc(u.name)}${whole ? "" : `, ayat 1 to ${ay.length}`}. How many? <span style="display:inline-block;width:8cqw;border-bottom:.25cqw dashed #1b1b1b"></span></p>
+    <div class="box"><span class="tag4 inspire">Inspire · Spot it</span><p style="margin:1cqw 0 0">Circle every <b class="ar" style="font-size:3.4cqw">${l.ar}</b> in Surah ${esc(u.name)}${where}. How many? <span style="display:inline-block;width:8cqw;border-bottom:.25cqw dashed #1b1b1b"></span></p>
       <div class="q" style="font-size:${words > 14 ? 3.1 : 3.6}cqw;line-height:2">${ay.map((a) => `${esc(a.text)} ﴿${a.n.toLocaleString("ar-EG")}﴾`).join(" ")}</div></div>
-    <div class="box" style="display:grid;grid-template-columns:18cqw 1fr;gap:2cqw;align-items:center"><span class="tag4 investigate">Investigate · Sound spot</span>
-      <div class="diagram">${MOUTH.side({ pose: "rest", levels: true })}</div>
+    <div class="box" style="display:grid;grid-template-columns:19cqw 1fr;gap:2cqw;align-items:center"><span class="tag4 investigate">Investigate · Sound spot</span>
+      ${mouthImg("neutral-side", { kind: "full", bw, alt: "Mouth and throat" })}
       <div><p style="margin:0 0 1cqw"><b>Draw a dot</b> where <span class="ar" style="font-size:3.4cqw">${l.ar}</span> comes from.</p>
         <div class="tick" style="margin:1cqw 0"><i></i>I said <span class="ar" style="font-size:3.6cqw">${sayLine(l)}</span></div>
-        <div class="tick"><i></i><span>${arab(sp.feel)}</span></div></div></div>
+        <div class="tick">${feelImg(feelFor(l.spot, l), bw)}<i></i><span>${arab(sp.feel)}</span></div></div></div>
     <div class="box"><span class="tag4 integrate">Integrate · Write it</span><p style="margin:1cqw 0">Start at the dot. Less help each time.</p>
       <div class="trow">${cells}</div>
-      ${l.joins || !l.noForms ? `<div class="trow forms" style="grid-template-columns:repeat(${formsOf(l).length},1fr);margin-top:1.4cqw;align-items:end">${formsRow}</div>` : ""}</div>
+      ${formsOf(l).length > 1 ? `<img class="pstrip" src="${artStrip(l, "outline", bw)}" alt="" width="1200" height="352">` : ""}</div>
     <div class="box" style="display:flex;gap:2.4cqw;align-items:center"><span class="tag4 impart">Impart · Say it and teach it</span>
       <div style="flex:1;display:grid;gap:1cqw;margin-top:1cqw"><div class="tick"><i></i>I taught someone where <span class="ar" style="font-size:3.4cqw">${l.ar}</span> comes from.</div><div class="tick"><i></i>I taught someone how to write it.</div><div class="tick"><i></i>Grown-up heard a clear ${esc(l.name)}: <span style="display:inline-block;width:16cqw;border-bottom:.25cqw dashed #1b1b1b"></span></div></div>
       ${lineArt("cheering", "width:11cqw;height:auto;flex:none")}<div class="stk">Stick your<br>${esc(l.name)}<br>sticker here</div></div>`, opt);
 }
 
 function printWrite(q, opt) {
-  const s = writeSettings(q), it = writeItems(s);
+  const s = writeSettings(q), it = writeItems(s), bw = !opt.colour;
   if (!it.length) return `<p class="card">Pick letters and shapes in Write first.</p>`;
   if (s.layout === "big") return it.map((x) => sheetWrap(`${sheetTop(`Write <span class="ar" style="font-size:6cqw">${formText(x.l, x.form)}</span> ${esc(x.l.name)} · ${FORMS.find((f) => f.id === x.form).name}`)}
-      <div class="big1" style="flex:1;display:grid;place-items:center"><div style="width:84%">${guideSVG(x.l, x.form, s.level)}</div></div>`, opt)).join("");
+      <div class="big1" style="flex:1;display:grid;place-items:center"><div style="width:84%">${printTraceCell(x.l, x.form, s.level, bw)}</div></div>`, opt)).join("");
   const per = opt.a5 ? 4 : 5, pages = [];
   for (let i = 0; i < it.length; i += per) pages.push(it.slice(i, i + per));
   return pages.map((pg, k) => sheetWrap(`${sheetTop("Write with Saurus", "writing")}<p style="margin:0">Start at the dot. Each box gives a little less help. ${k === 0 ? "" : `(page ${k + 1})`}</p>
-    ${pg.map((x) => `<div><b>${esc(x.l.name)}</b> <span class="muted">${FORMS.find((f) => f.id === x.form).name}</span><div class="trow">${["arrows", "outline", "faint", "faint", "own"].map((lv) => guideSVG(x.l, x.form, x.form === "alone" ? lv : lv === "arrows" ? "outline" : lv, { num: false, pad: 170 })).join("")}</div></div>`).join("")}`, opt)).join("");
+    ${pg.map((x) => `<div><b>${esc(x.l.name)}</b> <span class="muted">${FORMS.find((f) => f.id === x.form).name}</span><div class="trow">${["arrows", "outline", "faint", "faint", "own"].map((lv) => printTraceCell(x.l, x.form, lv, bw)).join("")}</div></div>`).join("")}`, opt)).join("");
 }
 
 function printMap(opt) {
   return sheetWrap(`${sheetTop("My Hijaiyya sticker map", "treasure-map")}<p style="margin:0">Each time you finish a letter, stick or colour its sticker. Start deep inside and travel out to the lips.</p>
-    <div class="mapgrid">${STATIONS.map((st) => `<div class="mapst${["throat", "tip"].includes(st.id) ? " wide" : ""}"><div>${sideFor(st.spots[0], { levels: false })}</div><div><h3>${st.name}</h3>
+    <div class="mapgrid">${STATIONS.map((st) => `<div class="mapst${["throat", "tip"].includes(st.id) ? " wide" : ""}"><div>${sideFor(st.spots[0], { bw: !opt.colour })}</div><div><h3>${st.name}</h3>
       <div class="circles">${(st.id === "nose" ? [{ ar: "ن م" }] : lettersAt(st)).map((l) => `<span class="circ">${letterSVG(l.ar, l.ar.length > 1 ? 150 : 260)}</span>`).join("")}</div></div></div>`).join("")}</div>`, opt);
 }
 function printStickers(opt) {
@@ -850,12 +681,17 @@ function printStickers(opt) {
     <div class="stsheet">${LETTERS.map((l) => `<div class="st"><span class="sg">${letterSVG(l.ar, 150)}</span><small>${esc(l.name)} ★</small></div>`).join("")}<div class="st"><span class="sg">${letterSVG("ن م", 150)}</span><small>Hum bonus ★</small></div></div>`, opt);
 }
 function printChart(opt) {
-  const rows = Object.entries(SPOTS).map(([id, s]) => ({ s, ls: LETTERS.filter((l) => l.spot === id) })).filter((x) => x.ls.length);
+  const bw = !opt.colour;
+  const cells = Object.keys(SPOTS).map((id) => {
+    const ls = LETTERS.filter((l) => l.spot === id || (id === "space" && l.also === "space") || (id === "nose" && ["nun", "mim"].includes(l.id)));
+    return `<figure class="cc">${mouthImg(`${id}-side`, { kind: "mini", bw, alt: SPOTS[id].name })}<figcaption><b class="ar">${ls.map((l) => l.ar).join(" ")}</b><span>${esc(SPOTS[id].short)}</span></figcaption></figure>`;
+  });
+  cells.push(`<figure class="cc">${mouthImg("edges-top", { bw, alt: "Lam from above" })}<figcaption><b class="ar">ل</b><span>Lam from above</span></figcaption></figure>`,
+    `<figure class="cc">${mouthImg("sides-top", { bw, alt: "Dhōd from above" })}<figcaption><b class="ar">ض</b><span>Dhōd from above</span></figcaption></figure>`);
   return sheetWrap(`${sheetTop("Where do the letters come from?", "thinking-questions")}
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2cqw;align-items:start"><div class="diagram">${MOUTH.side({ labels: true, dots: Object.entries(SPOTS).map(([id, s]) => ({ id, x: s.x, y: s.y, label: s.name })) })}</div>
-      <div style="display:grid;gap:.8cqw;font-size:1.9cqw">${rows.map(({ s, ls }) => `<div style="display:flex;justify-content:space-between;border-bottom:.2cqw dashed #c9c9c9;gap:1cqw"><span>${esc(s.short)}</span><b class="ar" style="font-size:3.2cqw;direction:rtl">${ls.map((l) => l.ar).join(" ")}</b></div>`).join("")}</div></div>
-    <div class="tops"><div>${MOUTH.top({ zone: "edgesFront" })}<p style="text-align:center;margin:0">Lam: tip and front edges</p></div><div>${MOUTH.top({ zone: "sidesBack" })}<p style="text-align:center;margin:0">Dhōd: side of the tongue</p></div></div>
-    <p style="margin:0;color:#8a8a8a">DRAFT for teacher review.</p>`, opt);
+    <p style="margin:0">From deep in the throat to the lips. Each picture shows one sound spot (makhraj).</p>
+    <div class="chartgrid">${cells.join("")}</div>
+    <p style="margin:0;color:#8a8a8a">DRAFT for asatizah review. Pictures are simplified so children can feel each spot.</p>`, opt);
 }
 
 function viewPrint(kind, rest, q) {
@@ -944,4 +780,4 @@ $("#openSettings").onclick = () => {
   openSheet("#settingsSheet");
 };
 addEventListener("hashchange", () => { $$(".sheetwrap").forEach((w) => (w.hidden = true)); go(); });
-document.fonts.load(`100px ${FONT}`, "بـ").then(go, go);
+Promise.all([document.fonts.load(`100px ${FONT}`, "بـ").catch(() => {}), ART_READY]).then(go, go);

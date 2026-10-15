@@ -1,0 +1,206 @@
+[
+  {
+    "id": "space",
+    "title": "The empty space",
+    "description": "Madd vowels: no single contact point.",
+    "letters": "ا و ي",
+    "primarySidePoint": [
+      402,
+      373
+    ],
+    "tonguePose": "rest",
+    "review": "DRAFT: for asatizah review"
+  },
+  {
+    "id": "throatDeep",
+    "title": "Deep throat",
+    "description": "Hamzah and H̲a: deepest throat region.",
+    "letters": "ء ه",
+    "primarySidePoint": [
+      533,
+      590
+    ],
+    "tonguePose": "rest",
+    "review": "DRAFT: for asatizah review"
+  },
+  {
+    "id": "throatMid",
+    "title": "Middle throat",
+    "description": "Ain and Ha: middle throat region.",
+    "letters": "ع ح",
+    "primarySidePoint": [
+      533,
+      547
+    ],
+    "tonguePose": "rest",
+    "review": "DRAFT: for asatizah review"
+  },
+  {
+    "id": "throatNear",
+    "title": "Upper throat",
+    "description": "Ghain and Kho: upper throat region.",
+    "letters": "غ خ",
+    "primarySidePoint": [
+      533,
+      504
+    ],
+    "tonguePose": "rest",
+    "review": "DRAFT: for asatizah review"
+  },
+  {
+    "id": "qaf",
+    "title": "Qof",
+    "description": "Back of tongue meets the soft roof.",
+    "letters": "ق",
+    "primarySidePoint": [
+      494,
+      306
+    ],
+    "tonguePose": "qaf",
+    "review": "DRAFT: for asatizah review"
+  },
+  {
+    "id": "kaf",
+    "title": "Kaf",
+    "description": "A little forward of Qof.",
+    "letters": "ك",
+    "primarySidePoint": [
+      463,
+      313
+    ],
+    "tonguePose": "kaf",
+    "review": "DRAFT: for asatizah review"
+  },
+  {
+    "id": "mid",
+    "title": "Middle of the tongue",
+    "description": "Middle tongue meets the hard roof.",
+    "letters": "ج ش ي",
+    "primarySidePoint": [
+      389,
+      315
+    ],
+    "tonguePose": "middle-up",
+    "review": "DRAFT: for asatizah review"
+  },
+  {
+    "id": "sides",
+    "title": "Dhōd: side contact",
+    "description": "Use the top view to see lateral contact.",
+    "letters": "ض",
+    "primarySidePoint": [
+      365,
+      348
+    ],
+    "tonguePose": "sides",
+    "review": "DRAFT: for asatizah review"
+  },
+  {
+    "id": "edges",
+    "title": "Lam: tip and front edges",
+    "description": "Tip and adjoining edges meet the upper gum.",
+    "letters": "ل",
+    "primarySidePoint": [
+      284,
+      336
+    ],
+    "tonguePose": "tip-up",
+    "review": "DRAFT: for asatizah review"
+  },
+  {
+    "id": "nun",
+    "title": "Nun: tip and nasal hum",
+    "description": "Tongue tip at upper gum; hum through the nose.",
+    "letters": "ن",
+    "primarySidePoint": [
+      287,
+      337
+    ],
+    "tonguePose": "tip-up",
+    "review": "DRAFT: for asatizah review"
+  },
+  {
+    "id": "ra",
+    "title": "Ra: controlled contact",
+    "description": "A brief tongue-tip contact; avoid repeated rolling.",
+    "letters": "ر",
+    "primarySidePoint": [
+      291,
+      338
+    ],
+    "tonguePose": "ra-tap",
+    "review": "DRAFT: for asatizah review"
+  },
+  {
+    "id": "ta",
+    "title": "Ta / Dal / Tho",
+    "description": "Tip touches the roots of the upper front teeth.",
+    "letters": "ت د ط",
+    "primarySidePoint": [
+      280,
+      335
+    ],
+    "tonguePose": "tip-up",
+    "review": "DRAFT: for asatizah review"
+  },
+  {
+    "id": "sin",
+    "title": "Sin / Zai / Sōd",
+    "description": "Tip near lower front teeth; a narrow air channel.",
+    "letters": "س ز ص",
+    "primarySidePoint": [
+      284,
+      400
+    ],
+    "tonguePose": "tip-low",
+    "review": "DRAFT: for asatizah review"
+  },
+  {
+    "id": "tha",
+    "title": "Tsa / Dzal / Zho",
+    "description": "Tongue tip at the edges of the upper front teeth.",
+    "letters": "ث ذ ظ",
+    "primarySidePoint": [
+      273,
+      369
+    ],
+    "tonguePose": "tip-out",
+    "review": "DRAFT: for asatizah review"
+  },
+  {
+    "id": "fa",
+    "title": "Fa",
+    "description": "Upper front teeth touch the inner lower lip.",
+    "letters": "ف",
+    "primarySidePoint": [
+      270,
+      374
+    ],
+    "tonguePose": "rest",
+    "review": "DRAFT: for asatizah review"
+  },
+  {
+    "id": "lips",
+    "title": "Ba / Mim / Waw",
+    "description": "Ba and Mim close; consonantal Waw rounds.",
+    "letters": "ب م و",
+    "primarySidePoint": [
+      257,
+      370
+    ],
+    "tonguePose": "rest",
+    "review": "DRAFT: for asatizah review"
+  },
+  {
+    "id": "nose",
+    "title": "Nasal hum",
+    "description": "Nasal resonance accompanies Nun and Mim.",
+    "letters": "ن م",
+    "primarySidePoint": [
+      347,
+      291
+    ],
+    "tonguePose": "rest",
+    "review": "DRAFT: for asatizah review"
+  }
+]

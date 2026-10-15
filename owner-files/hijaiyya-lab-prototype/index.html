@@ -132,8 +132,8 @@
   .step.done i::after { content: "✓"; }
   .step.done i span { display: none; }
   .forms { display: flex; gap: 10px; direction: rtl; flex-wrap: wrap; }
-  .form { background: var(--paper); border-radius: 16px; padding: 6px 10px 2px; text-align: center; min-width: 76px; }
-  .form .fg { display: block; width: 64px; height: 64px; margin: 0 auto; color: var(--plum); }
+  .form { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 6px 8px 4px; text-align: center; min-width: 76px; }
+  .form .fg { display: block; width: 86px; height: 88px; margin: 0 auto; }
   .form small { font-size: 12px; color: var(--muted); direction: ltr; display: block; }
   .choices { display: flex; gap: 8px; flex-wrap: wrap; }
   .feedback { min-height: 24px; font-weight: 700; margin: 8px 0; }
@@ -297,6 +297,54 @@
   .sh .st .sg { display: block; width: 9cqw; height: 9cqw; }
   .sh .st small { font: 800 1.6cqw var(--font-sans); }
 
+
+  /* ---------- Art from the 2026-10-15 delivery (art/) ---------- */
+  img.mouthimg { width: 100%; height: auto; display: block; }
+  .mouthwrap { position: relative; }
+  .mouthwrap svg.mouthart { width: 100%; height: auto; display: block; }
+  .mouthwrap .mouthdots { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .mouthdots .cand { cursor: pointer; }
+  .mouthdots .cand .hit { fill: transparent; }
+  .mouthdots .cand .cdot { fill: var(--surface); stroke: var(--primary); stroke-width: 5; }
+  .mouthdots .cand:hover .cdot, .mouthdots .cand:focus .cdot { fill: var(--sun); }
+  .mouthdots .cand.wrong .cdot { fill: #ddd; stroke: #aaa; }
+  .mouthdots .cand.dim .cdot { fill: var(--surface); stroke: #a9b7ba; stroke-width: 3; }
+  .mouthdots .cand.sel .cdot { fill: var(--m-spot); stroke: var(--surface); stroke-width: 5; }
+  .mouthdots .cand:focus-visible { outline: none; }
+  .mouthdots .cand:focus-visible .cdot { stroke: var(--plum); stroke-width: 7; }
+  .viewbox img.mouthimg { max-height: 400px; object-fit: contain; }
+  .viewgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 8px; }
+  .viewgrid figure { margin: 0; background: var(--paper); border-radius: 14px; padding: 6px; }
+  .viewgrid figcaption { font-size: 12px; color: var(--muted); text-align: center; }
+  .check.feel { align-items: center; }
+  .nbpair { display: flex; gap: 10px; align-items: center; font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .nbl { display: inline-block; width: 46px; height: 46px; color: var(--plum); }
+  .nbviews { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .nbviews figure { margin: 0; background: #fff; border-radius: 14px; padding: 6px; }
+  .nbviews figcaption { display: flex; justify-content: center; }
+  .check.feel img.feelimg { width: 72px; height: 72px; flex: none; object-fit: contain; background: #fff; border-radius: 14px; }
+  img.strip { width: 100%; max-width: 560px; height: auto; display: block; margin: 6px auto 4px; }
+  .bigl img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .station .mini img { width: 110px; height: auto; display: block; }
+  .guide image.faintimg { opacity: .2; }
+  .guide image.modelimg { opacity: .6; }
+  .guide .start { fill: var(--t-arrow); }
+  .guide .trail { fill: none; stroke: var(--t-arrow); stroke-width: 16; stroke-linecap: round; stroke-linejoin: round; opacity: .5; }
+  .guide .pendot { fill: var(--t-arrow); }
+  .sh .pcell { position: relative; border: .25cqw solid #9a9a9a; border-radius: 1.6cqw; aspect-ratio: 1; overflow: hidden; background: #fff; }
+  .sh .pcell img { width: 100%; height: 100%; display: block; }
+  .sh .pcell img.faintimg { opacity: .18; }
+  .sh .pcell img.modelimg { width: 30%; height: auto; position: absolute; left: 4%; top: 4%; opacity: .55; }
+  .sh .big1 .pcell { border-width: .4cqw; }
+  .sh img.pstrip { width: 64%; height: auto; display: block; margin: .6cqw auto 0; }
+  .sh .box > img.mouthimg { width: 100%; height: auto; }
+  .sh .tick img.feelimg { width: 6.5cqw; height: 6.5cqw; flex: none; }
+  .sh .mapst img { width: 9cqw; height: auto; display: block; }
+  .sh .chartgrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.2cqw 1.4cqw; }
+  .sh .cc { margin: 0; text-align: center; }
+  .sh .cc img { width: 100%; height: auto; display: block; }
+  .sh .cc figcaption b { display: block; font-size: 2.8cqw; direction: rtl; line-height: 2.2; font-weight: 400; margin-top: -.6cqw; }
+  .sh .cc figcaption span { display: block; font-size: 1.5cqw; line-height: 1.2; color: #555; }
   @media print {
     header.top, .toolnav, .noprint, .pen-bar, .printbar, .sheetwrap { display: none !important; }
     body { background: #fff; }
@@ -326,8 +374,9 @@
 <div class="sheetwrap" id="settingsSheet" hidden><div class="sheetpanel right" role="dialog" aria-label="Settings" id="settingsBody"></div></div>
 <main id="app"></main>
 <script src="letters.js"></script>
-<script src="mouth.js"></script>
 <script src="quran.js"></script>
+<script src="art/art-index.js"></script>
+<script src="art.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

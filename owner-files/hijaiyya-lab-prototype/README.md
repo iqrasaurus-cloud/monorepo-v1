@@ -108,3 +108,33 @@ Still to do, if wanted: when a letter is finished, a line-art dino could fade in
 - **Tap to hear:** tapping the big letter on a letter's page plays its sound.
 - **Reward:** when a sticker is earned, a black-and-white line-art dino fills with colour (a gentle fade).
 - **Fixes:** the stray "‹" mark on the next and previous buttons, the cut-off "Throat" label, and a scrollbar showing under the menu on phones.
+
+## New visuals fitted in (2026-10-15, from the ChatGPT delivery)
+The full delivery stays at `~/Documents/temp/hijaiyya-complete` (84 MB: SVG, PNG 512/2048 and WebP for everything). Only the SVGs the app uses were copied into `art/` (14 MB). The copy script is kept in this session's scratch folder; it is easy to re-run on a new delivery.
+
+**What changed in the app**
+- **Letters:** exact Amiri Quran outlines (made with HarfBuzz and fontTools, not painted).
+  - **Inspire:** the four shapes sit on one shared baseline, with a grey joining stub showing where each shape holds hands.
+  - **Letter page:** the big letter at the top uses the new art.
+- **Tracing:** cards use the new outline, faint and arrow pictures. "Show me" plays the proposed stroke routes in order. Check now measures against the real letter shape and asks for the dots.
+- **Mouth:**
+  - **Find the spot:** a neutral drawing with five dots; when found, the real drawing appears and the tongue moves (`art/motion.js`).
+  - **More views:** each letter shows only the views that were drawn: side, from above, front, plus a "Heavy letter" view for خ ص ض غ ط ق ظ. Dhōd also has left, right and both sides.
+  - **Sound Spots** uses the same drawings. Lips shows both closed lips (Ba, Mim) and round lips (Waw).
+- **"Feel it" pictures:** throat, mirror, air on the hand, nose hum and whistle sit beside every Feel it check.
+- **Printables:** black-and-white versions throughout.
+  - **Letter sheet:** an empty mouth to dot, plus the tracing row and the shapes strip.
+  - **Sound-spot chart:** one picture for every spot.
+  - **Sticker map:** small mouth icons.
+- **App and print variants:** in the app, the mouth pictures have their built-in title and caption removed (the page shows them), and the page itself carries the DRAFT note. The print versions keep the DRAFT line.
+
+**Fixes from ChatGPT's review (`art/review.md`)**
+- The letter sheet's passage now always contains the letter. Dhōd's sheet had asked for ض in Al-Fatihah ayat 1 to 5; it is now ayah 7.
+- The empty space (al-jawf) now names all three madd letters: Alif, and long Waw and Ya.
+- Nose wording is gentler: "gently hold your nose" instead of "pinch".
+- Waw shows round lips, not closed lips.
+
+**Still for the owner or teachers**
+- **Asatizah sign-off:** the mouth drawings, the child wording and the 29 proposed stroke orders still need it. See `art/stroke-order.md`.
+- **Not done yet:** ChatGPT's other suggestions in `art/review.md`, such as a teacher checklist per letter and showing the nasal hum as a separate branch on the sticker map.
+- **Old code:** `mouth.js` (the old hand-drawn mouths) is removed. `STROKES` in `letters.js` is no longer used, since the tracing routes now come from the delivery.
