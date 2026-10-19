@@ -268,6 +268,19 @@ export function Footer({ site }: { site: SiteConfig }) {
                   </span>
                 )}
               </p>
+              {aboutPage ? (
+                <p className="mt-2.5">
+                  {site.kind === 'hub' ? (
+                    <Link to="/ai" className={link}>
+                      {t.howWeUseAi}
+                    </Link>
+                  ) : (
+                    <a href={siteUrl(hub(), localPath(lang, '/ai'))} className={link}>
+                      {t.howWeUseAi}
+                    </a>
+                  )}
+                </p>
+              ) : null}
             </Column>
 
             {/* The header's "Work with us" item and the Donate placeholder land here. */}

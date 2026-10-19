@@ -457,5 +457,24 @@ export interface HubContent {
    */
   instagram: Photo[]
   workWithUs: { body: string }
-  seo: { home: PageSeo; about: PageSeo; workWithUs: PageSeo }
+  /**
+   * iqrasaurus.com/ai, "How we use AI" (owner approved 2026-10-19). The credential sentence and
+   * the contact details come from `brand`, never from here.
+   */
+  ai: {
+    lede: string
+    sections: AiSection[]
+    /** e.g. "Last updated: 19 October 2026" */
+    updated: string
+  }
+  seo: { home: PageSeo; about: PageSeo; workWithUs: PageSeo; ai: PageSeo }
+}
+
+export interface AiSection {
+  title: string
+  paragraphs?: string[]
+  /** A list where each item starts with a bold lead, e.g. "Building the tools:". */
+  items?: { lead: string; text: string }[]
+  /** Show the WhatsApp and email buttons under this section. */
+  contact?: boolean
 }

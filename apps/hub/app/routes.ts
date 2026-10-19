@@ -5,6 +5,7 @@ const pages = (id: string) => [
   index('routes/home.tsx', { id: `${id}home` }),
   route('about', 'routes/about.tsx', { id: `${id}about` }),
   route('work-with-us', 'routes/work-with-us.tsx', { id: `${id}work-with-us` }),
+  route('ai', 'routes/ai.tsx', { id: `${id}ai` }),
   route('journal', 'routes/journal.tsx', { id: `${id}journal` }),
   route('journal/:slug', 'routes/journal-post.tsx', { id: `${id}journal-post` }),
 ]

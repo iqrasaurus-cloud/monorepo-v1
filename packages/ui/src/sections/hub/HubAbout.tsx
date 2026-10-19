@@ -6,6 +6,7 @@ import {
   type SiteConfig,
 } from '@iqra/config'
 import { fourIText, useBrand, useLang, useT } from '../../i18n/lang.ts'
+import { Link } from '../../i18n/Link.tsx'
 import type { ReactNode } from 'react'
 import { mascotImage } from '../../layout/brand.ts'
 import { Reveal, RevealItem, RevealList } from '../../motion/Reveal.tsx'
@@ -134,6 +135,11 @@ export function HubAbout({ site, about: english, aboutMs }: HubAboutProps) {
       body: (
         <Reveal className="max-w-3xl">
           <p className="text-xl text-ink">{brand.credential}</p>
+          <p className="mt-3">
+            <Link to="/ai" className="link-sweep font-semibold text-primary">
+              {t.howWeUseAi}
+            </Link>
+          </p>
           {verify.length > 0 ? (
             <ul className="mt-4 flex flex-wrap gap-4">
               {verify.map((v) => (
