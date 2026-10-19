@@ -20,8 +20,8 @@ export function Layout({ children }: { children: ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {/* Day and Night both follow the device setting (tokens.css). */}
-        <meta name="color-scheme" content="light dark" />
+        {/* Light first (owner, 2026-10-19): Day always, Night only by choice (tokens.css). */}
+        <meta name="color-scheme" content="light" />
         <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicon-32.png" />
         <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicon-192.png" />
         <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png" />

@@ -78,66 +78,10 @@
   color-scheme: light;
 }
 
-/* Night (deep plum), same values as the tools. Owner decision 2026-10-11: the brand sites
-   follow the device's dark-mode setting, like the tools' "Auto". data-theme="day" or
-   data-theme="night" on <html> forces one or the other. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='day']) {
-    --paper: #1d0f21;
-    --paper-rgb: 29 15 33;
-    --surface: #2a1630;
-    --surface-rgb: 42 22 48;
-    --ink: #f6f4ee;
-    --ink-rgb: 246 244 238;
-    --muted: #c9bccb;
-    --muted-rgb: 201 188 203;
-    --line: #45304b;
-    --line-rgb: 69 48 75;
-    --primary: #c9a8f5;
-    --primary-rgb: 201 168 245;
-    --primary-soft: #3a2450;
-    --primary-soft-rgb: 58 36 80;
-    --on-primary: #1d0f21;
-    --on-primary-rgb: 29 15 33;
-    --inspire: #ffe45d;
-    --inspire-rgb: 255 228 93;
-    --on-inspire: #441c4b;
-    --on-inspire-rgb: 68 28 75;
-    --inspire-ink: #ffe45d;
-    --inspire-ink-rgb: 255 228 93;
-    --investigate: #c9a8f5;
-    --investigate-rgb: 201 168 245;
-    --on-investigate: #1d0f21;
-    --on-investigate-rgb: 29 15 33;
-    --integrate: #8fd3cf;
-    --integrate-rgb: 143 211 207;
-    --on-integrate: #12302f;
-    --on-integrate-rgb: 18 48 47;
-    --impart: #ef94f2;
-    --impart-rgb: 239 148 242;
-    --on-impart: #3a0f39;
-    --on-impart-rgb: 58 15 57;
-    --plum: #12071a;
-    --plum-rgb: 18 7 26;
-    --on-plum: #f6f4ee;
-    --on-plum-rgb: 246 244 238;
-    --sun: #ffe45d;
-    --sun-rgb: 255 228 93;
-    --on-sun: #441c4b;
-    --on-sun-rgb: 68 28 75;
-    --magenta: #ef94f2;
-    --magenta-rgb: 239 148 242;
-    --taupe: #c7b99f;
-    --taupe-rgb: 199 185 159;
-    /* Brand-site only: paper-2 has no tools equivalent. */
-    --paper-2: #26142b;
-    --paper-2-rgb: 38 20 43;
-    --mascot-glow: #4a2f5e;
-    --shadow-soft: 0 2px 6px rgb(var(--plum-rgb) / 0.4), 0 12px 32px rgb(var(--plum-rgb) / 0.5);
-    color-scheme: dark;
-  }
-}
-
+/* Night (deep plum), same values as the tools. Owner decision 2026-10-19: light first. Day is
+   the default on every site and tool, and the device's dark-mode setting is ignored. Night
+   applies only when data-theme="night" is set on <html> (a visitor's own choice; the sites
+   have no Night switch yet). */
 :root[data-theme='night'] {
   --paper: #1d0f21;
   --paper-rgb: 29 15 33;

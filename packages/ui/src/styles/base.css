@@ -20,14 +20,6 @@
   .logo-night {
     display: none;
   }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme='day']) .logo-day {
-      display: none;
-    }
-    :root:not([data-theme='day']) .logo-night {
-      display: block;
-    }
-  }
   :root[data-theme='night'] .logo-day {
     display: none;
   }
