@@ -1,5 +1,5 @@
 import { getSite, langOf } from '@iqra/config'
-import { NotFound, SiteShell } from '@iqra/ui'
+import { NightScript, NotFound, SiteShell } from '@iqra/ui'
 import type { ReactNode } from 'react'
 import {
   isRouteErrorResponse,
@@ -16,12 +16,13 @@ const site = getSite('hub')
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
-    <html lang={langOf(useLocation().pathname)}>
+    <html suppressHydrationWarning lang={langOf(useLocation().pathname)}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {/* Light first (owner, 2026-10-19): Day always, Night only by choice (tokens.css). */}
+        {/* Light first (owner, 2026-10-19): Day unless the family chose Night in the tools. */}
         <meta name="color-scheme" content="light" />
+        <NightScript />
         <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicon-32.png" />
         <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicon-192.png" />
         <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png" />

@@ -80,8 +80,8 @@
 
 /* Night (deep plum), same values as the tools. Owner decision 2026-10-19: light first. Day is
    the default on every site and tool, and the device's dark-mode setting is ignored. Night
-   applies only when data-theme="night" is set on <html> (a visitor's own choice; the sites
-   have no Night switch yet). */
+   applies only when data-theme="night" is set on <html>: the family chose Night in the tools,
+   and NightScript (packages/ui) reads that choice. */
 :root[data-theme='night'] {
   --paper: #1d0f21;
   --paper-rgb: 29 15 33;

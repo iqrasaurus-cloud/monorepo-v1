@@ -14,3 +14,4 @@ export {
   stickyOffset,
   type TileEntry,
 } from './links.ts'
+export { NightScript } from './NightScript.tsx'
