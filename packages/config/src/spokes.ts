@@ -225,17 +225,20 @@ export const tools: ToolConfig[] = [
   { slug: 'numbers', name: 'Numbers & Counting', line: 'One number a day', ms: { line: 'Satu nombor sehari' }, path: '/numbers', host: `numbers.${HUB_HOST}`, status: 'live', mascot: 'mascot-magnifier.png', pose: 'pointing', colour: 'investigate' },
   { slug: 'calendar', name: 'Calendar', line: 'Key days this Islamic month', ms: { line: 'Hari penting bulan Islam ini' }, path: '/calendar', host: `calendar.${HUB_HOST}`, status: 'live', mascot: 'mascot-binoculars.png', pose: 'crescent-moon', colour: 'impart' },
   // Signs Lab (owner, 2026-10-13): Quran Investigators' printable family investigations, in the tools repo
-  // (apps/signslab, docs/specs/signslab.md). Add host and set 'live' once signslab.iqrasaurus.com is set up in Vercel.
-  { slug: 'signslab', name: 'Signs Lab', line: 'Investigate a sign in creation', ms: { line: 'Siasat satu tanda dalam ciptaan' }, path: '/signslab', status: 'coming-soon', mascot: 'mascot-magnifier.png', pose: 'magnifier-sprout', colour: 'investigate' },
+  // (apps/signslab, docs/specs/signslab.md). Public since 2026-10-19 (owner).
+  { slug: 'signslab', name: 'Signs Lab', line: 'Investigate a sign in creation', ms: { line: 'Siasat satu tanda dalam ciptaan' }, path: '/signslab', host: `signslab.${HUB_HOST}`, status: 'live', mascot: 'mascot-magnifier.png', pose: 'magnifier-sprout', colour: 'investigate' },
   // Hijaiyya Hunt (owner, 2026-10-14): printable Arabic letter hunts in three levels, in the tools repo
-  // (apps/hijaiyya). Add host and set 'live' once hijaiyya.iqrasaurus.com is set up in Vercel.
-  { slug: 'hijaiyya', name: 'Hijaiyya Hunt', line: 'Find and trace Arabic letters', ms: { line: 'Cari dan surih huruf Arab' }, path: '/hijaiyya', status: 'coming-soon', mascot: 'mascot-magnifier.png', pose: 'magnifying-glass', colour: 'inspire' },
+  // (apps/hijaiyya). Public since 2026-10-19 (owner).
+  { slug: 'hijaiyya', name: 'Hijaiyya Hunt', line: 'Find and trace Arabic letters', ms: { line: 'Cari dan surih huruf Arab' }, path: '/hijaiyya', host: `hijaiyya.${HUB_HOST}`, status: 'live', mascot: 'mascot-magnifier.png', pose: 'magnifying-glass', colour: 'inspire' },
   // Iqra Train (owner, 2026-10-14): build trains to read, from letters to Juz 'Amma ayat, in the tools repo
-  // (apps/train, docs/specs/train.md). Add host and set 'live' once train.iqrasaurus.com is set up in Vercel.
-  { slug: 'train', name: 'Iqra Train', line: 'Build trains to read Arabic', ms: { line: 'Bina kereta api untuk membaca' }, path: '/train', status: 'coming-soon', mascot: 'mascot-reader.png', pose: 'signpost', colour: 'impart' },
+  // (apps/train, docs/specs/train.md). Public since 2026-10-19 (owner).
+  { slug: 'train', name: 'Iqra Train', line: 'Build trains to read Arabic', ms: { line: 'Bina kereta api untuk membaca' }, path: '/train', host: `train.${HUB_HOST}`, status: 'live', mascot: 'mascot-reader.png', pose: 'signpost', colour: 'impart' },
+  // Quran Investigator (owner, 2026-10-14): an activity booklet for every Juz 'Amma surah and the Surah Lazim,
+  // the at-home side of Quran Investigators (apps/investigator in the tools repo). Public since 2026-10-19 (owner).
+  { slug: 'investigator', name: 'Quran Investigator', line: 'A booklet for every surah', ms: { line: 'Buku aktiviti untuk setiap surah' }, path: '/investigator', host: `investigator.${HUB_HOST}`, status: 'live', mascot: 'mascot-magnifier.png', pose: 'magnifying-glass', colour: 'investigate' },
   { slug: 'museum', name: 'Museum', line: '[[CONTENT NEEDED: one line]]', path: '/museum', status: 'coming-soon', mascot: 'mascot-magnifier.png', pose: 'treasure-chest', colour: 'investigate' },
-  // Dino became Duas (owner, 2026-10-11): the duas we make on a regular basis.
-  { slug: 'duas', name: 'Duas', line: '[[CONTENT NEEDED: one line]]', path: '/duas', status: 'coming-soon', mascot: 'mascot-walking.png', pose: 'making-dua', colour: 'integrate' },
+  // Dino became Duas (owner, 2026-10-11): the duas we make on a regular basis. Public since 2026-10-19 (owner).
+  { slug: 'duas', name: 'Duas', line: 'A dua for every moment', ms: { line: 'Doa untuk setiap ketika' }, path: '/duas', host: `duas.${HUB_HOST}`, status: 'live', mascot: 'mascot-walking.png', pose: 'making-dua', colour: 'integrate' },
 ]
 
 /* ------------------------------------------------------------------ */

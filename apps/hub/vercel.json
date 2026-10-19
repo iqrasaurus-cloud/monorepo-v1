@@ -114,6 +114,56 @@
       "source": "/calendar/:rest*",
       "destination": "https://calendar.iqrasaurus.com/calendar/:rest*",
       "permanent": false
+    },
+    {
+      "source": "/signslab",
+      "destination": "https://signslab.iqrasaurus.com/signslab",
+      "permanent": false
+    },
+    {
+      "source": "/signslab/:rest*",
+      "destination": "https://signslab.iqrasaurus.com/signslab/:rest*",
+      "permanent": false
+    },
+    {
+      "source": "/hijaiyya",
+      "destination": "https://hijaiyya.iqrasaurus.com/hijaiyya",
+      "permanent": false
+    },
+    {
+      "source": "/hijaiyya/:rest*",
+      "destination": "https://hijaiyya.iqrasaurus.com/hijaiyya/:rest*",
+      "permanent": false
+    },
+    {
+      "source": "/train",
+      "destination": "https://train.iqrasaurus.com/train",
+      "permanent": false
+    },
+    {
+      "source": "/train/:rest*",
+      "destination": "https://train.iqrasaurus.com/train/:rest*",
+      "permanent": false
+    },
+    {
+      "source": "/investigator",
+      "destination": "https://investigator.iqrasaurus.com/investigator",
+      "permanent": false
+    },
+    {
+      "source": "/investigator/:rest*",
+      "destination": "https://investigator.iqrasaurus.com/investigator/:rest*",
+      "permanent": false
+    },
+    {
+      "source": "/duas",
+      "destination": "https://duas.iqrasaurus.com/duas",
+      "permanent": false
+    },
+    {
+      "source": "/duas/:rest*",
+      "destination": "https://duas.iqrasaurus.com/duas/:rest*",
+      "permanent": false
     }
   ]
 }
