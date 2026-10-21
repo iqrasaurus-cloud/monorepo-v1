@@ -192,6 +192,7 @@ function Instagram({ photos }: { photos: HubContent['instagram'] }) {
                   rel="noopener"
                   aria-label={i === 0 ? t.seeOurPhotos : undefined}
                   tabIndex={i === 0 ? undefined : -1}
+                  aria-hidden={i === 0 ? undefined : true}
                   className="group block w-[70%] translate-y-2"
                 >
                   <Mascot pose={pose} size={150} fluid className="iq-mascot-hover" />
@@ -274,7 +275,7 @@ export function HubHome({ site, content: english, contentMs }: HubHomeProps) {
             transition={fade(heroText.delayFrom)}
             className="mt-10"
           >
-            <p className="label mb-4 text-ink/80">{t.startWithTool}</p>
+            <p className="label mb-4 text-ink">{t.startWithTool}</p>
             <ul aria-label={t.tools} className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {toolTiles(lang).map((entry) => (
                 <li key={entry.key}>
