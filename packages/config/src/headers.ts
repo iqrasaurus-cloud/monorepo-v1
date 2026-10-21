@@ -64,4 +64,11 @@ export const securityHeaders = (site: SiteConfig): HeaderRule[] => [
     source: '/assets/(.*)',
     headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
   },
+  // Logos, photos and journal pictures keep their file names when the owner swaps one, so they can't be
+  // cached for good like /assets. A day in the visitor's browser, then refreshed quietly in the
+  // background for a week (2026-10-21: they were re-checked on every visit).
+  {
+    source: '/(brand|photos|journal)/(.*)',
+    headers: [{ key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' }],
+  },
 ]

@@ -239,6 +239,9 @@ export const tools: ToolConfig[] = [
   { slug: 'museum', name: 'Museum', line: '[[CONTENT NEEDED: one line]]', path: '/museum', status: 'coming-soon', mascot: 'mascot-magnifier.png', pose: 'treasure-chest', colour: 'investigate' },
   // Dino became Duas (owner, 2026-10-11): the duas we make on a regular basis. Public since 2026-10-19 (owner).
   { slug: 'duas', name: 'Duas', line: 'A dua for every moment', ms: { line: 'Doa untuk setiap ketika' }, path: '/duas', host: `duas.${HUB_HOST}`, status: 'live', mascot: 'mascot-walking.png', pose: 'making-dua', colour: 'integrate' },
+  // The shop's print-ready packs, as a tile in the Tools menu (owner, 2026-10-21; not a header item, rule 8).
+  // iqrasaurus.com/shop forwards there. The Malay line is a draft for the owner to check.
+  { slug: 'printables', name: 'Printables', line: 'Print-ready packs from our tools', ms: { line: 'Bahan cetak daripada alat kami' }, path: '/shop', host: `shop.${HUB_HOST}`, status: 'live', mascot: 'mascot-reader.png', pose: 'writing', colour: 'impart' },
 ]
 
 /* ------------------------------------------------------------------ */
