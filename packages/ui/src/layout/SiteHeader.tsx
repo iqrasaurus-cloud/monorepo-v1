@@ -312,7 +312,7 @@ export function SiteHeader({ site }: { site: SiteConfig }) {
                   </div>
                 </div>
                 <m.ul
-                  className="grid content-start grid-cols-3 gap-3"
+                  className="menu-scroll grid max-h-[min(26rem,calc(100vh-12rem))] content-start grid-cols-3 gap-3 pb-1 pr-2"
                   initial="hidden"
                   animate="shown"
                   variants={{

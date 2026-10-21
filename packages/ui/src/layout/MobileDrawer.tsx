@@ -285,7 +285,8 @@ export function MobileDrawer({ site, open, onClose }: MobileDrawerProps) {
                             >
                               <m.ul
                                 id={listId}
-                                className="grid gap-2 pb-5 min-[420px]:grid-cols-2"
+                                data-lenis-prevent=""
+                                className="menu-scroll mb-5 grid max-h-[55vh] gap-2 pb-1 pr-1 min-[420px]:grid-cols-2"
                                 initial="hidden"
                                 animate="shown"
                                 variants={{

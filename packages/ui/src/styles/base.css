@@ -112,6 +112,25 @@
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+  /* A menu list that scrolls on its own once it holds more than fits (the Tools menu, owner
+     2026-10-21: the tools keep growing). The scrollbar stays visible so families see there is more. */
+  .menu-scroll {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--primary-rgb) / 0.45) transparent;
+    scrollbar-gutter: stable;
+  }
+  .menu-scroll::-webkit-scrollbar {
+    width: 8px;
+  }
+  .menu-scroll::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: rgb(var(--primary-rgb) / 0.45);
+  }
+  .menu-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
 }
 
 /* ---------- Mascot (same motion as the tools' packages/design/motion.css) ---------- */
