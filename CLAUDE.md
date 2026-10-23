@@ -60,6 +60,14 @@ node scripts/sync-mascots.mjs   # re-copy the dino pose library from ../tadabbur
    Placeholders stay in the content and registry files where the owner can see them, but anything that is only a placeholder is **hidden on the built site** (a missing line is dropped; a section with nothing real in it does not render). Owner decision 2026-10-04: ship a clean MVP and fill in later.
 3. Credential wording is fixed: "Led by ARS-recognised asatizah and operated as an IECP in Singapore." Do not paraphrase it into "certified", "accredited" or similar.
 4. No imagery depicting prophets, anywhere. Companions of the Prophet may appear only in the owner's own YouTube videos and Shorts listed in `packages/config/src/media.ts` (owner decision 2026-10-12); everywhere else on the sites (pictures, cards, journal images, the dino) there is no imagery of companions either. The dino never plays a prophet or a companion. No AI-generated photos of people.
+4a. **Names of the prophets, in our own words** (owner, 2026-10-23). The same rule as the tools: `../tadabbur-for-kids-v1/CLAUDE.md` rule 9, list in its `packages/design/src/prophets.ts`.
+    - **Prophet Muhammad:** "Prophet Muhammad ﷺ" at the first mention on a page, then "the Prophet ﷺ".
+    - **Every other prophet:** "Prophet Ibrahim (peace be upon him)" at the first mention on a page, then "Prophet Ibrahim".
+    - **No abbreviations:** never PBUH, SAW or (AS).
+    - **Malay:** "Nabi Ibrahim a.s." and "Nabi Muhammad ﷺ".
+    - **No "Prophet" for:** Maryam (peace be upon her), Luqman, Dhul-Qarnayn and al-Khidr.
+    - **Never changed:** Quran text and translations, quoted hadith, and the words of families quoted on the site (rule 2).
+    - **Checking:** `node ../tadabbur-for-kids-v1/scripts/check-prophet-names.mjs $PWD/apps $PWD/packages`.
 5. Voice: warm, curious, clear, humble. Banned words in any copy you draft: revolutionary, game-changing, world-class, ultimate, proven, guaranteed, "the only", "the best".
    Write concretely: what a child does, what a parent needs, who to contact. Avoid "not just X, but Y", lists of three for rhythm, poetic closing lines and slogan headlines.
    Spell the brand **IqraSaurus**. "Tools" means the apps; the spokes are "programmes". Do not call them a "Toolkit".
