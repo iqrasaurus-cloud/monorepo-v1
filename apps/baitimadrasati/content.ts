@@ -47,7 +47,7 @@ export const content: SpokeContent = {
     // OWNER: real quotes, lessons and photos only.
     quotes: [{ text: '[[CONTENT NEEDED: something a parent told you after trying this at home]]' }],
     lessons: [
-      'A mini Hajj practice at home, walking through the rituals of Prophet Ibrahim, was great fun for our children.',
+      'A mini Hajj practice at home, walking through the rituals of Prophet Ibrahim (peace be upon him), was great fun for our children.',
       'New stationery and stamps made our children look forward to the weekly halaqah.',
     ],
     photos: [],

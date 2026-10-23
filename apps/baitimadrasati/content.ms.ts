@@ -38,7 +38,7 @@ export const contentMs: Overlay<SpokeContent> = {
   },
   seen: {
     lessons: [
-      'Latihan haji mini di rumah, melalui ibadah Nabi Ibrahim, sangat menyeronokkan bagi anak-anak kami.',
+      'Latihan haji mini di rumah, melalui ibadah Nabi Ibrahim a.s., sangat menyeronokkan bagi anak-anak kami.',
       'Alat tulis dan setem baharu membuatkan anak-anak kami menanti-nantikan halaqah mingguan.',
     ],
   },

@@ -23,7 +23,7 @@ export const content: SpokeContent = {
     body: [
       'StoryBuzz brings together our storytelling sessions (StoryBus) and our drama sessions (EduDrama). The stories are true ones from the Quran: the prophets, the hardships they faced and how they turned to Allah.',
       'We began with our own children. They grew up on stories of the prophets in place of fairy tales, because we wanted them ready for hard days and rooted in faith. When other parents asked how we told the stories at home, we opened the sessions to their children, and later to the public.',
-      'Drama came from reflecting on the Hajj rituals of Prophet Ibrahim. With our homeschooled children we walked through a mini Hajj practice, step by step. We have run StoryBuzz sessions at our satellite centres in Bukit Batok and Tampines, and at schools and kindergartens that invited us.',
+      'Drama came from reflecting on the Hajj rituals of Prophet Ibrahim (peace be upon him). With our homeschooled children we walked through a mini Hajj practice, step by step. We have run StoryBuzz sessions at our satellite centres in Bukit Batok and Tampines, and at schools and kindergartens that invited us.',
       '[[CONTENT NEEDED: when StoryBus and EduDrama started, and roughly how many children have joined]]',
     ],
     photos: [],

@@ -17,7 +17,7 @@ export const contentMs: Overlay<SpokeContent> = {
     body: [
       'StoryBuzz menggabungkan sesi bercerita kami (StoryBus) dan sesi drama kami (EduDrama). Kisah-kisahnya ialah kisah benar daripada Al-Quran: para nabi, kesusahan yang mereka hadapi dan bagaimana mereka kembali kepada Allah.',
       'Kami bermula dengan anak-anak kami sendiri. Mereka membesar dengan kisah para nabi sebagai ganti cerita dongeng, kerana kami mahu mereka bersedia menghadapi hari-hari yang sukar dan berakar dalam iman. Apabila ibu bapa lain bertanya bagaimana kami bercerita di rumah, kami membuka sesi itu kepada anak-anak mereka, dan kemudian kepada orang ramai.',
-      'Drama lahir daripada renungan tentang ibadah haji Nabi Ibrahim. Bersama anak-anak kami yang bersekolah di rumah, kami melalui latihan haji mini, langkah demi langkah. Kami telah menjalankan sesi StoryBuzz di pusat satelit kami di Bukit Batok dan Tampines, dan di sekolah serta tadika yang menjemput kami.',
+      'Drama lahir daripada renungan tentang ibadah haji Nabi Ibrahim a.s. Bersama anak-anak kami yang bersekolah di rumah, kami melalui latihan haji mini, langkah demi langkah. Kami telah menjalankan sesi StoryBuzz di pusat satelit kami di Bukit Batok dan Tampines, dan di sekolah serta tadika yang menjemput kami.',
     ],
   },
   session: {
@@ -40,7 +40,7 @@ export const contentMs: Overlay<SpokeContent> = {
   seen: {
     lessons: [
       'Anak-anak kami suka berkongsi kisah-kisah itu dengan kawan-kawan mereka. Begitulah bermulanya sesi pertama untuk keluarga lain.',
-      'Latihan haji mini, melakonkan ibadah Nabi Ibrahim, sangat menyeronokkan bagi anak-anak kami.',
+      'Latihan haji mini, melakonkan ibadah Nabi Ibrahim a.s., sangat menyeronokkan bagi anak-anak kami.',
     ],
   },
   bringIt: {
