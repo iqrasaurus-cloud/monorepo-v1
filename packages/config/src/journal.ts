@@ -12,7 +12,9 @@
  *   publish_date  YYYY-MM-DD (or DD/MM/YYYY). Past dates are fine; future dates wait until that day
  *   title, excerpt
  *   body          the post; a blank line between paragraphs. Or a Google Doc link to use its text.
- *                 In either, a line starting "## " is a subheading and "- " lines make a list
+ *                 In either, a line starting "## " is a subheading and "- " lines make a list.
+ *                 A paragraph starting "[[" (e.g. "[[fill in: the date]]") is a note to yourself
+ *                 and is not shown, so a post can go live before every detail is in
  *   image_url     optional; a Google Drive "anyone with the link" picture or any https picture
  *   image_alt     what the picture shows
  *   video_url     optional YouTube link

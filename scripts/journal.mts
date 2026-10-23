@@ -11,6 +11,7 @@ import { basename, join } from 'node:path'
 import sharp from 'sharp'
 import {
   getSite,
+  isPlaceholder,
   journalCsvUrl,
   programmes,
   type JournalPost,
@@ -140,12 +141,35 @@ const docParagraphs = (text: string): string[] => {
   return out
 }
 
+/**
+ * Owner notes such as "[[fill in: …]]" stay in the sheet but never show (CLAUDE.md rule 2):
+ * a paragraph or list line that is only a note is dropped, and so is a "## " subheading
+ * left with nothing under it. A note in the middle of a sentence can't be dropped cleanly,
+ * so it is only reported in the build log.
+ */
+function withoutNotes(paras: string[], title: string): string[] {
+  const kept = paras
+    .map((p) =>
+      p
+        .split('\n')
+        .filter((l) => !isPlaceholder(l.replace(BULLET, '')))
+        .join('\n'),
+    )
+    .filter((p) => !isPlaceholder(p))
+  const body = kept.filter(
+    (p, i) => !p.startsWith('## ') || (kept[i + 1] !== undefined && !kept[i + 1]!.startsWith('## ')),
+  )
+  if (body.some((p) => p.includes('[['))) warn(`"${title}": has a [[note]] inside a sentence`)
+  return body
+}
+
 async function bodyOf(raw: string, title: string): Promise<string[]> {
   const id = docId(raw)
-  if (!id) return paragraphs(raw)
+  if (!id) return withoutNotes(paragraphs(raw), title)
   try {
-    return docParagraphs(
-      await fetchText(`https://docs.google.com/document/d/${id}/export?format=txt`),
+    return withoutNotes(
+      docParagraphs(await fetchText(`https://docs.google.com/document/d/${id}/export?format=txt`)),
+      title,
     )
   } catch (e) {
     warn(`"${title}": could not read its Google Doc (${(e as Error).message})`)
