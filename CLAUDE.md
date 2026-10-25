@@ -71,7 +71,8 @@ node scripts/sync-mascots.mjs   # re-copy the dino pose library from ../tadabbur
 5. Voice: warm, curious, clear, humble. Banned words in any copy you draft: revolutionary, game-changing, world-class, ultimate, proven, guaranteed, "the only", "the best".
    Write concretely: what a child does, what a parent needs, who to contact. Avoid "not just X, but Y", lists of three for rhythm, poetic closing lines and slogan headlines.
    Spell the brand **IqraSaurus**. "Tools" means the apps; the spokes are "programmes". Do not call them a "Toolkit".
-6. The pedagogical framework is **4-I: Inspire → Investigate → Integrate → Impart**. Do not mention 5D or SPARK anywhere on the sites.
+6. The pedagogical framework is **4-I: Inspire → Investigate → Integrate → Impart**. Do not mention SPARK anywhere on the sites.
+   5D may be mentioned only as history (owner decision 2026-10-25): IqraSaurus began with **3-I** (Inspire, Integrate, Impart) and added Investigate after attending 5D thinking framework workshops by UTM university professors. Use this on About or journal pages that tell how 3-I became 4-I; the framework the sites teach is always the 4-I. Do not name the professors or describe 5D in detail until the owner supplies that content. The tools keep their own rule (5D never appears there).
 
 ### Design
 7. **No hex colours, font names or raw easing arrays in components.** Use the tokens in `packages/config` (Tailwind classes such as `bg-paper`, `text-ink`, `bg-plum`) and the motion presets in `packages/ui/src/motion`.
