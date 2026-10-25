@@ -42,6 +42,14 @@ export const contentMs: Overlay<SpokeContent> = {
       'Anak-anak kami menanti-nantikan halaqah mingguan kerana sentiasa ada alat tulis dan setem baharu untuk dicuba.',
       'Melukis sesuai semasa anak-anak kami masih terlalu kecil untuk banyak menulis. Apabila mereka semakin besar, kami beralih kepada jurnal renungan, yang kemudian menjadi Quran Investigators.',
     ],
+    photos: [
+      { src: '/photos/seen-qhd-al-maun-cover.webp', alt: 'Kulit buku kerja Doodle with Surah Al-Maun', caption: 'Buku kerja Doodle with Surah Al-Maun', width: 1165, height: 1600 },
+      { src: '/photos/seen-qhd-al-maun-panels.webp', alt: 'Halaman lukisan berpanel komik untuk satu ayat', caption: 'Satu ayat, satu panel komik', width: 1147, height: 1600 },
+      { src: '/photos/seen-qhd-ghashiyah-cover.webp', alt: 'Buku kecil kuning lipatan tangan bertajuk Surah Al-Ghashiyah', caption: 'Buku lipat Al-Ghashiyah buatan seorang kanak-kanak', width: 1166, height: 1600 },
+      { src: '/photos/seen-qhd-ghashiyah-spread.webp', alt: 'Di dalam buku lipat: lukisan dan renungan ringkas tentang surah itu', caption: 'Lukisan dan renungannya di dalam', width: 1600, height: 1124 },
+      { src: '/photos/seen-qhd-fatihah-alamin.webp', alt: 'Kad skrapbuk tentang Tuhan sekalian alam, dengan haiwan laut dan darat daripada span', caption: 'Kad skrapbuk Al-Fatihah', width: 1600, height: 1121 },
+      { src: '/photos/seen-qhd-fatihah-path.webp', alt: 'Kad skrapbuk tentang jalan yang lurus, dilukis sebagai pembaris dan jalan bergaris putus', caption: '“Tunjukilah kami jalan yang lurus”, seperti yang dibayangkan seorang kanak-kanak', width: 1600, height: 1144 },
+    ],
   },
   bringIt: {
     body: 'Ingin menjalankan Quran & Hadeeth Doodling di kelas, madrasah, pusat atau halaqah rumah anda?',

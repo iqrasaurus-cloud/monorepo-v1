@@ -42,6 +42,14 @@ export const contentMs: Overlay<SpokeContent> = {
     lessons: [
       'Melukis sesuai untuk anak-anak kami semasa mereka masih terlalu kecil untuk banyak menulis. Jurnal, dan kemudian buku-buku ini, datang apabila mereka semakin besar.',
     ],
+    photos: [
+      { src: '/photos/seen-qi-module-1-2018.webp', alt: 'Sekumpulan Quran Investigators bersama guru mereka semasa lawatan', caption: 'Kumpulan Modul 1, Ogos–Oktober 2018', width: 580, height: 238 },
+      { src: '/photos/seen-qi-science-centre-2018.webp', alt: 'Kanak-kanak melukis di atas papan klip di Science Centre', caption: 'Lawatan Surah Al-Kautsar ke Science Centre, Sept 2018', width: 400, height: 445 },
+      { src: '/photos/seen-qi-ar-raudhah-minbar.webp', alt: 'Kanak-kanak berkumpul di mimbar Masjid Ar-Raudhah bersama seorang guru', caption: 'Lawatan Surah Al-Kafirun, Masjid Ar-Raudhah', width: 680, height: 540 },
+      { src: '/photos/seen-qi-papaya-tree.webp', alt: 'Kanak-kanak menunjuk ke arah pokok betik yang lebat buahnya', caption: 'Mencari tanda-tanda di taman masjid', width: 380, height: 475 },
+      { src: '/photos/seen-qi-sand-tray.webp', alt: 'Kanak-kanak menapis pasir dan kerlipan dalam dulang semasa eksperimen', caption: 'Eksperimen secara langsung dalam sesi di rumah', width: 440, height: 440 },
+      { src: '/photos/seen-qi-al-fil-cover.webp', alt: 'Kulit buku Quran Investigators untuk Surah Al-Fil', caption: 'Salah satu kulit buku awal kami, 2018–2019', width: 1055, height: 1600 },
+    ],
   },
   bringIt: {
     body: 'Ingin menggunakan Quran Investigators di madrasah, pusat atau kumpulan rumah anda, atau membantu menguji buku baharu?',

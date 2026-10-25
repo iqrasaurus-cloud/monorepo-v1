@@ -374,6 +374,8 @@ export interface Photo {
   alt: string
   width: number
   height: number
+  /** Optional short line shown under the photo (what it is and when), e.g. in "What we've seen". */
+  caption?: string
 }
 
 export type FourIKey = (typeof fourI)[number]['key']

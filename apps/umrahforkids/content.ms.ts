@@ -38,6 +38,10 @@ export const contentMs: Overlay<SpokeContent> = {
   },
   seen: {
     lessons: ['Kanak-kanak sangat seronok dengan drama di atas bukit yang menghadap Gunung Uhud.'],
+    photos: [
+      { src: '/photos/seen-ufk-pop-up-kabah.webp', alt: 'Kaabah timbul pada papan cerita kad hitam dengan langit kertas koyak', caption: 'Papan cerita Haji timbul buatan seorang kanak-kanak', width: 1600, height: 1441 },
+      { src: '/photos/seen-ufk-hajj-route.webp', alt: 'Papan cerita yang menunjukkan laluan Haji dari miqat ke Muzdalifah dalam tujuh langkah', caption: 'Memetakan perjalanan, langkah demi langkah', width: 1600, height: 1130 },
+    ],
   },
   bringIt: {
     body: 'Membawa kanak-kanak menunaikan umrah, atau menganjurkan perjalanan umrah keluarga? Hubungi kami tentang bengkel dan sesi bercerita untuk kanak-kanak.',

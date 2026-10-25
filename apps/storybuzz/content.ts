@@ -51,7 +51,15 @@ export const content: SpokeContent = {
       'Our own children enjoyed sharing the stories with their friends. That is how the first sessions for other families began.',
       'The mini Hajj practice, acting out the rituals of Prophet Ibrahim, was great fun for our children.',
     ],
-    photos: [],
+    // Real photos from the owner's library (approved in the review, 2026-10-25). Faces blurred unless cleared.
+    photos: [
+      { src: '/photos/seen-sb-hoopoe-puppets.webp', alt: 'Hoopoe stick puppets made with feathers and googly eyes', caption: 'The Honest Hudhud puppets, early StoryBuzz', width: 954, height: 1600 }, // library IQ-0090
+      { src: '/photos/seen-sb-hud-hud-kit.webp', alt: 'A StoryBuzz folder with a workbook and hoopoe puppets', caption: 'A take-home StoryBuzz kit', width: 1600, height: 1012 }, // library IQ-0090
+      { src: '/photos/seen-sb-rhyme-cards.webp', alt: 'Rhyme cards about three little hoopoes', caption: 'Rhymes we sang together', width: 1600, height: 1152 }, // library IQ-0090
+      { src: '/photos/seen-sb-helpful-spider.webp', alt: 'A girl in a spider-web cape with a felt spider, arms spread', caption: 'The Helpful Spider', width: 600, height: 600 }, // library IQ-0089
+      { src: '/photos/seen-sb-paper-bag-puppet.webp', alt: 'Two children making paper-bag puppets with glue and crayons', caption: 'Puppet-making after a library story show, 2016', width: 330, height: 600 }, // library IQ-0024
+      { src: '/photos/seen-sb-hoopoe-close.webp', alt: 'A close-up of a hoopoe puppet on a stick', caption: 'Every child takes a puppet home to retell the story', width: 1600, height: 1278 }, // library IQ-0090
+    ],
   },
 
   bringIt: {

@@ -78,7 +78,15 @@ export const content: SpokeContent = {
       'Doodling suited our children while they were too young to write much. Journaling, and then the booklets, came as they grew older.',
       '[[CONTENT NEEDED: what worked, what did not, and what you changed between versions]]',
     ],
-    photos: [],
+    // Real photos from the owner's library (approved in the review, 2026-10-25). Faces blurred unless cleared.
+    photos: [
+      { src: '/photos/seen-qi-module-1-2018.webp', alt: 'A Quran Investigators group with their teacher on a field trip', caption: 'Module 1 group, Aug–Oct 2018', width: 580, height: 238 }, // library IQ-0075
+      { src: '/photos/seen-qi-science-centre-2018.webp', alt: 'Children drawing on clipboards at the Science Centre', caption: 'Surah Al-Kautsar trip to the Science Centre, Sept 2018', width: 400, height: 445 }, // library IQ-0075
+      { src: '/photos/seen-qi-ar-raudhah-minbar.webp', alt: 'Children gathered at the minbar of Ar-Raudhah Mosque with a teacher', caption: 'Surah Al-Kafirun field trip, Ar-Raudhah Mosque', width: 680, height: 540 }, // library IQ-0075
+      { src: '/photos/seen-qi-papaya-tree.webp', alt: 'Children pointing up at a papaya tree full of fruit', caption: 'Spotting signs in a mosque garden', width: 380, height: 475 }, // library IQ-0075
+      { src: '/photos/seen-qi-sand-tray.webp', alt: 'Children sifting sand and glitter in a tray during an experiment', caption: 'A hands-on experiment at a home session', width: 440, height: 440 }, // library IQ-0075
+      { src: '/photos/seen-qi-al-fil-cover.webp', alt: 'The cover of the Quran Investigators booklet for Surah Al-Fil', caption: 'One of our early booklet covers, 2018–2019', width: 1055, height: 1600 }, // library IQ-0100
+    ],
   },
 
   bringIt: {

@@ -47,7 +47,11 @@ export const content: SpokeContent = {
     // OWNER: real quotes, lessons and photos only.
     quotes: [{ text: '[[CONTENT NEEDED: something a child said during or after the trip]]' }],
     lessons: ['The children enjoyed the drama on the hill facing Mount Uhud very much.'],
-    photos: [],
+    // Real photos from the owner's library (approved in the review, 2026-10-25). Faces blurred unless cleared.
+    photos: [
+      { src: '/photos/seen-ufk-pop-up-kabah.webp', alt: 'A pop-up Ka’bah on a black card storyboard with a torn-paper sky', caption: 'A child’s pop-up Hajj storyboard', width: 1600, height: 1441 }, // library IQ-0027
+      { src: '/photos/seen-ufk-hajj-route.webp', alt: 'A storyboard showing the Hajj route from the miqat to Muzdalifah in seven steps', caption: 'Mapping the journey, step by step', width: 1600, height: 1130 }, // library IQ-0027
+    ],
   },
 
   bringIt: {

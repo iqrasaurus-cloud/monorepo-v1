@@ -41,6 +41,14 @@ export const contentMs: Overlay<SpokeContent> = {
       'Latihan haji mini di rumah, melalui ibadah Nabi Ibrahim a.s., sangat menyeronokkan bagi anak-anak kami.',
       'Alat tulis dan setem baharu membuatkan anak-anak kami menanti-nantikan halaqah mingguan.',
     ],
+    photos: [
+      { src: '/photos/seen-bm-corridor-tent.webp', alt: 'Khemah keluarga didirikan di koridor di luar rumah', caption: 'Semalam berkhemah, betul-betul di luar pintu rumah', width: 803, height: 600 },
+      { src: '/photos/seen-bm-cleaning-chicken.webp', alt: 'Dua orang kanak-kanak memakai sarung tangan plastik membersihkan ayam di sinki dapur', caption: 'Setiap orang ada peranan: menyediakan makan malam', width: 803, height: 600 },
+      { src: '/photos/seen-bm-picking-limes.webp', alt: 'Seorang kanak-kanak memetik limau daripada pokok dalam pasu ke dalam mangkuk kuning', caption: 'Memetik limau yang kami tanam', width: 1600, height: 1200 },
+      { src: '/photos/seen-bm-ironing.webp', alt: 'Seorang budak lelaki menggosok baju', caption: 'Menggosok bajunya sendiri', width: 1200, height: 1600 },
+      { src: '/photos/seen-bm-quran-at-the-beach.webp', alt: 'Buku-buku kajian Al-Quran di atas bangku lipat di pantai', caption: 'Membawa buku-buku Al-Quran kami ke pantai', width: 1200, height: 1600 },
+      { src: '/photos/seen-bm-deer-farm.webp', alt: 'Kanak-kanak berjalan di laluan taman dan mengutip biji saga di ladang rusa', caption: 'Mengutip biji saga di ladang rusa', width: 600, height: 600 },
+    ],
   },
   bringIt: {
     body: 'Menyekolahkan anak di rumah, atau ingin memulakan halaqah mingguan di rumah? Tanyakan kami bagaimana kami menjalankannya.',

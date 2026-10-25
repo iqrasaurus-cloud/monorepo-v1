@@ -15,7 +15,8 @@
  *                 In either, a line starting "## " is a subheading and "- " lines make a list.
  *                 A paragraph starting "[[" (e.g. "[[fill in: the date]]") is a note to yourself
  *                 and is not shown, so a post can go live before every detail is in
- *   image_url     optional; a Google Drive "anyone with the link" picture or any https picture
+ *   image_url     optional; a Google Drive "anyone with the link" picture or any https picture,
+ *                 or library/<file>.webp for an approved picture in packages/ui/assets/journal-library/
  *   image_alt     what the picture shows
  *   video_url     optional YouTube link
  *   status        "published" shows it; anything else (draft, example) hides it

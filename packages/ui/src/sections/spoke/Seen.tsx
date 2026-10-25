@@ -80,12 +80,15 @@ export function Seen({ seen }: SeenProps) {
       {photos.length > 0 ? (
         <RevealList as="ul" className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-3">
           {photos.map((photo, i) => (
-            <RevealItem
-              key={`${photo.src}-${i}`}
-              as="li"
-              className="aspect-[4/3] overflow-hidden rounded-card [&_picture]:contents"
-            >
-              <Picture {...photo} className="h-full w-full object-cover" />
+            <RevealItem key={`${photo.src}-${i}`} as="li">
+              <figure>
+                <div className="aspect-[4/3] overflow-hidden rounded-card [&_picture]:contents">
+                  <Picture {...photo} className="h-full w-full object-cover" />
+                </div>
+                {photo.caption ? (
+                  <figcaption className="mt-2 text-sm text-ink/80">{photo.caption}</figcaption>
+                ) : null}
+              </figure>
             </RevealItem>
           ))}
         </RevealList>

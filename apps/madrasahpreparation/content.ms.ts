@@ -38,6 +38,16 @@ export const contentMs: Overlay<SpokeContent> = {
         'Bagi pembaca yang yakin, tetapkan masa untuk beberapa soalan supaya hari ujian terasa biasa.',
     },
   },
+  seen: {
+    photos: [
+      { src: '/photos/seen-mp-counting-six.webp', alt: 'Seorang kanak-kanak menyusun enam penanda merah di sebelah penyepit nombor', caption: 'Latihan mengira, Jun 2022', width: 1200, height: 1600 },
+      { src: '/photos/seen-mp-counting-four.webp', alt: 'Seorang budak lelaki mengira empat penanda di sebelah penyepit nombor', caption: 'Satu penanda untuk setiap nombor', width: 1200, height: 1600 },
+      { src: '/photos/seen-mp-counting-table.webp', alt: 'Tiga orang kanak-kanak di sekeliling meja kecil mengira dengan penanda dan penyepit nombor', caption: 'Kumpulan kecil sedang bekerja', width: 1200, height: 1600 },
+      { src: '/photos/seen-mp-colour-mixing.webp', alt: 'Seorang kanak-kanak mencampur warna cat pada lembaran kerja', caption: 'Mencampur warna', width: 1200, height: 1600 },
+      { src: '/photos/seen-mp-plasticine-green.webp', alt: 'Seorang kanak-kanak membentuk plastisin hijau di atas meja', caption: 'Membentuk dengan plastisin', width: 1200, height: 1600 },
+      { src: '/photos/seen-mp-plasticine-orange.webp', alt: 'Seorang budak lelaki menggulung plastisin oren menjadi bentuk', caption: 'Latihan motor halus', width: 1200, height: 1600 },
+    ],
+  },
   bringIt: {
     body: 'Sedang menyediakan anak anda untuk Ujian Kemasukan Madrasah, atau ingin menjalankan program ini di pusat anda? Hubungi kami.',
   },

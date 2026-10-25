@@ -177,15 +177,24 @@ async function bodyOf(raw: string, title: string): Promise<string[]> {
   }
 }
 
+/** Approved pictures from the owner's library, shared by every site (image_url "library/<file>"). */
+const libraryDir = join(app, '..', '..', 'packages', 'ui', 'assets', 'journal-library')
+
 async function imageOf(url: string, slug: string, alt: string): Promise<JournalPost['image']> {
-  const id = driveId(url)
-  const source = id ? `https://drive.google.com/uc?export=download&id=${id}` : url
   try {
-    const res = await fetch(source, { redirect: 'follow' })
-    const type = res.headers.get('content-type') ?? ''
-    if (!res.ok || !type.startsWith('image/')) throw new Error(`${res.status} ${type}`)
+    let input: Buffer
+    if (url.startsWith('library/')) {
+      input = readFileSync(join(libraryDir, basename(url)))
+    } else {
+      const id = driveId(url)
+      const source = id ? `https://drive.google.com/uc?export=download&id=${id}` : url
+      const res = await fetch(source, { redirect: 'follow' })
+      const type = res.headers.get('content-type') ?? ''
+      if (!res.ok || !type.startsWith('image/')) throw new Error(`${res.status} ${type}`)
+      input = Buffer.from(await res.arrayBuffer())
+    }
     const file = `${slug}.webp`
-    const { data, info } = await sharp(Buffer.from(await res.arrayBuffer()))
+    const { data, info } = await sharp(input)
       .rotate()
       .resize({ width: MAX_WIDTH, withoutEnlargement: true })
       .webp({ quality: 78 })
@@ -271,7 +280,7 @@ async function main() {
       title,
       excerpt: get(row, 'excerpt'),
       body: await bodyOf(get(row, 'body'), title),
-      image: imageUrl.startsWith('https://')
+      image: imageUrl.startsWith('https://') || imageUrl.startsWith('library/')
         ? await imageOf(imageUrl, slug, get(row, 'image_alt'))
         : undefined,
       videoId: videoUrl ? youtubeId(videoUrl) : undefined,

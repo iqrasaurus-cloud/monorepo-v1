@@ -42,6 +42,14 @@ export const contentMs: Overlay<SpokeContent> = {
       'Anak-anak kami suka berkongsi kisah-kisah itu dengan kawan-kawan mereka. Begitulah bermulanya sesi pertama untuk keluarga lain.',
       'Latihan haji mini, melakonkan ibadah Nabi Ibrahim a.s., sangat menyeronokkan bagi anak-anak kami.',
     ],
+    photos: [
+      { src: '/photos/seen-sb-hoopoe-puppets.webp', alt: 'Boneka kayu burung hud-hud dengan bulu dan mata bergerak', caption: 'Boneka The Honest Hudhud, StoryBuzz awal', width: 954, height: 1600 },
+      { src: '/photos/seen-sb-hud-hud-kit.webp', alt: 'Fail StoryBuzz dengan buku kerja dan boneka hud-hud', caption: 'Kit StoryBuzz untuk dibawa pulang', width: 1600, height: 1012 },
+      { src: '/photos/seen-sb-rhyme-cards.webp', alt: 'Kad pantun tentang tiga ekor burung hud-hud kecil', caption: 'Pantun yang kami nyanyikan bersama', width: 1600, height: 1152 },
+      { src: '/photos/seen-sb-helpful-spider.webp', alt: 'Seorang kanak-kanak perempuan memakai jubah sarang labah-labah dengan labah-labah kain flanel', caption: 'The Helpful Spider', width: 600, height: 600 },
+      { src: '/photos/seen-sb-paper-bag-puppet.webp', alt: 'Dua orang kanak-kanak membuat boneka beg kertas dengan gam dan krayon', caption: 'Membuat boneka selepas persembahan cerita di perpustakaan, 2016', width: 330, height: 600 },
+      { src: '/photos/seen-sb-hoopoe-close.webp', alt: 'Gambar dekat boneka hud-hud pada sebatang kayu', caption: 'Setiap kanak-kanak membawa pulang boneka untuk menceritakan semula kisahnya', width: 1600, height: 1278 },
+    ],
   },
   bringIt: {
     body: 'Ingin sesi bercerita atau drama StoryBuzz di tadika, madrasah, pusat atau kumpulan rumah anda?',

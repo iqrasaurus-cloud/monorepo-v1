@@ -52,7 +52,15 @@ export const content: SpokeContent = {
       'Our children looked forward to the weekly halaqah because there were always new stationery and stamps to try.',
       'Doodling worked while our children were too young to write much. As they grew older, we moved them on to reflection journaling, which became Quran Investigators.',
     ],
-    photos: [],
+    // Real photos from the owner's library (approved in the review, 2026-10-25). Faces blurred unless cleared.
+    photos: [
+      { src: '/photos/seen-qhd-al-maun-cover.webp', alt: 'The cover of the Doodle with Surah Al-Maun workbook', caption: 'Doodle with Surah Al-Maun workbook', width: 1165, height: 1600 }, // library IQ-0016
+      { src: '/photos/seen-qhd-al-maun-panels.webp', alt: 'A comic-panel doodle page for one verse', caption: 'One verse, one comic panel', width: 1147, height: 1600 }, // library IQ-0016
+      { src: '/photos/seen-qhd-ghashiyah-cover.webp', alt: 'A hand-folded yellow booklet titled Surah Al-Ghashiyah', caption: 'A child’s folded Al-Ghashiyah booklet', width: 1166, height: 1600 }, // library IQ-0092
+      { src: '/photos/seen-qhd-ghashiyah-spread.webp', alt: 'Inside the folded booklet: drawings and short reflections on the surah', caption: 'Her doodles and reflections inside', width: 1600, height: 1124 }, // library IQ-0092
+      { src: '/photos/seen-qhd-fatihah-alamin.webp', alt: 'A scrapbook card about the Lord of the worlds, with foam sea and land animals', caption: 'Al-Fatihah scrapbook cards', width: 1600, height: 1121 }, // library IQ-0005
+      { src: '/photos/seen-qhd-fatihah-path.webp', alt: 'A scrapbook card about the straight path, drawn as a ruler and a dashed road', caption: '“Guide us to the straight path”, as a child pictured it', width: 1600, height: 1144 }, // library IQ-0005
+    ],
   },
 
   bringIt: {

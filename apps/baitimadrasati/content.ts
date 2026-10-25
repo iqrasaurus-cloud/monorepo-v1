@@ -50,7 +50,15 @@ export const content: SpokeContent = {
       'A mini Hajj practice at home, walking through the rituals of Prophet Ibrahim (peace be upon him), was great fun for our children.',
       'New stationery and stamps made our children look forward to the weekly halaqah.',
     ],
-    photos: [],
+    // Real photos from the owner's library (approved in the review, 2026-10-25). Faces blurred unless cleared.
+    photos: [
+      { src: '/photos/seen-bm-corridor-tent.webp', alt: 'A family tent pitched in the corridor outside a flat', caption: 'A night of camping, right outside our door', width: 803, height: 600 }, // library IQ-0066
+      { src: '/photos/seen-bm-cleaning-chicken.webp', alt: 'Two children in plastic gloves cleaning chicken at the kitchen sink', caption: 'Everyone has a role: preparing dinner', width: 803, height: 600 }, // library IQ-0017
+      { src: '/photos/seen-bm-picking-limes.webp', alt: 'A child picking limes from a potted tree into a yellow bowl', caption: 'Picking limes we grew', width: 1600, height: 1200 }, // library IQ-0059
+      { src: '/photos/seen-bm-ironing.webp', alt: 'A boy ironing a shirt', caption: 'Ironing his own shirt', width: 1200, height: 1600 }, // library IQ-0034
+      { src: '/photos/seen-bm-quran-at-the-beach.webp', alt: 'Quran study books on a folding stool at the beach', caption: 'Taking our Quran books to the beach', width: 1200, height: 1600 }, // library IQ-0034
+      { src: '/photos/seen-bm-deer-farm.webp', alt: 'Children walking a garden path and collecting saga seeds at a deer farm', caption: 'Collecting saga seeds at a deer farm', width: 600, height: 600 }, // library IQ-0066
+    ],
   },
 
   bringIt: {

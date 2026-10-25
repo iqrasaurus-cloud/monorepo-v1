@@ -48,7 +48,15 @@ export const content: SpokeContent = {
     // OWNER: real quotes, lessons and photos only.
     quotes: [{ text: '[[CONTENT NEEDED: something a parent told you after the entrance test]]' }],
     lessons: ['[[CONTENT NEEDED: what worked in preparing children, and what you changed]]'],
-    photos: [],
+    // Real photos from the owner's library (approved in the review, 2026-10-25). Faces blurred unless cleared.
+    photos: [
+      { src: '/photos/seen-mp-counting-six.webp', alt: 'A child lines up six red counters beside a number peg', caption: 'Counting practice, June 2022', width: 1200, height: 1600 }, // library IQ-0009
+      { src: '/photos/seen-mp-counting-four.webp', alt: 'A boy counts four counters beside a number peg', caption: 'One counter for each number', width: 1200, height: 1600 }, // library IQ-0009
+      { src: '/photos/seen-mp-counting-table.webp', alt: 'Three children around a small table counting with counters and number pegs', caption: 'A small group at work', width: 1200, height: 1600 }, // library IQ-0009
+      { src: '/photos/seen-mp-colour-mixing.webp', alt: 'A child mixing paint colours on a worksheet', caption: 'Colour mixing', width: 1200, height: 1600 }, // library IQ-0033
+      { src: '/photos/seen-mp-plasticine-green.webp', alt: 'A child shaping green plasticine on a table', caption: 'Shaping with plasticine', width: 1200, height: 1600 }, // library IQ-0034
+      { src: '/photos/seen-mp-plasticine-orange.webp', alt: 'A boy rolling orange plasticine into shapes', caption: 'Fine motor practice', width: 1200, height: 1600 }, // library IQ-0034
+    ],
   },
 
   bringIt: {
