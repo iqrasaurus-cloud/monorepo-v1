@@ -34,9 +34,10 @@ export const loveSheet = {
    * ...#gid=<number>. Until it is filled in, the sites use the starting rows in
    * packages/config/love-seed.csv (the same rows to import into the tab).
    */
-  gid: '[[CONTENT NEEDED: gid of the Wall of Love tab]]',
+  gid: '1411310386', // the "Wall of Love" tab (owner, 2026-10-27)
   /** OWNER: the Google Form's "Send" link (https://forms.gle/...). The button hides until then. */
-  formUrl: '[[CONTENT NEEDED: Google Form link for "Share your story"]]',
+  formUrl:
+    'https://docs.google.com/forms/d/e/1FAIpQLSfctiIdGJ8qyPyws5tuLqDl9f87BtQU5bzPK2oQm3sRiBVl2w/viewform', // owner, 2026-10-27
 } as const
 
 /** The tab as CSV, or undefined while its gid is still a placeholder. */
