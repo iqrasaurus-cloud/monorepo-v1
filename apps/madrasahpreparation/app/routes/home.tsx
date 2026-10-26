@@ -2,6 +2,7 @@ import { getSite, langOf, localized } from '@iqra/config'
 import { pageMeta, SpokeHome } from '@iqra/ui'
 import { content } from '../../content'
 import { contentMs } from '../../content.ms'
+import { notes } from '../love.ts'
 
 const site = getSite('madrasahpreparation')
 
@@ -12,5 +13,5 @@ export function meta({ location }: { location: { pathname: string } }) {
 }
 
 export default function Home() {
-  return <SpokeHome site={site} content={content} contentMs={contentMs} />
+  return <SpokeHome site={site} content={content} contentMs={contentMs} love={notes} />
 }

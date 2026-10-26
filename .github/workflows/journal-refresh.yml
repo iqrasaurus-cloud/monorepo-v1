@@ -1,4 +1,5 @@
-# Rebuilds all seven sites so they pick up new posts from the journal Google Sheet.
+# Rebuilds all seven sites so they pick up new posts from the journal Google Sheet
+# (and new notes from its Wall of Love tab).
 # Runs every day at 06:00 Singapore time. To publish straight away: GitHub -> Actions ->
 # "Refresh journal" -> Run workflow.
 # VERCEL_DEPLOY_HOOKS is a repository secret: one Vercel deploy-hook URL per line.

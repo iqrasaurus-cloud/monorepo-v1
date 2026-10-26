@@ -3,8 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node --experimental-strip-types --disable-warning=ExperimentalWarning ../../scripts/journal.mts && react-router dev --port 3001",
-    "build": "node --experimental-strip-types --disable-warning=ExperimentalWarning ../../scripts/journal.mts && react-router build && node --experimental-strip-types --disable-warning=ExperimentalWarning ../../scripts/post-build.mts",
+    "dev": "node --experimental-strip-types --disable-warning=ExperimentalWarning ../../scripts/journal.mts && node --experimental-strip-types --disable-warning=ExperimentalWarning ../../scripts/love.mts && react-router dev --port 3001",
+    "build": "node --experimental-strip-types --disable-warning=ExperimentalWarning ../../scripts/journal.mts && node --experimental-strip-types --disable-warning=ExperimentalWarning ../../scripts/love.mts && react-router build && node --experimental-strip-types --disable-warning=ExperimentalWarning ../../scripts/post-build.mts",
     "preview": "vite preview --outDir build/client",
     "typecheck": "tsc -p tsconfig.json"
   },

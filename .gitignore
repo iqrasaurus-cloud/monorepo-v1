@@ -16,3 +16,7 @@ Thumbs.db
 # Journal posts and pictures, written from the Google Sheet by scripts/journal.mts at build time
 apps/*/app/journal.generated.json
 apps/*/public/journal/
+
+# Wall of Love notes and pictures, written from the Google Sheet by scripts/love.mts at build time
+apps/*/app/love.generated.json
+apps/*/public/love/

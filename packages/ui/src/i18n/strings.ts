@@ -88,6 +88,19 @@ const en = {
   inTheNews: 'In the news',
   workWithUsTitle: 'Work with us',
   bringAProgramme: 'Bring a programme to your class',
+  // Wall of Love
+  wallOfLove: 'Wall of Love',
+  wallOfLoveLede: 'What parents, teachers and children have told us, shown exactly as they wrote it.',
+  fromOurWall: 'From our Wall of Love',
+  seeTheWall: 'See the whole Wall of Love',
+  filterByProgramme: 'Filter by programme',
+  everyone: 'IqraSaurus',
+  shareYourStory: 'Share your story',
+  shareYourStoryLine:
+    'Has a programme or tool helped your child, your class or your family? Tell us in a short Google Form. Nothing appears here until we have read it and you have said we may.',
+  loveHowWeShow:
+    'We show each note in the writer’s own words, without changes. A name appears only when its writer said we may.',
+  loveEmpty: 'The first notes are on their way.',
   // Errors and embeds
   somethingWentWrong: 'Something went wrong',
   pageNotFound: 'Page not found',
@@ -184,6 +197,19 @@ const ms: Strings = {
   inTheNews: 'Dalam berita',
   workWithUsTitle: 'Bekerjasama dengan kami',
   bringAProgramme: 'Bawa program ke kelas anda',
+  wallOfLove: 'Dinding Kasih',
+  wallOfLoveLede:
+    'Apa yang ibu bapa, guru dan kanak-kanak telah kongsikan dengan kami, dipaparkan tepat seperti yang mereka tulis.',
+  fromOurWall: 'Dari Dinding Kasih kami',
+  seeTheWall: 'Lihat seluruh Dinding Kasih',
+  filterByProgramme: 'Tapis mengikut program',
+  everyone: 'IqraSaurus',
+  shareYourStory: 'Kongsi kisah anda',
+  shareYourStoryLine:
+    'Adakah sesuatu program atau alat telah membantu anak, kelas atau keluarga anda? Ceritakan kepada kami melalui Google Form yang ringkas. Tiada apa yang dipaparkan di sini sehingga kami membacanya dan anda membenarkannya.',
+  loveHowWeShow:
+    'Setiap nota dipaparkan dalam kata-kata penulisnya sendiri, tanpa diubah. Nama hanya dipaparkan jika penulisnya membenarkan.',
+  loveEmpty: 'Nota-nota pertama sedang dalam perjalanan.',
   somethingWentWrong: 'Ada sesuatu yang tidak kena',
   pageNotFound: 'Halaman tidak ditemui',
   pageNotFoundBody:

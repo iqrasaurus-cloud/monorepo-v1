@@ -2,6 +2,7 @@ import {
   isPlaceholder,
   localized,
   type HubContent,
+  type LoveNote,
   type Overlay,
   type SiteConfig,
 } from '@iqra/config'
@@ -17,6 +18,7 @@ import { Scallop } from '../../primitives/Scallop.tsx'
 import { SectionHeading } from '../../primitives/SectionHeading.tsx'
 import { cn } from '../../utils/cn.ts'
 import { real, STEP_MASCOTS, withFallback, type Bg, bgClass } from '../spoke/helpers.ts'
+import { LoveNotes } from '../love/Love.tsx'
 import { PageHeader } from './PageHeader.tsx'
 
 function Prose({ paragraphs }: { paragraphs: string[] }) {
@@ -44,10 +46,12 @@ interface HubAboutProps {
   about: HubContent['about']
   /** The Malay version from apps/hub/content.ms.ts. */
   aboutMs?: Overlay<HubContent['about']>
+  /** Wall of Love notes; the first three show, with a link to the rest. */
+  love?: LoveNote[]
 }
 
-/** iqrasaurus.com/about: story, people, foundation, how we teach, trust and press. */
-export function HubAbout({ site, about: english, aboutMs }: HubAboutProps) {
+/** iqrasaurus.com/about: story, people, foundation, how we teach, trust, kind words and press. */
+export function HubAbout({ site, about: english, aboutMs, love = [] }: HubAboutProps) {
   const t = useT()
   const lang = useLang()
   const brand = useBrand()
@@ -153,6 +157,13 @@ export function HubAbout({ site, about: english, aboutMs }: HubAboutProps) {
           ) : null}
         </Reveal>
       ),
+    },
+    {
+      id: 'wall-of-love',
+      title: t.wallOfLove,
+      bg: 'paper-2',
+      show: love.length > 0,
+      body: <LoveNotes site={site} notes={love} />,
     },
     {
       id: 'in-the-news',

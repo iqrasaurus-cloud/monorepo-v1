@@ -38,8 +38,9 @@ const COPY = [
   'public/brand',
   'public/embeds',
 ]
-// The journal file is build output for the template's own site, so it is left behind.
-const skipGenerated = (src) => !src.endsWith('journal.generated.json')
+// The journal and Wall of Love files are build output for the template's own site, so they are left behind.
+const skipGenerated = (src) =>
+  !src.endsWith('journal.generated.json') && !src.endsWith('love.generated.json')
 for (const path of COPY) {
   cpSync(join(from, path), join(target, path), { recursive: true, filter: skipGenerated })
 }
