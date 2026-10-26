@@ -2,6 +2,7 @@ import {
   isPlaceholder,
   localized,
   videosFor,
+  type LoveNote,
   type Overlay,
   type SiteConfig,
   type SpokeContent,
@@ -9,6 +10,7 @@ import {
 import { useLang } from '../../i18n/lang.ts'
 import type { ReactNode } from 'react'
 import { Section, type Bg } from '../../primitives/Section.tsx'
+import { loveHref, LoveStrip } from '../love/Love.tsx'
 import { Videos } from '../shared/Videos.tsx'
 import { BringIt } from './BringIt.tsx'
 import { real } from './helpers.ts'
@@ -29,13 +31,16 @@ interface SpokeHomeProps {
   content: SpokeContent
   /** The Malay version (apps/<slug>/content.ms.ts); missing parts show in English. */
   contentMs?: Overlay<SpokeContent>
+  /** This programme's first few Wall of Love notes (apps/<slug>/app/love.ts). */
+  love?: LoveNote[]
 }
 
 /**
- * The programme page (BUILD_SPEC.md section 6B, plus the videos from phase 10).
+ * The programme page (BUILD_SPEC.md section 6B, plus the videos from phase 10 and a few
+ * Wall of Love notes, 2026-10-25).
  * Empty sections don't render. The last band is plum, so it runs straight into the footer.
  */
-export function SpokeHome({ site, content, contentMs }: SpokeHomeProps) {
+export function SpokeHome({ site, content, contentMs, love = [] }: SpokeHomeProps) {
   const lang = useLang()
   const c = lang === 'ms' ? localized(content, contentMs) : content
   const blocks: Block[] = [
@@ -61,7 +66,14 @@ export function SpokeHome({ site, content, contentMs }: SpokeHomeProps) {
       id: 'seen',
       bg: 'surface',
       show: hasSeen(c.seen),
-      node: <Seen seen={c.seen} />,
+      // With no notes of its own yet, the programme still links to the whole wall from here.
+      node: <Seen seen={c.seen} loveLink={love.length === 0 ? loveHref(site, lang) : undefined} />,
+    },
+    {
+      id: 'wall-of-love',
+      bg: 'paper-2',
+      show: love.length > 0,
+      node: <LoveStrip site={site} notes={love} />,
     },
     {
       id: 'bring-it-to-your-class',

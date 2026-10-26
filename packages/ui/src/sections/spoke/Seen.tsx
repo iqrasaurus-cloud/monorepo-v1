@@ -15,10 +15,12 @@ export const hasSeen = (seen: SpokeContent['seen']): boolean =>
 
 interface SeenProps {
   seen: SpokeContent['seen']
+  /** The Wall of Love on iqrasaurus.com, shown beside the journal link. */
+  loveLink?: string
 }
 
 /** Section 4: real quotes, lessons and photos. Only rendered when hasSeen() is true. */
-export function Seen({ seen }: SeenProps) {
+export function Seen({ seen, loveLink }: SeenProps) {
   const t = useT()
   const quotes = seen.quotes.filter((q) => !isPlaceholder(q.text))
   const lessons = real(seen.lessons)
@@ -94,10 +96,15 @@ export function Seen({ seen }: SeenProps) {
         </RevealList>
       ) : null}
 
-      <Reveal className="mt-10">
+      <Reveal className="mt-10 flex flex-wrap gap-3">
         <Button to="/journal" variant="outline" className="bg-surface">
           {t.readOurJournal}
         </Button>
+        {loveLink ? (
+          <Button href={loveLink} variant="outline" className="bg-surface">
+            {t.wallOfLove}
+          </Button>
+        ) : null}
       </Reveal>
     </Container>
   )

@@ -8,7 +8,6 @@
 // with the last posts it wrote (or none), so a Google hiccup never breaks a deploy.
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { basename, join } from 'node:path'
-import sharp from 'sharp'
 import {
   getSite,
   isPlaceholder,
@@ -16,6 +15,7 @@ import {
   programmes,
   type JournalPost,
 } from '../packages/config/src/index.ts'
+import { fetchText, parseCsv, savePicture } from './sheet.mts'
 
 const app = process.cwd()
 const site = getSite(basename(app))
@@ -25,39 +25,6 @@ const MAX_WIDTH = 1280
 const SITES = new Set(['hub', 'all', ...programmes().map((p) => p.slug)])
 
 const warn = (msg: string) => console.warn(`journal: ${msg}`)
-
-/** A small CSV reader: quoted cells, doubled quotes and line breaks inside cells. */
-function parseCsv(text: string): string[][] {
-  const rows: string[][] = []
-  let row: string[] = []
-  let cell = ''
-  let quoted = false
-  for (let i = 0; i < text.length; i++) {
-    const ch = text[i]
-    if (quoted) {
-      if (ch === '"' && text[i + 1] === '"') {
-        cell += '"'
-        i++
-      } else if (ch === '"') quoted = false
-      else cell += ch
-    } else if (ch === '"') quoted = true
-    else if (ch === ',') {
-      row.push(cell)
-      cell = ''
-    } else if (ch === '\n' || ch === '\r') {
-      if (ch === '\r' && text[i + 1] === '\n') i++
-      row.push(cell)
-      rows.push(row)
-      row = []
-      cell = ''
-    } else cell += ch
-  }
-  if (cell !== '' || row.length > 0) {
-    row.push(cell)
-    rows.push(row)
-  }
-  return rows.filter((r) => r.some((c) => c.trim() !== ''))
-}
 
 const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
 const pad = (n: number) => String(n).padStart(2, '0')
@@ -99,21 +66,8 @@ const slugify = (text: string): string =>
 const youtubeId = (url: string): string | undefined =>
   /(?:youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/)|youtu\.be\/)([\w-]{11})/.exec(url)?.[1]
 
-const driveId = (url: string): string | undefined =>
-  /drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:.*&)?id=)([\w-]+)/.exec(url)?.[1]
-
 const docId = (text: string): string | undefined =>
   /^https:\/\/docs\.google\.com\/document\/d\/([\w-]+)/.exec(text.trim())?.[1]
-
-async function fetchText(url: string): Promise<string> {
-  const res = await fetch(url, { redirect: 'follow' })
-  const type = res.headers.get('content-type') ?? ''
-  // A private sheet or doc answers with Google's sign-in page instead of the data.
-  if (!res.ok || type.includes('text/html')) {
-    throw new Error(`${res.status} ${type || 'no type'} (is it shared as "anyone with the link"?)`)
-  }
-  return (await res.text()).replace(/^\uFEFF/, '')
-}
 
 const paragraphs = (text: string): string[] =>
   text
@@ -177,30 +131,11 @@ async function bodyOf(raw: string, title: string): Promise<string[]> {
   }
 }
 
-/** Approved pictures from the owner's library, shared by every site (image_url "library/<file>"). */
-const libraryDir = join(app, '..', '..', 'packages', 'ui', 'assets', 'journal-library')
-
 async function imageOf(url: string, slug: string, alt: string): Promise<JournalPost['image']> {
   try {
-    let input: Buffer
-    if (url.startsWith('library/')) {
-      input = readFileSync(join(libraryDir, basename(url)))
-    } else {
-      const id = driveId(url)
-      const source = id ? `https://drive.google.com/uc?export=download&id=${id}` : url
-      const res = await fetch(source, { redirect: 'follow' })
-      const type = res.headers.get('content-type') ?? ''
-      if (!res.ok || !type.startsWith('image/')) throw new Error(`${res.status} ${type}`)
-      input = Buffer.from(await res.arrayBuffer())
-    }
     const file = `${slug}.webp`
-    const { data, info } = await sharp(input)
-      .rotate()
-      .resize({ width: MAX_WIDTH, withoutEnlargement: true })
-      .webp({ quality: 78 })
-      .toBuffer({ resolveWithObject: true })
-    writeFileSync(join(imageDir, file), data)
-    return { src: `/journal/${file}`, alt, width: info.width, height: info.height }
+    const { width, height } = await savePicture(url, app, join(imageDir, file), MAX_WIDTH)
+    return { src: `/journal/${file}`, alt, width, height }
   } catch (e) {
     warn(`"${slug}": picture not used (${(e as Error).message})`)
     return undefined

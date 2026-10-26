@@ -281,6 +281,19 @@ export function Footer({ site }: { site: SiteConfig }) {
                   )}
                 </p>
               ) : null}
+              {aboutPage ? (
+                <p className="mt-2.5">
+                  {site.kind === 'hub' ? (
+                    <Link to="/love" className={link}>
+                      {t.wallOfLove}
+                    </Link>
+                  ) : (
+                    <a href={siteUrl(hub(), localPath(lang, '/love'))} className={link}>
+                      {t.wallOfLove}
+                    </a>
+                  )}
+                </p>
+              ) : null}
             </Column>
 
             {/* The header's "Work with us" item and the Donate placeholder land here. */}

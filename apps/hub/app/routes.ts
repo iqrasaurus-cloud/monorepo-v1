@@ -8,6 +8,7 @@ const pages = (id: string) => [
   route('ai', 'routes/ai.tsx', { id: `${id}ai` }),
   route('journal', 'routes/journal.tsx', { id: `${id}journal` }),
   route('journal/:slug', 'routes/journal-post.tsx', { id: `${id}journal-post` }),
+  route('love', 'routes/love.tsx', { id: `${id}love` }),
 ]
 
 export default [

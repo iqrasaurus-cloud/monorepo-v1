@@ -11,3 +11,4 @@ export {
   postHref,
   formatDate,
 } from './journal/Journal.tsx'
+export { LoveWall, LoveStrip, LoveNotes, loveHref } from './love/Love.tsx'

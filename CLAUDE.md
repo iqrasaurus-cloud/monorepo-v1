@@ -86,6 +86,7 @@ node scripts/sync-mascots.mjs   # re-copy the dino pose library from ../tadabbur
 
 ### Security & speed
 12. The journal comes from one Google Sheet (`packages/config/src/journal.ts`), read at build time by `scripts/journal.mts`; its pictures are downloaded and shrunk into the build, so nothing loads from Google in a visitor's browser. A GitHub Action (`.github/workflows/journal-refresh.yml`) rebuilds every site daily; its Vercel deploy-hook URLs are a GitHub secret, never in the repo.
+    The Wall of Love (`iqrasaurus.com/love`, owner decision 2026-10-25) works the same way from a second tab of that sheet (`packages/config/src/love.ts`, `scripts/love.mts`; starting rows in `packages/config/love-seed.csv` until the tab's gid is set). Only rows marked `approved` show, words exactly as written (rules 1 and 2). Stories come in through a Google Form the owner named, reached by a plain link: never embedded.
     Iframes are rendered only through `<SafeEmbed>`. External sources must be listed in the registry, which also generates the CSP `frame-src` allowlist. Never add a raw `<iframe>`.
     YouTube videos are listed in `packages/config/src/media.ts` and play from `youtube-nocookie.com` only after a visitor presses play (owner asked for them by name, 2026-10-11). Cards show a dino, never the YouTube thumbnail.
 13. No third-party scripts, analytics, trackers, cookies or forms that post data, unless the owner asks for one by name.
