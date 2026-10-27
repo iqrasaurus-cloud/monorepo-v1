@@ -42,6 +42,8 @@ function Words({ text }: { text: string }) {
   return (
     <blockquote className="text-lg text-ink">
       {text.split('\n').map((line, i) => {
+        // A blank line between paragraphs stays a visible gap.
+        if (line.trim() === '') return <span key={i} aria-hidden="true" className="block h-3" />
         const label = FORM_LABEL.exec(line)?.[0]
         return (
           <span key={i} className="block">
