@@ -1,5 +1,7 @@
 @import '@fontsource-variable/fredoka';
-@import '@fontsource-variable/nunito-sans';
+/* Andika for reading text: the school "a" and "g" children learn to write (founders, 2026-10-27; CLAUDE.md rule 7a) */
+@import '@fontsource/andika/400.css';
+@import '@fontsource/andika/700.css';
 @import '@fontsource/noto-naskh-arabic';
 @import '@iqra/config/tokens.css';
 
