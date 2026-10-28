@@ -2,6 +2,7 @@ import {
   isPlaceholder,
   localized,
   type HubContent,
+  type JournalPost,
   type LoveNote,
   type Overlay,
   type SiteConfig,
@@ -19,6 +20,7 @@ import { SectionHeading } from '../../primitives/SectionHeading.tsx'
 import { cn } from '../../utils/cn.ts'
 import { real, STEP_MASCOTS, withFallback, type Bg, bgClass } from '../spoke/helpers.ts'
 import { LoveNotes } from '../love/Love.tsx'
+import { archivePosts, TimelineStrip } from '../journal/Timeline.tsx'
 import { PageHeader } from './PageHeader.tsx'
 
 function Prose({ paragraphs }: { paragraphs: string[] }) {
@@ -48,10 +50,12 @@ interface HubAboutProps {
   aboutMs?: Overlay<HubContent['about']>
   /** Wall of Love notes; the first three show, with a link to the rest. */
   love?: LoveNote[]
+  /** The hub's journal posts; archive posts (dated by year) make the story-so-far row. */
+  posts?: JournalPost[]
 }
 
 /** iqrasaurus.com/about: story, people, foundation, how we teach, trust, kind words and press. */
-export function HubAbout({ site, about: english, aboutMs, love = [] }: HubAboutProps) {
+export function HubAbout({ site, about: english, aboutMs, love = [], posts = [] }: HubAboutProps) {
   const t = useT()
   const lang = useLang()
   const brand = useBrand()
@@ -71,6 +75,13 @@ export function HubAbout({ site, about: english, aboutMs, love = [] }: HubAboutP
       bg: 'surface',
       show: story.length > 0,
       body: <Prose paragraphs={story} />,
+    },
+    {
+      id: 'story-so-far',
+      title: t.ourStorySoFar,
+      bg: 'paper',
+      show: archivePosts(posts).length > 0,
+      body: <TimelineStrip site={site} posts={posts} />,
     },
     {
       id: 'our-people',

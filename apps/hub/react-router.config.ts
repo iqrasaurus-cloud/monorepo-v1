@@ -18,5 +18,5 @@ const withMalay = (paths: string[]): string[] => [
 export default {
   ssr: false,
   prerender: () =>
-    withMalay(['/', '/about', '/work-with-us', '/ai', '/journal', '/love', '/404', ...journalPages()]),
+    withMalay(['/', '/about', '/work-with-us', '/ai', '/journal', '/love', '/timeline', '/books', '/404', ...journalPages()]),
 } satisfies Config

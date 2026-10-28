@@ -294,6 +294,26 @@ export function Footer({ site }: { site: SiteConfig }) {
                   )}
                 </p>
               ) : null}
+              {aboutPage
+                ? (
+                    [
+                      ['/books', t.bookshelf],
+                      ['/timeline', t.timeline],
+                    ] as const
+                  ).map(([path, label]) => (
+                    <p key={path} className="mt-2.5">
+                      {site.kind === 'hub' ? (
+                        <Link to={path} className={link}>
+                          {label}
+                        </Link>
+                      ) : (
+                        <a href={siteUrl(hub(), localPath(lang, path))} className={link}>
+                          {label}
+                        </a>
+                      )}
+                    </p>
+                  ))
+                : null}
             </Column>
 
             {/* The header's "Work with us" item and the Donate placeholder land here. */}

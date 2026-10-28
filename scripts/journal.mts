@@ -29,9 +29,13 @@ const warn = (msg: string) => console.warn(`journal: ${msg}`)
 const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
 const pad = (n: number) => String(n).padStart(2, '0')
 
-/** YYYY-MM-DD, D/M/YYYY (day first, as in Singapore) or "14 March 2019", as YYYY-MM-DD. */
+/**
+ * YYYY-MM-DD, D/M/YYYY (day first, as in Singapore) or "14 March 2019", as YYYY-MM-DD.
+ * A year on its own ("2016") is an archive post: it is stored as 1 January and shown as the year.
+ */
 function parseDate(raw: string): string | undefined {
   const s = raw.trim()
+  if (/^\d{4}$/.test(s)) return `${s}-01-01`
   let m = /^(\d{4})-(\d{1,2})-(\d{1,2})/.exec(s)
   if (m) return `${m[1]}-${pad(+m[2]!)}-${pad(+m[3]!)}`
   m = /^(\d{1,2})[/.-](\d{1,2})[/.-](\d{4})$/.exec(s)
@@ -142,6 +146,55 @@ async function imageOf(url: string, slug: string, alt: string): Promise<JournalP
   }
 }
 
+/** A picture inside a post: `![caption](library/file.webp)` or `![words](url | alt)` on its own paragraph. */
+const FIGURE = /^!\[([\s\S]*)\]\((\S+?)(?:\s*\|\s*([\s\S]*?))?\)$/
+
+/**
+ * Saves the pictures written inside a post's body and swaps each for "!fig:<n>". A run of
+ * pictures between "[book]" and "[/book]" becomes one "!book:<n>,<n>,…" (a child's book, page
+ * by page, the words under each page). With keep = false (a programme's post on the hub,
+ * which only shows its card there) the pictures are left out.
+ */
+async function withFigures(
+  body: string[],
+  slug: string,
+  keep: boolean,
+  figures: NonNullable<JournalPost['figures']>,
+): Promise<string[]> {
+  const out: string[] = []
+  let book: number[] | undefined
+  for (const p of body) {
+    if (p === '[book]') {
+      book = []
+      continue
+    }
+    if (p === '[/book]') {
+      if (book?.length) out.push(`!book:${book.join(',')}`)
+      book = undefined
+      continue
+    }
+    const m = FIGURE.exec(p)
+    if (!m) {
+      if (book) warn(`"${slug}": text inside [book] … [/book] ignored`)
+      else out.push(p)
+      continue
+    }
+    if (!keep) continue
+    const [, caption = '', url = '', alt] = m
+    const file = `${slug}-${figures.length + 1}.webp`
+    try {
+      const { width, height } = await savePicture(url, app, join(imageDir, file), MAX_WIDTH)
+      figures.push({ src: `/journal/${file}`, alt: (alt || caption).trim(), caption: caption.trim(), width, height })
+      if (book) book.push(figures.length - 1)
+      else out.push(`!fig:${figures.length - 1}`)
+    } catch (e) {
+      warn(`"${slug}": picture ${url} not used (${(e as Error).message})`)
+    }
+  }
+  if (book?.length) out.push(`!book:${book.join(',')}`)
+  return out
+}
+
 /** The optional Malay columns (title_ms, excerpt_ms, body_ms), or nothing when all are empty. */
 async function malayOf(
   title: string,
@@ -207,19 +260,29 @@ async function main() {
 
     const imageUrl = get(row, 'image_url')
     const videoUrl = get(row, 'video_url')
+    // On the hub, a programme's post only shows as a card, so its inside pictures are skipped.
+    const fullPage = site.kind === 'spoke' || !programmes().some((p) => p.slug === postSite)
+    const figures: NonNullable<JournalPost['figures']> = []
+    const ms = await malayOf(get(row, 'title_ms'), get(row, 'excerpt_ms'), get(row, 'body_ms'))
+    const raw = await bodyOf(get(row, 'body'), title)
+    const body = await withFigures(raw, slug, fullPage, figures)
+    if (ms?.body) ms.body = await withFigures(ms.body, slug, fullPage, figures)
     posts.push({
       slug,
       site: postSite,
       category: get(row, 'category'),
       date,
+      yearOnly: /^\d{4}$/.test(get(row, 'publish_date')) || undefined,
+      book: raw.includes('[book]') || undefined,
       title,
       excerpt: get(row, 'excerpt'),
-      body: await bodyOf(get(row, 'body'), title),
+      body,
+      figures: figures.length ? figures : undefined,
       image: imageUrl.startsWith('https://') || imageUrl.startsWith('library/')
         ? await imageOf(imageUrl, slug, get(row, 'image_alt'))
         : undefined,
       videoId: videoUrl ? youtubeId(videoUrl) : undefined,
-      ms: await malayOf(get(row, 'title_ms'), get(row, 'excerpt_ms'), get(row, 'body_ms')),
+      ms,
     })
   }
 

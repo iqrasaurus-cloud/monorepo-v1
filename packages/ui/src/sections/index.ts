@@ -11,4 +11,5 @@ export {
   postHref,
   formatDate,
 } from './journal/Journal.tsx'
+export { TimelinePage, BookshelfPage } from './journal/Timeline.tsx'
 export { LoveWall, LoveStrip, LoveNotes, loveHref } from './love/Love.tsx'

@@ -9,6 +9,8 @@ const pages = (id: string) => [
   route('journal', 'routes/journal.tsx', { id: `${id}journal` }),
   route('journal/:slug', 'routes/journal-post.tsx', { id: `${id}journal-post` }),
   route('love', 'routes/love.tsx', { id: `${id}love` }),
+  route('timeline', 'routes/timeline.tsx', { id: `${id}timeline` }),
+  route('books', 'routes/books.tsx', { id: `${id}books` }),
 ]
 
 export default [

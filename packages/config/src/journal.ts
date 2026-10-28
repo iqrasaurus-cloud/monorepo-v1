@@ -9,7 +9,12 @@
  * Sheet columns (row 1, in any order):
  *   site          a programme slug (e.g. storybuzz), "hub", or "all" (every site)
  *   category      free text, e.g. Session, Workshop, Behind the scenes
- *   publish_date  YYYY-MM-DD (or DD/MM/YYYY). Past dates are fine; future dates wait until that day
+ *   publish_date  YYYY-MM-DD (or DD/MM/YYYY). Past dates are fine; future dates wait until that day.
+ *                 A year on its own (e.g. 2016) makes an archive post: it shows the year and
+ *                 appears on the timeline
+ *   (in body)     a paragraph ![caption](library/file.webp) is a picture inside the post;
+ *                 [book] … [/book] around ![words on the page](library/page.webp | what the page
+ *                 shows) paragraphs shows a child's book page by page
  *   title, excerpt
  *   body          the post; a blank line between paragraphs. Or a Google Doc link to use its text.
  *                 In either, a line starting "## " is a subheading and "- " lines make a list.
@@ -43,10 +48,19 @@ export interface JournalPost {
   category: string
   /** ISO date, YYYY-MM-DD. */
   date: string
+  /** An archive post dated by its year only (publish_date "2016"): shown as the year. */
+  yearOnly?: boolean
+  /** The post holds a child's book ([book] … [/book]); it is listed on the Bookshelf. */
+  book?: boolean
   title: string
   excerpt: string
-  /** Paragraphs of the post, in order. */
+  /**
+   * Paragraphs of the post, in order. "!fig:<n>" is figures[n]; "!book:<n>,<n>,…" is a
+   * child's book shown page by page (each figure's caption is the words on that page).
+   */
   body: string[]
+  /** Pictures inside the post, written in the sheet as ![caption](picture) paragraphs. */
+  figures?: { src: string; alt: string; caption: string; width: number; height: number }[]
   image?: { src: string; alt: string; width: number; height: number }
   /** YouTube video id. */
   videoId?: string

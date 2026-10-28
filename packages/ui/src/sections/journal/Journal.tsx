@@ -23,6 +23,7 @@ import { Section } from '../../primitives/Section.tsx'
 import { cn } from '../../utils/cn.ts'
 import { PageHeader } from '../hub/PageHeader.tsx'
 import { Player } from '../shared/Videos.tsx'
+import { BookReader } from './BookReader.tsx'
 
 const PROGRAMME_SLUGS = new Set(programmes().map((p) => p.slug))
 
@@ -34,6 +35,10 @@ export const formatDate = (iso: string, lang: Lang = 'en'): string =>
     year: 'numeric',
     timeZone: 'UTC',
   }).format(new Date(`${iso}T00:00:00Z`))
+
+/** A post's date as shown: the full date, or just the year for an archive post. */
+export const postDate = (post: JournalPost, lang: Lang = 'en'): string =>
+  post.yearOnly ? post.date.slice(0, 4) : formatDate(post.date, lang)
 
 /** The programme a post belongs to, or undefined for hub and "all" posts. */
 const programmeOf = (post: JournalPost): SiteConfig | undefined =>
@@ -80,8 +85,31 @@ function Linked({ text }: { text: string }) {
 
 const BULLET = /^\s*(?:[-*•●○▪◦]|\d+[.)])\s+/
 
-/** One block of a post: a "## " subheading, a list (every line a bullet) or a paragraph. */
-function Block({ text }: { text: string }) {
+/**
+ * One block of a post: a picture ("!fig:<n>"), a child's book ("!book:<n>,…"), a "## "
+ * subheading, a list (every line a bullet) or a paragraph.
+ */
+function Block({ text, figures = [] }: { text: string; figures?: JournalPost['figures'] }) {
+  const fig = /^!fig:(\d+)$/.exec(text)
+  if (fig) {
+    const f = figures[+fig[1]!]
+    if (!f) return null
+    return (
+      <figure className="py-3">
+        <div className="overflow-hidden rounded-card shadow-soft [&_picture]:contents">
+          <Picture {...f} className="h-auto w-full" />
+        </div>
+        {f.caption ? (
+          <figcaption className="mt-2 text-base text-ink/75">{f.caption}</figcaption>
+        ) : null}
+      </figure>
+    )
+  }
+  const book = /^!book:([\d,]+)$/.exec(text)
+  if (book) {
+    const pages = book[1]!.split(',').flatMap((n) => figures[+n] ?? [])
+    return pages.length ? <BookReader pages={pages} /> : null
+  }
   if (text.startsWith('## ')) {
     return (
       <h2 className="pt-4 font-heading text-2xl font-bold text-primary">{text.slice(3).trim()}</h2>
@@ -128,7 +156,7 @@ function SiteBadge({ post }: { post: JournalPost }) {
   )
 }
 
-function CardLink({
+export function CardLink({
   href,
   className,
   children,
@@ -204,7 +232,7 @@ function PostCard({
           <span className="mt-2 line-clamp-3 text-ink/80">{post.excerpt}</span>
         ) : null}
         <span className="mt-auto pt-4 text-sm text-ink/70">
-          <time dateTime={post.date}>{formatDate(post.date, lang)}</time>
+          <time dateTime={post.yearOnly ? post.date.slice(0, 4) : post.date}>{postDate(post, lang)}</time>
         </span>
       </span>
     </CardLink>
@@ -355,7 +383,8 @@ export function JournalPostPage({ site, post: original, posts: allPosts }: Journ
               <p className="mt-6 flex flex-wrap items-center gap-3 text-sm text-ink/75">
                 {site.kind === 'hub' ? <SiteBadge post={post} /> : null}
                 {post.category ? <span className="label text-[10px]">{post.category}</span> : null}
-                <time dateTime={post.date}>{formatDate(post.date, lang)}</time>
+                {post.yearOnly ? <span>{t.fromTheArchive}</span> : null}
+                <time dateTime={post.yearOnly ? post.date.slice(0, 4) : post.date}>{postDate(post, lang)}</time>
               </p>
               <h1 className="mt-3 text-balance font-heading text-4xl font-bold leading-tight text-ink md:text-5xl">
                 {post.title}
@@ -367,14 +396,15 @@ export function JournalPostPage({ site, post: original, posts: allPosts }: Journ
 
         <Section bg="surface" prev="paper" tight>
           <Container className="max-w-3xl">
-            {post.image ? (
+            {/* A story with pictures inside uses its picture for the card only. */}
+            {post.image && !post.figures?.length ? (
               <Reveal className="mb-10 overflow-hidden rounded-card shadow-soft [&_picture]:contents">
                 <Picture {...post.image} priority className="h-auto w-full" />
               </Reveal>
             ) : null}
             <div className="space-y-5 text-lg leading-relaxed text-ink/85">
               {post.body.map((p, i) => (
-                <Block key={i} text={p} />
+                <Block key={i} text={p} figures={post.figures} />
               ))}
             </div>
             {video ? (
