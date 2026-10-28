@@ -165,11 +165,16 @@ function PostCard({
       href={postHref(site, post, lang)}
       className="group flex h-full flex-col overflow-hidden rounded-[24px] bg-surface p-2 shadow-soft transition duration-300 ease-reveal motion-safe:hover:-translate-y-1"
     >
-      <span className="relative block aspect-[16/10] overflow-hidden rounded-[18px] [&_picture]:contents">
+      <span className="relative block aspect-[16/10] overflow-hidden rounded-[18px] bg-paper-2 [&_picture]:contents">
         {post.image ? (
           <Picture
             {...post.image}
-            className="h-full w-full object-cover transition duration-500 ease-reveal group-hover:scale-105"
+            // Wide photos fill the card; squarer or tall pictures (e.g. the dino question
+            // thumbnails, book pages) are shown whole so nothing printed on them is cut off.
+            className={cn(
+              'h-full w-full transition duration-500 ease-reveal group-hover:scale-105',
+              post.image.width / post.image.height >= 1.45 ? 'object-cover' : 'object-contain',
+            )}
           />
         ) : (
           <span
@@ -279,6 +284,40 @@ export function JournalList({ site, posts: allPosts }: JournalListProps) {
         </Container>
       </Section>
     </>
+  )
+}
+
+/** A programme page's "From the journal" band: its newest few posts, each opening the post itself. */
+export function LatestPosts({
+  site,
+  posts: allPosts,
+  limit = 3,
+}: {
+  site: SiteConfig
+  posts: JournalPost[]
+  limit?: number
+}) {
+  const t = useT()
+  const lang = useLang()
+  const posts = allPosts.slice(0, limit).map((p) => localPost(p, lang))
+  return (
+    <Container>
+      <Reveal className="mb-8 flex flex-wrap items-end justify-between gap-4">
+        <h2 className="font-heading text-3xl font-bold text-primary md:text-4xl">
+          {t.fromTheJournal}
+        </h2>
+        <Button to="/journal" variant="outline" className="bg-surface font-heading">
+          {t.readOurJournal}
+        </Button>
+      </Reveal>
+      <RevealList as="ul" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {posts.map((post) => (
+          <RevealItem key={`${post.site}-${post.slug}`} as="li">
+            <PostCard site={site} post={post} showSite={false} />
+          </RevealItem>
+        ))}
+      </RevealList>
+    </Container>
   )
 }
 

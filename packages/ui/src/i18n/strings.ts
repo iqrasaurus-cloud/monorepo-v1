@@ -69,6 +69,7 @@ const en = {
   backTo: 'Back to',
   watchTheVideo: 'Watch the video',
   moreFromJournal: 'More from the journal',
+  fromTheJournal: 'From the journal',
   // Hub
   todaysAyah: 'Today’s ayah',
   open: 'Open',
@@ -179,6 +180,7 @@ const ms: Strings = {
   backTo: 'Kembali ke',
   watchTheVideo: 'Tonton video',
   moreFromJournal: 'Lagi daripada jurnal',
+  fromTheJournal: 'Daripada jurnal',
   todaysAyah: 'Ayat hari ini',
   open: 'Buka',
   ourProgrammes: 'Program kami',

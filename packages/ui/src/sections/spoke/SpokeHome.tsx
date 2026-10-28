@@ -2,6 +2,7 @@ import {
   isPlaceholder,
   localized,
   videosFor,
+  type JournalPost,
   type LoveNote,
   type Overlay,
   type SiteConfig,
@@ -10,6 +11,7 @@ import {
 import { useLang } from '../../i18n/lang.ts'
 import type { ReactNode } from 'react'
 import { Section, type Bg } from '../../primitives/Section.tsx'
+import { LatestPosts } from '../journal/Journal.tsx'
 import { loveHref, LoveStrip } from '../love/Love.tsx'
 import { Videos } from '../shared/Videos.tsx'
 import { BringIt } from './BringIt.tsx'
@@ -33,6 +35,8 @@ interface SpokeHomeProps {
   contentMs?: Overlay<SpokeContent>
   /** This programme's first few Wall of Love notes (apps/<slug>/app/love.ts). */
   love?: LoveNote[]
+  /** This programme's journal posts, newest first (apps/<slug>/app/journal.ts). */
+  posts?: JournalPost[]
 }
 
 /**
@@ -40,7 +44,7 @@ interface SpokeHomeProps {
  * Wall of Love notes, 2026-10-25).
  * Empty sections don't render. The last band is plum, so it runs straight into the footer.
  */
-export function SpokeHome({ site, content, contentMs, love = [] }: SpokeHomeProps) {
+export function SpokeHome({ site, content, contentMs, love = [], posts = [] }: SpokeHomeProps) {
   const lang = useLang()
   const c = lang === 'ms' ? localized(content, contentMs) : content
   const blocks: Block[] = [
@@ -68,6 +72,12 @@ export function SpokeHome({ site, content, contentMs, love = [] }: SpokeHomeProp
       show: hasSeen(c.seen),
       // With no notes of its own yet, the programme still links to the whole wall from here.
       node: <Seen seen={c.seen} loveLink={love.length === 0 ? loveHref(site, lang) : undefined} />,
+    },
+    {
+      id: 'journal',
+      bg: 'paper',
+      show: posts.length > 0,
+      node: <LatestPosts site={site} posts={posts} />,
     },
     {
       id: 'wall-of-love',
