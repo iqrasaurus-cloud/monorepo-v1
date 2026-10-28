@@ -7,6 +7,10 @@
  * DRAFT: the session steps and tips are drafted from how the founder describes the work.
  * OWNER: please check them, and the name of the hill where the drama took place.
  *
+ * The at-home paragraph, the Umrah tool under "Use this at home" and the three pictures in "What it is"
+ * come from the Umrah for Kids tool (tools repo, docs/specs/umrah.md section 4; owner OK 2026-10-28).
+ * The pictures are copied by scripts/sync-umrah-samples.mjs. Add the shop link once the pack is on sale.
+ *
  * [[CONTENT NEEDED]] lines are for the owner to fill in. They are hidden on the built site;
  * "What we've seen" stays hidden until it holds at least one real quote, lesson or photo.
  */
@@ -16,17 +20,23 @@ import type { SpokeContent } from '@iqra/config'
 export const content: SpokeContent = {
   hero: {
     line: 'Stories, drama and rhymes that prepare children for Umrah, before, during and after the trip.',
-    useAtHome: ['duas'],
+    useAtHome: ['umrah', 'duas'],
   },
 
   whatItIs: {
     body: [
       'Umrah for Kids helps children understand what they will see and do on Umrah. We weave the seerah into drama and make up rhymes so the children remember the steps and the stories behind them. Each child gets worksheets and a book we made for the trip.',
+      'At home, families can get ready with Umrah for Kids, our free tool: one short step a day for 29 days, from making the intention and packing the bag to tawaf, sa’ee and coming home. The packing-list page from its paper pack is free to print from the tool’s Print tab.',
       'Before the trip we run a workshop for the children near Arab Street, and another one after the families come home.',
       'During the Umrah itself we hold storytelling sessions. In Madinah, the children acted out a drama on the hill facing Mount Uhud and listened to a story at the foot of the mountain.',
       '[[CONTENT NEEDED: which year(s) you ran it, and which travel agency or group it was with]]',
     ],
-    photos: [],
+    // From the Umrah for Kids tool: scripts/sync-umrah-samples.mjs (pictures made with ChatGPT's image tools, chosen by the owner)
+    photos: [
+      { src: '/photos/ufk-model-tawaf.webp', alt: 'The IqraSaurus dino walking round a model of the Ka’bah on a mat at home', width: 1600, height: 1600 },
+      { src: '/photos/ufk-sample-packing.webp', alt: 'A black-and-white page to colour: the dino packs a bag, with a packing list to tick and a corner to draw in', width: 1600, height: 2264 },
+      { src: '/photos/ufk-passport.webp', alt: 'My Umrah passport: 29 circles to draw a stamp in, one for each step of the journey', width: 1600, height: 2264 },
+    ],
   },
 
   session: {

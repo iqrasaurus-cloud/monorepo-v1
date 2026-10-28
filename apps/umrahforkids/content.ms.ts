@@ -16,8 +16,14 @@ export const contentMs: Overlay<SpokeContent> = {
   whatItIs: {
     body: [
       'Umrah for Kids membantu kanak-kanak memahami apa yang akan mereka lihat dan lakukan semasa umrah. Kami menjalin sirah ke dalam drama dan mencipta rima supaya kanak-kanak mengingati langkah-langkahnya dan kisah di sebaliknya. Setiap kanak-kanak menerima lembaran kerja dan sebuah buku yang kami sediakan untuk perjalanan itu.',
+      'Di rumah, keluarga boleh bersedia dengan Umrah for Kids, alat percuma kami: satu langkah pendek sehari selama 29 hari, daripada berniat dan mengemas beg hinggalah tawaf, saie dan pulang ke rumah. Halaman senarai barang daripada pek kertasnya boleh dicetak secara percuma dari tab Print dalam alat itu.',
       'Sebelum perjalanan, kami menjalankan bengkel untuk kanak-kanak berhampiran Arab Street, dan satu lagi selepas keluarga-keluarga pulang.',
       'Semasa umrah itu sendiri, kami mengadakan sesi bercerita. Di Madinah, kanak-kanak melakonkan sebuah drama di atas bukit yang menghadap Gunung Uhud dan mendengar sebuah kisah di kaki gunung itu.',
+    ],
+    photos: [
+      { src: '/photos/ufk-model-tawaf.webp', alt: 'Dino IqraSaurus berjalan mengelilingi model Kaabah di atas tikar di rumah', width: 1600, height: 1600 },
+      { src: '/photos/ufk-sample-packing.webp', alt: 'Halaman hitam putih untuk diwarnakan: dino mengemas beg, dengan senarai barang untuk ditanda dan ruang untuk melukis', width: 1600, height: 2264 },
+      { src: '/photos/ufk-passport.webp', alt: 'Pasport Umrah Saya: 29 bulatan untuk melukis setem, satu bagi setiap langkah perjalanan', width: 1600, height: 2264 },
     ],
   },
   session: {

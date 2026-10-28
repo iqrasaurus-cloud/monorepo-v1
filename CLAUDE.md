@@ -50,6 +50,7 @@ pnpm new:spoke <slug>           # scaffold a spoke app from the registry
 pnpm gen:vercel                 # regenerate every apps/*/vercel.json from the registry
 pnpm assets                     # optimise images in apps/*/assets-src into public/
 node scripts/sync-mascots.mjs   # re-copy the dino pose library from ../tadabbur-for-kids-v1
+node scripts/sync-umrah-samples.mjs  # re-copy the three Umrah for Kids sample pictures from the tools repo
 ```
 
 ## Hard rules
