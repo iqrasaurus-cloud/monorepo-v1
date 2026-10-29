@@ -68,6 +68,11 @@ node scripts/sync-umrah-samples.mjs  # re-copy the three Umrah for Kids sample p
     - **No abbreviations:** never PBUH, SAW or (AS).
     - **Malay:** "Nabi Ibrahim a.s." and "Nabi Muhammad ﷺ".
     - **No "Prophet" for:** Maryam (peace be upon her), Luqman, Dhul-Qarnayn and al-Khidr.
+    - **Allah, angels, companions and scholars** (owner, 2026-10-29; the same as the tools' rule 9, wording with the asatizah). Never abbreviated in English: no SWT, RA, RH, AWJ, JJ, SAWW or ASWS.
+      - **Allah:** "Allah"; on pages for parents, "Allah (Glorified and Exalted is He)" once. Malay: "Allah SWT".
+      - **An angel by name:** "Angel Jibril (peace be upon him)", then "Jibril". Malay: "Malaikat Jibril a.s."
+      - **A companion:** "Abu Bakr (may Allah be pleased with him)", then "Abu Bakr". Malay: "r.a."
+      - **A scholar who has passed away:** "(may Allah have mercy on him)", not in source credits, never for the living. Malay: "rahimahullah".
     - **Never changed:** Quran text and translations, quoted hadith, and the words of families quoted on the site (rule 2).
     - **Checking:** `node ../tadabbur-for-kids-v1/scripts/check-prophet-names.mjs $PWD/apps $PWD/packages`.
 5. Voice: warm, curious, clear, humble. Banned words in any copy you draft: revolutionary, game-changing, world-class, ultimate, proven, guaranteed, "the only", "the best".
