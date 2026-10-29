@@ -9,7 +9,8 @@
  *
  * The at-home paragraph, the Umrah tool under "Use this at home" and the three pictures in "What it is"
  * come from the Umrah for Kids tool (tools repo, docs/specs/umrah.md section 4; owner OK 2026-10-28).
- * The pictures are copied by scripts/sync-umrah-samples.mjs. Add the shop link once the pack is on sale.
+ * The pictures are copied by scripts/sync-umrah-samples.mjs. The shop link is the tool's paper pack
+ * (on sale since 2026-10-29).
  *
  * [[CONTENT NEEDED]] lines are for the owner to fill in. They are hidden on the built site;
  * "What we've seen" stays hidden until it holds at least one real quote, lesson or photo.
@@ -37,6 +38,11 @@ export const content: SpokeContent = {
       { src: '/photos/ufk-sample-packing.webp', alt: 'A black-and-white page to colour: the dino packs a bag, with a packing list to tick and a corner to draw in', width: 1600, height: 2264 },
       { src: '/photos/ufk-passport.webp', alt: 'My Umrah passport: 29 round stamps to colour, one for each step of the journey', width: 1600, height: 2264 },
     ],
+    shop: {
+      line: 'My Umrah Journey, the 30-day paper pack to colour and read together at home, is in the IqraSaurus Shop.',
+      label: 'See the pack',
+      href: 'https://shop.iqrasaurus.com/shop/p/umrah-journey',
+    },
   },
 
   session: {

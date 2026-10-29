@@ -25,6 +25,10 @@ export const contentMs: Overlay<SpokeContent> = {
       { src: '/photos/ufk-sample-packing.webp', alt: 'Halaman hitam putih untuk diwarnakan: dino mengemas beg, dengan senarai barang untuk ditanda dan ruang untuk melukis', width: 1600, height: 2264 },
       { src: '/photos/ufk-passport.webp', alt: 'Pasport Umrah Saya: 29 setem bulat untuk diwarnakan, satu bagi setiap langkah perjalanan', width: 1600, height: 2264 },
     ],
+    shop: {
+      line: 'My Umrah Journey, pek kertas 30 hari untuk diwarnakan dan dibaca bersama di rumah, kini ada di Kedai IqraSaurus.',
+      label: 'Lihat pek',
+    },
   },
   session: {
     steps: {

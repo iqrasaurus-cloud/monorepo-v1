@@ -5,6 +5,7 @@ import { SafeEmbed } from '../../embed/SafeEmbed.tsx'
 import { mascotImage } from '../../layout/brand.ts'
 import { Reveal } from '../../motion/Reveal.tsx'
 import { SplitScroll } from '../../motion/SplitScroll.tsx'
+import { Button } from '../../primitives/Button.tsx'
 import { Container } from '../../primitives/Container.tsx'
 import { Picture } from '../../primitives/Picture.tsx'
 import { real, withFallback } from './helpers.ts'
@@ -101,6 +102,16 @@ export function WhatItIs({ site, whatItIs }: WhatItIsProps) {
                 ))}
               </div>
             </details>
+          </Reveal>
+        ) : null}
+        {whatItIs.shop && !isPlaceholder(whatItIs.shop.line) ? (
+          <Reveal>
+            <div className="mt-8 flex flex-wrap items-center gap-4 rounded-card border border-line bg-surface p-5">
+              <p className="min-w-0 flex-1 basis-60 text-base text-ink">{whatItIs.shop.line}</p>
+              <Button href={whatItIs.shop.href} variant="primary">
+                {whatItIs.shop.label}
+              </Button>
+            </div>
           </Reveal>
         ) : null}
         {!isPlaceholder(whatItIs.sources) ? (

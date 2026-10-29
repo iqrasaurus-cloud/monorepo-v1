@@ -413,6 +413,8 @@ export interface SpokeContent {
     photos: Photo[]
     /** Optional video embed, shown as a click-to-load poster (goes through SafeEmbed). */
     videoUrl?: string
+    /** A paper pack of this programme on sale in the IqraSaurus Shop: one line and a link to it. */
+    shop?: { line: string; label: string; href: string }
   }
   session: {
     /** e.g. "About 40 minutes". */
