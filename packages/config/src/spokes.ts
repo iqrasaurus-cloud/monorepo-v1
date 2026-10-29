@@ -236,6 +236,19 @@ export const tools: ToolConfig[] = [
   // Quran Investigator (owner, 2026-10-14): an activity booklet for every Juz 'Amma surah and the Surah Lazim,
   // the at-home side of Quran Investigators (apps/investigator in the tools repo). Public since 2026-10-19 (owner).
   { slug: 'investigator', name: 'Quran Investigator', line: 'A booklet for every surah', ms: { line: 'Buku aktiviti untuk setiap surah' }, path: '/investigator', host: `investigator.${HUB_HOST}`, status: 'live', mascot: 'mascot-magnifier.png', pose: 'magnifying-glass', colour: 'investigate' },
+  // Five tools that went public in the tools repo after the menu was last updated (added 2026-10-29, owner:
+  // "make sure they are included in the main site and the navigation"). Poses as on their shop covers; the
+  // Malay lines are drafts for the owner to check.
+  // Tajweed Trail: ten-minute tajweed lessons (apps/tajweed). Public 2026-10-29 (owner).
+  { slug: 'tajweed', name: 'Tajweed Trail', line: 'Tajweed, ten minutes at a time', ms: { line: 'Tajwid, sepuluh minit setiap kali' }, path: '/tajweed', host: `tajweed.${HUB_HOST}`, status: 'live', mascot: 'mascot-quran.png', pose: 'flag-summit', colour: 'integrate' },
+  // Qasas: the stories Allah tells in the Quran (apps/qasas). Public 2026-10-24 (owner).
+  { slug: 'qasas', name: 'Qasas', line: 'Stories from the Quran', ms: { line: 'Kisah-kisah daripada al-Quran' }, path: '/qasas', host: `qasas.${HUB_HOST}`, status: 'live', mascot: 'mascot-quran.png', pose: 'lantern', colour: 'inspire' },
+  // Asmaul Husna: one Name a day, each with a sign in creation (apps/asma). Public 2026-10-23 (owner).
+  { slug: 'asma', name: 'Asmaul Husna', line: 'The Beautiful Names of Allah', ms: { line: 'Nama-nama Allah yang indah' }, path: '/asma', host: `asma.${HUB_HOST}`, status: 'live', mascot: 'mascot-binoculars.png', pose: 'star-hug', colour: 'integrate' },
+  // Akhlaq: one good manner a week (apps/akhlaq). Public 2026-10-24 (owner).
+  { slug: 'akhlaq', name: 'Akhlaq', line: 'Good manners, every day', ms: { line: 'Adab yang baik, setiap hari' }, path: '/akhlaq', host: `akhlaq.${HUB_HOST}`, status: 'live', mascot: 'mascot-walking.png', pose: 'heart-gift', colour: 'impart' },
+  // Baca Bersama: read together in Malay and English, a short story a day (apps/baca). Public 2026-10-22 (owner).
+  { slug: 'baca', name: 'Baca Bersama', line: 'Read together in Malay and English', ms: { line: 'Baca bersama dalam bahasa Melayu dan Inggeris' }, path: '/baca', host: `baca.${HUB_HOST}`, status: 'live', mascot: 'mascot-reader.png', pose: 'books-stack', colour: 'investigate' },
   { slug: 'museum', name: 'Museum', line: '[[CONTENT NEEDED: one line]]', path: '/museum', status: 'coming-soon', mascot: 'mascot-magnifier.png', pose: 'treasure-chest', colour: 'investigate' },
   // Umrah for Kids (owner, 2026-10-28): get ready for Umrah a step a day, the at-home side of the
   // Umrah for Kids programme (apps/umrah in the tools repo, docs/specs/umrah.md). Public since 2026-10-29

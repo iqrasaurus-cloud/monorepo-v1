@@ -165,6 +165,56 @@
       "permanent": false
     },
     {
+      "source": "/tajweed",
+      "destination": "https://tajweed.iqrasaurus.com/tajweed",
+      "permanent": false
+    },
+    {
+      "source": "/tajweed/:rest*",
+      "destination": "https://tajweed.iqrasaurus.com/tajweed/:rest*",
+      "permanent": false
+    },
+    {
+      "source": "/qasas",
+      "destination": "https://qasas.iqrasaurus.com/qasas",
+      "permanent": false
+    },
+    {
+      "source": "/qasas/:rest*",
+      "destination": "https://qasas.iqrasaurus.com/qasas/:rest*",
+      "permanent": false
+    },
+    {
+      "source": "/asma",
+      "destination": "https://asma.iqrasaurus.com/asma",
+      "permanent": false
+    },
+    {
+      "source": "/asma/:rest*",
+      "destination": "https://asma.iqrasaurus.com/asma/:rest*",
+      "permanent": false
+    },
+    {
+      "source": "/akhlaq",
+      "destination": "https://akhlaq.iqrasaurus.com/akhlaq",
+      "permanent": false
+    },
+    {
+      "source": "/akhlaq/:rest*",
+      "destination": "https://akhlaq.iqrasaurus.com/akhlaq/:rest*",
+      "permanent": false
+    },
+    {
+      "source": "/baca",
+      "destination": "https://baca.iqrasaurus.com/baca",
+      "permanent": false
+    },
+    {
+      "source": "/baca/:rest*",
+      "destination": "https://baca.iqrasaurus.com/baca/:rest*",
+      "permanent": false
+    },
+    {
       "source": "/umrah",
       "destination": "https://umrah.iqrasaurus.com/umrah",
       "permanent": false
