@@ -165,6 +165,16 @@
       "permanent": false
     },
     {
+      "source": "/umrah",
+      "destination": "https://umrah.iqrasaurus.com/umrah",
+      "permanent": false
+    },
+    {
+      "source": "/umrah/:rest*",
+      "destination": "https://umrah.iqrasaurus.com/umrah/:rest*",
+      "permanent": false
+    },
+    {
       "source": "/duas",
       "destination": "https://duas.iqrasaurus.com/duas",
       "permanent": false

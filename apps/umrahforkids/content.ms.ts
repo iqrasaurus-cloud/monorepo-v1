@@ -23,7 +23,7 @@ export const contentMs: Overlay<SpokeContent> = {
     photos: [
       { src: '/photos/ufk-model-tawaf.webp', alt: 'Dino IqraSaurus berjalan mengelilingi model Kaabah di atas tikar di rumah', width: 1600, height: 1600 },
       { src: '/photos/ufk-sample-packing.webp', alt: 'Halaman hitam putih untuk diwarnakan: dino mengemas beg, dengan senarai barang untuk ditanda dan ruang untuk melukis', width: 1600, height: 2264 },
-      { src: '/photos/ufk-passport.webp', alt: 'Pasport Umrah Saya: 29 bulatan untuk melukis setem, satu bagi setiap langkah perjalanan', width: 1600, height: 2264 },
+      { src: '/photos/ufk-passport.webp', alt: 'Pasport Umrah Saya: 29 setem bulat untuk diwarnakan, satu bagi setiap langkah perjalanan', width: 1600, height: 2264 },
     ],
   },
   session: {

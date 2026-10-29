@@ -238,9 +238,9 @@ export const tools: ToolConfig[] = [
   { slug: 'investigator', name: 'Quran Investigator', line: 'A booklet for every surah', ms: { line: 'Buku aktiviti untuk setiap surah' }, path: '/investigator', host: `investigator.${HUB_HOST}`, status: 'live', mascot: 'mascot-magnifier.png', pose: 'magnifying-glass', colour: 'investigate' },
   { slug: 'museum', name: 'Museum', line: '[[CONTENT NEEDED: one line]]', path: '/museum', status: 'coming-soon', mascot: 'mascot-magnifier.png', pose: 'treasure-chest', colour: 'investigate' },
   // Umrah for Kids (owner, 2026-10-28): get ready for Umrah a step a day, the at-home side of the
-  // Umrah for Kids programme (apps/umrah in the tools repo, docs/specs/umrah.md). 'coming-soon' until
-  // the asatizah have checked its steps and umrah.iqrasaurus.com is set up; then 'live'.
-  { slug: 'umrah', name: 'Umrah for Kids', line: 'Get ready for Umrah, step by step', ms: { line: 'Bersedia untuk umrah, langkah demi langkah' }, path: '/umrah', host: `umrah.${HUB_HOST}`, status: 'coming-soon', mascot: 'mascot-walking.png', pose: 'backpack-ready', colour: 'integrate' },
+  // Umrah for Kids programme (apps/umrah in the tools repo, docs/specs/umrah.md). Public since 2026-10-29
+  // (owner: the asatizah cleared all 29 steps).
+  { slug: 'umrah', name: 'Umrah for Kids', line: 'Get ready for Umrah, step by step', ms: { line: 'Bersedia untuk umrah, langkah demi langkah' }, path: '/umrah', host: `umrah.${HUB_HOST}`, status: 'live', mascot: 'mascot-walking.png', pose: 'backpack-ready', colour: 'integrate' },
   // Dino became Duas (owner, 2026-10-11): the duas we make on a regular basis. Public since 2026-10-19 (owner).
   { slug: 'duas', name: 'Duas', line: 'A dua for every moment', ms: { line: 'Doa untuk setiap ketika' }, path: '/duas', host: `duas.${HUB_HOST}`, status: 'live', mascot: 'mascot-walking.png', pose: 'making-dua', colour: 'integrate' },
   // The shop's print-ready packs, as a tile in the Tools menu (owner, 2026-10-21; not a header item, rule 8).

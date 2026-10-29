@@ -35,7 +35,7 @@ export const content: SpokeContent = {
     photos: [
       { src: '/photos/ufk-model-tawaf.webp', alt: 'The IqraSaurus dino walking round a model of the Ka’bah on a mat at home', width: 1600, height: 1600 },
       { src: '/photos/ufk-sample-packing.webp', alt: 'A black-and-white page to colour: the dino packs a bag, with a packing list to tick and a corner to draw in', width: 1600, height: 2264 },
-      { src: '/photos/ufk-passport.webp', alt: 'My Umrah passport: 29 circles to draw a stamp in, one for each step of the journey', width: 1600, height: 2264 },
+      { src: '/photos/ufk-passport.webp', alt: 'My Umrah passport: 29 round stamps to colour, one for each step of the journey', width: 1600, height: 2264 },
     ],
   },
 
